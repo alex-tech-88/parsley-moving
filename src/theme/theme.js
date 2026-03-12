@@ -19,7 +19,8 @@ export const theme = {
     border: '#e5e7eb',
     shadow: '0 2px 16px rgba(0,0,0,0.07)',
     navbar: {
-      bg: '#ffffff',
+      bg:         '#ffffff',
+      bgScrolled: 'rgba(255,255,255,0.95)',
     },
   },
 
@@ -43,7 +44,10 @@ export const theme = {
     border: '#3a3a3a',
     shadow: '0 2px 16px rgba(0,0,0,0.35)',
     navbar: {
-      bg: 'rgba(26,26,26,0.90)',
+      bg:         '#1a1a1a',
+      bgScrolled: 'rgba(26,26,26,0.95)',
     },
+
+
   },
 }

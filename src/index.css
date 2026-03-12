@@ -7,18 +7,86 @@
   --color-brand-green-hover: #148f47;
   --color-graphite: #3b3b3b;
   --font-sans: 'Geologica', sans-serif;
+  --breakpoint-lg: 1024px;
+  --spacing-22: 5.5rem;
 }
 
 @layer base {
+  :root {
+    --navbar-height: 5rem;
+  }
+
+  @media (min-width: 1280px) {
+    :root {
+      --navbar-height: 6rem;
+    }
+  }
+
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: var(--navbar-height);
   }
+
   body {
     font-family: 'Geologica', sans-serif;
     -webkit-font-smoothing: antialiased;
     margin: 0;
   }
+
   #root {
     min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Desktop — underline expands from center */
+  .nav-link {
+    position: relative;
+    text-decoration: none;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background-color: #19ad57;
+    transition: left 0.3s ease, right 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    left: 0;
+    right: 0;
+  }
+
+  /* Mobile — green left bar + text shift */
+  .nav-link-mobile {
+    position: relative;
+    text-decoration: none;
+    padding-left: 0;
+    transition: padding-left 0.3s ease, color 0.3s ease;
+  }
+
+  .nav-link-mobile::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0%;
+    background-color: #19ad57;
+    border-radius: 2px;
+    transition: height 0.3s ease;
+  }
+
+  .nav-link-mobile:hover {
+    padding-left: 10px;
+  }
+
+  .nav-link-mobile:hover::before {
+    height: 100%;
   }
 }
