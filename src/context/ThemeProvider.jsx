@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ThemeContext } from './ThemeContext'
-import { theme } from '../theme/theme'
+import { ThemeContext } from '@context/ThemeContext'
+import { theme } from '@theme/theme'
 
 export function ThemeProvider({ children }) {
   const [mode, setMode] = useState(
