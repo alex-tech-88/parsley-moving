@@ -8,23 +8,13 @@
   --color-graphite: #3b3b3b;
   --font-sans: 'Geologica', sans-serif;
   --breakpoint-lg: 1024px;
-  --spacing-22: 5.5rem;
+  --spacing-25: 6.25rem; /* 100px */
 }
 
 @layer base {
-  :root {
-    --navbar-height: 5rem;
-  }
-
-  @media (min-width: 1280px) {
-    :root {
-      --navbar-height: 6rem;
-    }
-  }
-
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: var(--navbar-height);
+    scroll-padding-top: 88px;
   }
 
   body {
