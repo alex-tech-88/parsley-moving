@@ -1,5 +1,7 @@
 import { useTheme } from '@context/useTheme'
 import ContactForm from '@components/ui/ContactForm'
+import logoLight from '@/assets/Parsley_Light_Theme.webp'
+import logoDark from '@/assets/Parsley_Dark_Theme.webp'
 
 function MobileCard({ t, children }) {
   return (
@@ -25,7 +27,7 @@ function MobileCard({ t, children }) {
 }
 
 export default function Hero() {
-  const { t } = useTheme()
+  const { t, mode } = useTheme()
 
   return (
     <section
@@ -38,11 +40,21 @@ export default function Hero() {
 
           {/* Left column — desktop only */}
           <div className="hidden lg:flex flex-1 flex-col items-start text-left">
-            <img
-              src="/favicon-96x96.png"
-              alt="Parsley Moving"
-              className="w-40 h-40 xl:w-52 xl:h-52 object-contain mb-6"
-            />
+            <div className="relative w-72 h-72 xl:w-96 xl:h-96 mb-6 mx-auto">
+              <img
+                src={logoLight}
+                alt="Parsley Moving"
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === 'dark' ? 'opacity-0' : 'opacity-100'
+                  }`}
+              />
+              <img
+                src={logoDark}
+                alt="Parsley Moving"
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === 'dark' ? 'opacity-100' : 'opacity-0'
+                  }`}
+              />
+            </div>
+
             <h1 className="text-4xl xl:text-5xl font-bold text-graphite dark:text-white leading-tight">
               Where every move is
               <br />
@@ -56,7 +68,15 @@ export default function Hero() {
                 <span
                   key={badge}
                   style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
-                  className="text-sm font-medium px-4 py-1.5 rounded-full"
+                  className="text-sm font-medium px-4 py-1.5 rounded-full cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-md"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = t.brand.primary
+                    e.currentTarget.style.color = '#fff'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = t.bg.accent
+                    e.currentTarget.style.color = t.brand.primary
+                  }}
                 >
                   {badge}
                 </span>

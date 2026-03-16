@@ -19,7 +19,6 @@ export default function ContactForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Form submitted:', form)
   }
 
   const inputClass = `

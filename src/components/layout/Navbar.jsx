@@ -67,9 +67,9 @@ export default function Navbar() {
           <a
             href={telHref}
             style={{ borderColor: t.border, color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
-            className="flex items-center gap-2 border rounded-xl px-4 py-2.5
-    hover:border-brand-green hover:text-brand-green hover:bg-brand-green/5
-    transition-all duration-200 text-sm font-semibold group"
+            className="flex items-center gap-2 border rounded-xl px-4 py-3
+           hover:border-brand-green hover:text-brand-green hover:bg-brand-green/5
+            transition-all duration-200 text-sm font-semibold group"
           >
             <PhoneIcon className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
             {PHONE}
@@ -80,9 +80,9 @@ export default function Navbar() {
             href="#contact"
             style={{ backgroundColor: t.brand.primary }}
             className="hover:opacity-90 text-white text-sm xl:text-base font-semibold
-              px-5 xl:px-6 py-2.5 xl:py-3 rounded-xl transition-opacity"
+            px-5 xl:px-6 py-3 rounded-xl transition-opacity"
           >
-            Get a Quote
+            GET QUOTE
           </a>
 
           {/* Theme toggle */}
@@ -150,7 +150,7 @@ export default function Navbar() {
             className="hover:opacity-90 text-white text-sm font-semibold px-5 py-2.5 rounded-xl
               text-center transition-opacity w-full max-w-xs"
           >
-            Get a Quote
+            GET QUOTE
           </a>
         </div>
       </div>
