@@ -78,9 +78,9 @@ export default function ContactForm() {
             type="submit"
             style={{ backgroundColor: t.brand.primary }}
             className="w-full sm:flex-1 hover:opacity-90 transition-opacity
-              text-white font-semibold px-4 py-2.5 rounded-xl text-sm sm:text-base text-center"
+              text-white font-semibold px-4 py-2.5 rounded-xl text-sm sm:text-base text-center cursor-pointer"
           >
-            Get a Quote
+            GET QUOTE
           </button>
 
           {/* Divider — horizontal on mobile, vertical on sm+ */}
@@ -99,7 +99,7 @@ export default function ContactForm() {
               transition-all duration-200 text-sm font-semibold group"
           >
             <PhoneIcon className="w-4 h-4 shrink-0 group-hover:scale-110 transition-transform duration-200" />
-            Or get a call
+            REQUEST CALL
           </a>
 
         </div>

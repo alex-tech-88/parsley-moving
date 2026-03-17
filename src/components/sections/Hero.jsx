@@ -56,15 +56,15 @@ export default function Hero() {
             </div>
 
             <h1 className="text-4xl xl:text-5xl font-bold text-graphite dark:text-white leading-tight">
-              Where every move is
+              Where Every Move is
               <br />
-              <span className="text-brand-green">seasoned with care.</span>
+              <span className="text-brand-green">Seasoned With Care</span>
             </h1>
-            <p className="mt-4 text-base xl:text-lg text-[#6b7280] dark:text-[#a0a0a0] max-w-sm">
-              Professional moving services in the Bay Area. Licensed, insured, and always on time.
+            <p className="mt-4 text-base xl:text-lg text-[#6b7280] dark:text-[#a0a0a0]">
+              Professional Moving Services in the Bay Area
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
-              {['✅ Licensed & Insured', '⭐ 5-Star Rated', '🚛 Local & Long Distance'].map((badge) => (
+              {['✅ Fast & Reliable', '⭐ 5-Star Rated', '🚛 Local & Long Distance'].map((badge) => (
                 <span
                   key={badge}
                   style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
@@ -90,12 +90,12 @@ export default function Hero() {
             {/* Heading — mobile/tablet only */}
             <div className="lg:hidden mb-6">
               <h1 className="text-3xl sm:text-4xl font-bold text-graphite dark:text-white leading-tight mb-3">
-                Where every move is
+                Where Every Move is
                 <br />
-                <span className="text-brand-green">seasoned with care.</span>
+                <span className="text-brand-green">Seasoned With Care</span>
               </h1>
               <p className="text-sm text-[#6b7280] dark:text-[#a0a0a0]">
-                Professional moving services in the Bay Area. Licensed, insured, and always on time.
+                Professional Moving Services in the Bay Area
               </p>
             </div>
 
