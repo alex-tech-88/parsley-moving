@@ -1,0 +1,50 @@
+/* Mobile menu */
+.mobile-menu {
+  background-color: #ffffff;
+}
+.dark .mobile-menu {
+  background-color: #1a1a1a;
+}
+
+/* Mobile menu divider */
+.mobile-menu-divider {
+  background-color: #e5e7eb;
+}
+.dark .mobile-menu-divider {
+  background-color: #3a3a3a;
+}
+
+/* Desktop phone button */
+.navbar-phone-btn {
+  border-color: var(--color-brand-green);
+  border-width: 2px;
+  color: var(--color-graphite);
+}
+.dark .navbar-phone-btn {
+  color: #f5f5f5;
+}
+
+/* Mobile call button in menu */
+.navbar-call-btn {
+  border-color: #e5e7eb;
+  color: var(--color-graphite);
+}
+.dark .navbar-call-btn {
+  border-color: #3a3a3a;
+  color: #f5f5f5;
+}
+
+/* Desktop dropdown */
+.navbar-dropdown {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+}
+.dark .navbar-dropdown {
+  background-color: #2c2c2c;
+  border-color: #3a3a3a;
+}
+
+/* CTA button */
+.navbar-cta {
+  background-color: var(--color-brand-green);
+}

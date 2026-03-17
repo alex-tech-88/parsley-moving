@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from '@context/useTheme'
 import { PHONE, NAV_LINKS } from '@/constants'
+import './Navbar.css'
 
 function PhoneIcon({ className = '' }) {
   return (
@@ -19,7 +20,7 @@ function ChevronIcon({ className = '' }) {
 }
 
 export default function Navbar() {
-  const { mode, toggleTheme, t } = useTheme()
+  const { toggleTheme, t, mode } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
@@ -30,6 +31,11 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Сбрасываем servicesOpen при закрытии меню
+  useEffect(() => {
+    if (!menuOpen) setServicesOpen(false)
+  }, [menuOpen])
 
   const telHref = `tel:${PHONE.replace(/\D/g, '')}`
 
@@ -68,11 +74,9 @@ export default function Navbar() {
                   </a>
 
                   {/* Desktop dropdown */}
-                  <div
-                    style={{ backgroundColor: t.bg.card, borderColor: t.border }}
-                    className="absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
-                      opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                      transition-all duration-200 z-50 overflow-hidden"
+                  <div className="navbar-dropdown absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                    transition-all duration-200 z-50 overflow-hidden"
                   >
                     {link.dropdown.map((item) => (
                       <a
@@ -99,8 +103,7 @@ export default function Navbar() {
             {/* Phone */}
             <a
               href={telHref}
-              style={{ borderColor: t.brand.primary, borderWidth: '2px', color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
-              className="flex items-center gap-2 border rounded-xl px-4 py-3
+              className="navbar-phone-btn flex items-center gap-2 border rounded-xl px-4 py-3
                 hover:border-brand-green hover:text-brand-green hover:bg-brand-green/5
                 transition-all duration-200 text-sm font-semibold group"
             >
@@ -111,8 +114,7 @@ export default function Navbar() {
             {/* CTA */}
             <a
               href="#contact"
-              style={{ backgroundColor: t.brand.primary }}
-              className="hover:opacity-90 text-white text-sm xl:text-base font-semibold
+              className="navbar-cta hover:opacity-90 text-white text-sm xl:text-base font-semibold
                 px-5 xl:px-6 py-3 rounded-xl transition-opacity"
             >
               GET QUOTE
@@ -160,78 +162,75 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile dropdown menu — вне header, перекрывает всё */}
-      {menuOpen && (
-        <div
-          style={{ backgroundColor: mode === 'light' ? '#ffffff' : '#1e1e1e' }}
-          className="fixed inset-0 z-40 lg:hidden overflow-y-auto mobile-menu-open"
-        >
-          <div className="px-6 pb-8 pt-22 mt-6 flex flex-col items-center gap-6">
-            {NAV_LINKS.map((link) => (
-              <div key={link.href} className="w-full flex flex-col items-center gap-3">
-                {link.dropdown ? (
-                  <>
-                    <button
-                      onClick={() => setServicesOpen(!servicesOpen)}
-                      className={`nav-link-mobile flex items-center gap-1 ${servicesOpen ? 'active' : ''}`}
-                    >
-                      {link.label}
-                      <ChevronIcon className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    <div className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${servicesOpen ? 'max-h-96' : 'max-h-0'}`}>
-                      <div style={{ backgroundColor: mode === 'light' ? '#e5e7eb' : '#2a2a2a' }} className="w-full h-px" />
-                      {link.dropdown.map((item) => (
-                        <a
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => { setMenuOpen(false); setServicesOpen(false) }}
-                          className="nav-dropdown-item-mobile"
-                        >
-                          {item.label}
-                        </a>
-                      ))}
-                      <div style={{ backgroundColor: mode === 'light' ? '#e5e7eb' : '#2a2a2a' }} className="w-full h-px" />
-                    </div>
-                  </>
-                ) : (
-                  <a
-                    href={link.href}
-                    onClick={() => { setMenuOpen(false); setActiveLink(link.href) }}
-                    className={`nav-link-mobile ${activeLink === link.href ? 'active' : ''}`}
+      {/* Mobile menu */}
+      <div
+        className={`mobile-menu fixed inset-0 z-40 lg:hidden overflow-y-auto
+          transition-opacity duration-300
+          ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      >
+        <div className="px-6 pb-8 pt-22 mt-6 flex flex-col items-center gap-6">
+          {NAV_LINKS.map((link) => (
+            <div key={link.href} className="w-full flex flex-col items-center gap-3">
+              {link.dropdown ? (
+                <>
+                  <button
+                    onClick={() => setServicesOpen(!servicesOpen)}
+                    className={`nav-link-mobile flex items-center gap-1 ${servicesOpen ? 'active' : ''}`}
                   >
                     {link.label}
-                  </a>
-                )}
-              </div>
-            ))}
+                    <ChevronIcon className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
 
-            {/* Buttons */}
-            <div className="w-full flex flex-col gap-3 mt-2">
-              <a
-                href="#contact"
-                onClick={() => setMenuOpen(false)}
-                style={{ backgroundColor: t.brand.primary }}
-                className="hover:opacity-90 text-white text-sm font-semibold px-5 py-3 rounded-xl
-                  text-center transition-opacity w-full"
-              >
-                GET QUOTE
-              </a>
-              <a
-                href={telHref}
-                onClick={() => setMenuOpen(false)}
-                style={{ borderColor: t.border, color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
-                className="flex items-center justify-center gap-2 border-2 rounded-xl px-5 py-3
-                  hover:border-brand-green hover:text-brand-green transition-all duration-200
-                  text-sm font-semibold"
-              >
-                <PhoneIcon className="w-4 h-4 phone-ring" />
-                {PHONE}
-              </a>
+                  <div className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${servicesOpen ? 'max-h-96' : 'max-h-0'}`}>
+                    <div className="mobile-menu-divider w-full h-px" />
+                    {link.dropdown.map((item) => (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => { setMenuOpen(false); setServicesOpen(false) }}
+                        className="nav-dropdown-item-mobile"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                    <div className="mobile-menu-divider w-full h-px" />
+                  </div>
+                </>
+              ) : (
+                <a
+                  href={link.href}
+                  onClick={() => { setMenuOpen(false); setActiveLink(link.href) }}
+                  className={`nav-link-mobile ${activeLink === link.href ? 'active' : ''}`}
+                >
+                  {link.label}
+                </a>
+              )}
             </div>
+          ))}
+
+          {/* Buttons */}
+          <div className="w-full flex flex-col gap-3 mt-2">
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              className="navbar-cta hover:opacity-90 text-white text-sm font-semibold px-5 py-3 rounded-xl
+                text-center transition-opacity w-full"
+            >
+              GET QUOTE
+            </a>
+            <a
+              href={telHref}
+              onClick={() => setMenuOpen(false)}
+              className="navbar-call-btn flex items-center justify-center gap-2 border-2 rounded-xl px-5 py-3
+                hover:border-brand-green hover:text-brand-green transition-all duration-200
+                text-sm font-semibold"
+            >
+              <PhoneIcon className="w-4 h-4 phone-ring" />
+              {PHONE}
+            </a>
           </div>
         </div>
-      )}
+      </div>
     </>
   )
 }
