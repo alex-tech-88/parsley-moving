@@ -61,7 +61,7 @@ export default function Hero() {
               <span className="text-brand-green">Seasoned With Care</span>
             </h1>
             <p className="mt-4 text-base xl:text-lg text-[#6b7280] dark:text-[#a0a0a0]">
-              Professional Moving Services in the Bay Area
+              Professional Moving ervices in the Bay Area
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
               {['✅ Fast & Reliable', '⭐ 5-Star Rated', '🚛 Local & Long Distance'].map((badge) => (

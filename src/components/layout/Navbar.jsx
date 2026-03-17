@@ -66,12 +66,12 @@ export default function Navbar() {
           {/* Phone button */}
           <a
             href={telHref}
-            style={{ borderColor: t.border, color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
+            style={{ borderColor: t.brand.primary,  borderWidth: '2px', color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
             className="flex items-center gap-2 border rounded-xl px-4 py-3
            hover:border-brand-green hover:text-brand-green hover:bg-brand-green/5
             transition-all duration-200 text-sm font-semibold group"
           >
-            <PhoneIcon className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" />
+            <PhoneIcon className="w-5 h-5 group-hover:scale-110 transition-transform duration-200 phone-ring" />
             {PHONE}
           </a>
 
@@ -104,7 +104,7 @@ export default function Navbar() {
             className="w-9 h-9 flex items-center justify-center rounded-lg
               text-graphite dark:text-white hover:text-brand-green hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
           >
-            <PhoneIcon className="w-5 h-5" />
+            <PhoneIcon className="w-7 h-7 phone-ring" />
           </a>
           <button
             onClick={toggleTheme}

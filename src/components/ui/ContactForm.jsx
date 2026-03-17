@@ -39,7 +39,7 @@ export default function ContactForm() {
       {/* Heading */}
       <div className="mb-4 sm:mb-6">
         <h2 className="text-xl sm:text-2xl xl:text-3xl font-bold text-graphite dark:text-white mb-1">
-          Get a free quote
+          Get a Free Quote
         </h2>
         <p className="text-xs sm:text-sm text-[#6b7280] dark:text-[#a0a0a0]">
           Guaranteed all-inclusive quote within minutes.
@@ -92,13 +92,13 @@ export default function ContactForm() {
           {/* Call link — full width on mobile */}
           <a
             href={`tel:${PHONE.replace(/\D/g, '')}`}
-            style={{ color: callColor, borderColor: t.border }}
+            style={{ color: callColor, borderColor: t.brand.primary, borderWidth: '2px' }}
             className="w-full sm:flex-1 flex items-center justify-center gap-2
               border rounded-xl px-4 py-2.5
               hover:border-brand-green hover:text-brand-green hover:bg-brand-green/5
               transition-all duration-200 text-sm font-semibold group"
           >
-            <PhoneIcon className="w-4 h-4 shrink-0 group-hover:scale-110 transition-transform duration-200" />
+            <PhoneIcon className="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200 phone-ring" />
             REQUEST CALL
           </a>
 
