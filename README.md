@@ -43,6 +43,8 @@ npm run lint
 
 # Auto-fix errors
 npm run lint:fix
+
+
 Project Structure
 text
 src/
@@ -57,6 +59,8 @@ src/
 ├── App.jsx
 └── main.jsx
 public/              # Favicons, web manifest, SVG icons
+
+
 Path Aliases
 Configured in vite.config.js:
 
@@ -67,5 +71,8 @@ Alias	Path
 @theme	src/theme/
 @assets	src/assets/
 @hooks	src/hooks/
+
+
 Theme
-The app supports light and dark mode. The selected theme is saved in localStorage under the key parsley-theme and persists between sessions.
+The app supports light and dark mode.
+The selected theme is saved in localStorage under the key parsley-theme and persists between sessions.
