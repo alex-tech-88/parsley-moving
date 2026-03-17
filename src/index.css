@@ -120,38 +120,77 @@
     transition: height 0.3s ease;
   }
 
-  .nav-link-mobile:hover {
+  .nav-link-mobile:active {
     padding-left: 10px;
     color: var(--color-brand-green);
   }
 
-  .nav-link-mobile:hover::before {
+  .nav-link-mobile:active::before {
     height: 100%;
+  }
+
+  .nav-link-mobile.active {
+    color: var(--color-brand-green);
   }
 
   .dark .nav-link-mobile {
     color: #ffffff;
   }
 
-  .dark .nav-link-mobile:hover {
+  .dark .nav-link-mobile:active {
+    color: var(--color-brand-green);
+  }
+
+  .dark .nav-link-mobile.active {
     color: var(--color-brand-green);
   }
 
   /* Desktop dropdown items */
   .nav-dropdown-item {
+    position: relative;
     display: block;
+    text-decoration: none;
     padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.15s, background-color 0.15s;
+    padding-left: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-graphite);
+    transition: padding-left 0.3s ease, color 0.3s ease;
+  }
+
+  .nav-dropdown-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0%;
+    background-color: var(--color-brand-green);
+    border-radius: 2px;
+    transition: height 0.3s ease;
   }
 
   .nav-dropdown-item:hover {
+    padding-left: 1.625rem;
     color: var(--color-brand-green);
-    background-color: rgb(25 173 87 / 0.05);
   }
 
-  /* Mobile dropdown items — same style as nav-link-mobile */
+  .nav-dropdown-item:hover::before {
+    height: 100%;
+  }
+
+  .dark .nav-dropdown-item {
+    color: #ffffff;
+  }
+
+  .dark .nav-dropdown-item:hover {
+    color: var(--color-brand-green);
+  }
+
+  /* Mobile dropdown items */
   .nav-dropdown-item-mobile {
     position: relative;
     text-decoration: none;
@@ -177,12 +216,12 @@
     transition: height 0.3s ease;
   }
 
-  .nav-dropdown-item-mobile:hover {
+  .nav-dropdown-item-mobile:active {
     padding-left: 10px;
     color: var(--color-brand-green);
   }
 
-  .nav-dropdown-item-mobile:hover::before {
+  .nav-dropdown-item-mobile:active::before {
     height: 100%;
   }
 
@@ -190,7 +229,8 @@
     color: #ffffff;
   }
 
-  .dark .nav-dropdown-item-mobile:hover {
+  .dark .nav-dropdown-item-mobile:active {
     color: var(--color-brand-green);
   }
+
 }

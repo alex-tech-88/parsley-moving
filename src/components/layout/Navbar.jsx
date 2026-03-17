@@ -23,6 +23,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
+  const [activeLink, setActiveLink] = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -68,7 +69,7 @@ export default function Navbar() {
                 {/* Desktop dropdown */}
                 <div
                   style={{ backgroundColor: t.bg.card, borderColor: t.border }}
-                  className="absolute top-full left-0 mt-2 w-52 rounded-xl border shadow-lg
+                  className="absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
                     opacity-0 invisible group-hover:opacity-100 group-hover:visible
                     transition-all duration-200 z-50 overflow-hidden"
                 >
@@ -76,7 +77,6 @@ export default function Navbar() {
                     <a
                       key={item.href}
                       href={item.href}
-                      style={{ color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
                       className="nav-dropdown-item"
                     >
                       {item.label}
@@ -165,7 +165,7 @@ export default function Navbar() {
           backgroundColor: mode === 'light' ? '#ffffff' : '#1e1e1e',
         }}
         className={`lg:hidden transition-all duration-300 overflow-hidden border-t
-          ${menuOpen ? 'max-h-125 opacity-100' : 'max-h-0 opacity-0'}`}
+          ${menuOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}
       >
         <div className="px-6 pb-8 pt-6 flex flex-col items-center gap-6">
           {NAV_LINKS.map((link) => (
@@ -174,7 +174,7 @@ export default function Navbar() {
                 <>
                   <button
                     onClick={() => setServicesOpen(!servicesOpen)}
-                    className="nav-link-mobile flex items-center justify-center gap-1 w-full text-center"
+                    className={`nav-link-mobile flex items-center gap-1 ${servicesOpen ? 'active' : ''}`}
                   >
                     {link.label}
                     <ChevronIcon className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
@@ -198,8 +198,8 @@ export default function Navbar() {
               ) : (
                 <a
                   href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="nav-link-mobile"
+                  onClick={() => { setMenuOpen(false); setActiveLink(link.href) }}
+                  className={`nav-link-mobile ${activeLink === link.href ? 'active' : ''}`}
                 >
                   {link.label}
                 </a>
