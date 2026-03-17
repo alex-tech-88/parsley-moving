@@ -10,10 +10,19 @@ function PhoneIcon({ className = '' }) {
   )
 }
 
+function ChevronIcon({ className = '' }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  )
+}
+
 export default function Navbar() {
   const { mode, toggleTheme, t } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -46,41 +55,64 @@ export default function Navbar() {
           </span>
         </a>
 
-        {/* Desktop nav links */}
+        {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-8 xl:gap-12">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="nav-link text-base xl:text-lg font-bold uppercase tracking-wide
-                text-graphite dark:text-white hover:text-brand-green dark:hover:text-brand-green transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.dropdown ? (
+              <div key={link.href} className="relative group">
+                <a href={link.href} className="nav-link flex items-center gap-1">
+                  {link.label}
+                  <ChevronIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
+                </a>
+
+                {/* Desktop dropdown */}
+                <div
+                  style={{ backgroundColor: t.bg.card, borderColor: t.border }}
+                  className="absolute top-full left-0 mt-2 w-52 rounded-xl border shadow-lg
+                    opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                    transition-all duration-200 z-50 overflow-hidden"
+                >
+                  {link.dropdown.map((item) => (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      style={{ color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
+                      className="nav-dropdown-item"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <a key={link.href} href={link.href} className="nav-link">
+                {link.label}
+              </a>
+            )
+          )}
         </nav>
 
         {/* Desktop right side */}
         <div className="hidden lg:flex items-center gap-4 xl:gap-5">
 
-          {/* Phone button */}
+          {/* Phone */}
           <a
             href={telHref}
-            style={{ borderColor: t.brand.primary,  borderWidth: '2px', color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
+            style={{ borderColor: t.brand.primary, borderWidth: '2px', color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
             className="flex items-center gap-2 border rounded-xl px-4 py-3
-           hover:border-brand-green hover:text-brand-green hover:bg-brand-green/5
-            transition-all duration-200 text-sm font-semibold group"
+              hover:border-brand-green hover:text-brand-green hover:bg-brand-green/5
+              transition-all duration-200 text-sm font-semibold group"
           >
             <PhoneIcon className="w-5 h-5 group-hover:scale-110 transition-transform duration-200 phone-ring" />
             {PHONE}
           </a>
 
-          {/* CTA button */}
+          {/* CTA */}
           <a
             href="#contact"
             style={{ backgroundColor: t.brand.primary }}
             className="hover:opacity-90 text-white text-sm xl:text-base font-semibold
-            px-5 xl:px-6 py-3 rounded-xl transition-opacity"
+              px-5 xl:px-6 py-3 rounded-xl transition-opacity"
           >
             GET QUOTE
           </a>
@@ -128,30 +160,76 @@ export default function Navbar() {
 
       {/* Mobile dropdown menu */}
       <div
-        style={{ borderTopColor: t.border }}
-        className={`lg:hidden transition-all duration-300 overflow-hidden border-t ${menuOpen ? 'max-h-96' : 'max-h-0'}`}
+        style={{
+          borderTopColor: t.border,
+          backgroundColor: mode === 'light' ? '#ffffff' : '#1e1e1e',
+        }}
+        className={`lg:hidden transition-all duration-300 overflow-hidden border-t
+          ${menuOpen ? 'max-h-125 opacity-100' : 'max-h-0 opacity-0'}`}
       >
-        <div className="px-6 pb-6 pt-4 flex flex-col items-center gap-4">
+        <div className="px-6 pb-8 pt-6 flex flex-col items-center gap-6">
           {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="nav-link-mobile text-base font-medium uppercase tracking-wide
-                text-graphite dark:text-white hover:text-brand-green transition-colors"
-            >
-              {link.label}
-            </a>
+            <div key={link.href} className="w-full flex flex-col items-center gap-3">
+              {link.dropdown ? (
+                <>
+                  <button
+                    onClick={() => setServicesOpen(!servicesOpen)}
+                    className="nav-link-mobile flex items-center justify-center gap-1 w-full text-center"
+                  >
+                    {link.label}
+                    <ChevronIcon className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <div className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${servicesOpen ? 'max-h-96' : 'max-h-0'}`}>
+                    <div style={{ backgroundColor: mode === 'light' ? '#e5e7eb' : '#2a2a2a' }} className="w-full h-px" />
+                    {link.dropdown.map((item) => (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => { setMenuOpen(false); setServicesOpen(false) }}
+                        className="nav-dropdown-item-mobile"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                    <div style={{ backgroundColor: mode === 'light' ? '#e5e7eb' : '#2a2a2a' }} className="w-full h-px" />
+                  </div>
+                </>
+              ) : (
+                <a
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="nav-link-mobile"
+                >
+                  {link.label}
+                </a>
+              )}
+            </div>
           ))}
-          <a
-            href="#contact"
-            onClick={() => setMenuOpen(false)}
-            style={{ backgroundColor: t.brand.primary }}
-            className="hover:opacity-90 text-white text-sm font-semibold px-5 py-2.5 rounded-xl
-              text-center transition-opacity w-full max-w-xs"
-          >
-            GET QUOTE
-          </a>
+
+          {/* Buttons */}
+          <div className="w-full flex flex-col gap-3 mt-2">
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              style={{ backgroundColor: t.brand.primary }}
+              className="hover:opacity-90 text-white text-sm font-semibold px-5 py-3 rounded-xl
+                text-center transition-opacity w-full"
+            >
+              GET QUOTE
+            </a>
+            <a
+              href={telHref}
+              onClick={() => setMenuOpen(false)}
+              style={{ borderColor: t.border, color: mode === 'light' ? '#3b3b3b' : '#f5f5f5' }}
+              className="flex items-center justify-center gap-2 border-2 rounded-xl px-5 py-3
+                hover:border-brand-green hover:text-brand-green transition-all duration-200
+                text-sm font-semibold"
+            >
+              <PhoneIcon className="w-4 h-4 phone-ring" />
+              {PHONE}
+            </a>
+          </div>
         </div>
       </div>
     </header>
