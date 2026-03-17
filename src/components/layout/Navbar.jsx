@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from '@context/useTheme'
-import { PHONE, NAV_LINKS } from '@/constants'
+import GetQuoteButton from '@components/ui/GetQuoteButton'
+import RequestCallButton from '@components/ui/RequestCallButton'
 import './Navbar.css'
+import { PHONE, NAV_LINKS } from '@/constants'
+
 
 function PhoneIcon({ className = '' }) {
   return (
@@ -31,11 +34,6 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  // Сбрасываем servicesOpen при закрытии меню
-  useEffect(() => {
-    if (!menuOpen) setServicesOpen(false)
-  }, [menuOpen])
 
   const telHref = `tel:${PHONE.replace(/\D/g, '')}`
 
@@ -99,8 +97,6 @@ export default function Navbar() {
 
           {/* Desktop right side */}
           <div className="hidden lg:flex items-center gap-4 xl:gap-5">
-
-            {/* Phone */}
             <a
               href={telHref}
               className="navbar-phone-btn flex items-center gap-2 border rounded-xl px-4 py-3
@@ -111,16 +107,8 @@ export default function Navbar() {
               {PHONE}
             </a>
 
-            {/* CTA */}
-            <a
-              href="#contact"
-              className="navbar-cta hover:opacity-90 text-white text-sm xl:text-base font-semibold
-                px-5 xl:px-6 py-3 rounded-xl transition-opacity"
-            >
-              GET QUOTE
-            </a>
+            <GetQuoteButton className="text-sm xl:text-base px-5 xl:px-6" />
 
-            {/* Theme toggle */}
             <button
               onClick={toggleTheme}
               className="w-9 h-9 xl:w-11 xl:h-11 flex items-center justify-center rounded-lg
@@ -151,9 +139,13 @@ export default function Navbar() {
             </button>
             <button
               className="flex flex-col gap-1.5 p-2"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => {
+                if (menuOpen) setServicesOpen(false)
+                setMenuOpen(!menuOpen)
+              }}
               aria-label="Menu"
             >
+
               <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
               <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
               <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
@@ -210,24 +202,8 @@ export default function Navbar() {
 
           {/* Buttons */}
           <div className="w-full flex flex-col gap-3 mt-2">
-            <a
-              href="#contact"
-              onClick={() => setMenuOpen(false)}
-              className="navbar-cta hover:opacity-90 text-white text-sm font-semibold px-5 py-3 rounded-xl
-                text-center transition-opacity w-full"
-            >
-              GET QUOTE
-            </a>
-            <a
-              href={telHref}
-              onClick={() => setMenuOpen(false)}
-              className="navbar-call-btn flex items-center justify-center gap-2 border-2 rounded-xl px-5 py-3
-                hover:border-brand-green hover:text-brand-green transition-all duration-200
-                text-sm font-semibold"
-            >
-              <PhoneIcon className="w-4 h-4 phone-ring" />
-              {PHONE}
-            </a>
+            <GetQuoteButton onClick={() => setMenuOpen(false)} className="w-full text-sm" />
+            <RequestCallButton onClick={() => setMenuOpen(false)} className="w-full text-sm" />
           </div>
         </div>
       </div>
