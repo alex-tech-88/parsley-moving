@@ -1,16 +1,71 @@
-# React + Vite
+# Parsley Moving
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Website for a professional moving company in the Bay Area.
+Built with React 19, Vite 8, and Tailwind CSS 4.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- **React 19** — UI components
+- **Vite 8** — build tool and dev server
+- **Tailwind CSS 4** — utility-first styling
+- **ESLint 9** — code linting
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Requirements
+
+- Node.js **18+**
+- npm **9+**
+
+### Install dependencies
+
+```bash
+npm install
+Run dev server
+bash
+npm run dev
+Opens at http://localhost:5173
+
+Build for production
+bash
+npm run build
+Preview production build
+bash
+npm run preview
+Linting
+bash
+# Check for errors
+npm run lint
+
+# Auto-fix errors
+npm run lint:fix
+Project Structure
+text
+src/
+├── assets/          # Images and static files (logos, icons)
+├── components/
+│   ├── layout/      # Navbar and layout wrappers
+│   ├── sections/    # Page sections (Hero, etc.)
+│   └── ui/          # Reusable UI components (ContactForm, etc.)
+├── context/         # ThemeContext and useTheme hook
+├── theme/           # Light/dark theme tokens
+├── constants.js     # Shared constants
+├── App.jsx
+└── main.jsx
+public/              # Favicons, web manifest, SVG icons
+Path Aliases
+Configured in vite.config.js:
+
+Alias	Path
+@	src/
+@components	src/components/
+@context	src/context/
+@theme	src/theme/
+@assets	src/assets/
+@hooks	src/hooks/
+Theme
+The app supports light and dark mode. The selected theme is saved in localStorage under the key parsley-theme and persists between sessions.
