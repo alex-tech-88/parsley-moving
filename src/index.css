@@ -6,7 +6,7 @@
   --color-brand-green: #19ad57;
   --color-brand-green-hover: #148f47;
   --color-graphite: #3b3b3b;
-  --font-sans: 'Geologica', sans-serif;
+  --font-sans: "Geologica", sans-serif;
   --breakpoint-lg: 1024px;
   --spacing-25: 6.25rem;
 }
@@ -18,7 +18,7 @@
   }
 
   body {
-    font-family: 'Geologica', sans-serif;
+    font-family: "Geologica", sans-serif;
     -webkit-font-smoothing: antialiased;
     margin: 0;
   }
@@ -29,19 +29,36 @@
 }
 
 @keyframes phone-ring {
-  0%   { transform: rotate(0deg); }
-  5%   { transform: rotate(15deg); }
-  10%  { transform: rotate(-15deg); }
-  15%  { transform: rotate(15deg); }
-  20%  { transform: rotate(-15deg); }
-  25%  { transform: rotate(10deg); }
-  30%  { transform: rotate(-10deg); }
-  35%  { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  5% {
+    transform: rotate(15deg);
+  }
+  10% {
+    transform: rotate(-15deg);
+  }
+  15% {
+    transform: rotate(15deg);
+  }
+  20% {
+    transform: rotate(-15deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  30% {
+    transform: rotate(-10deg);
+  }
+  35% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 @layer components {
-
   .phone-ring {
     animation: phone-ring 2.5s ease-in-out infinite;
     display: inline-block;
@@ -67,14 +84,16 @@
   }
 
   .nav-link::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -2px;
     left: 50%;
     right: 50%;
     height: 2px;
     background-color: var(--color-brand-green);
-    transition: left 0.3s ease, right 0.3s ease;
+    transition:
+      left 0.3s ease,
+      right 0.3s ease;
   }
 
   .nav-link:hover {
@@ -104,11 +123,13 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-graphite);
-    transition: padding-left 0.3s ease, color 0.3s ease;
+    transition:
+      padding-left 0.3s ease,
+      color 0.3s ease;
   }
 
   .nav-link-mobile::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 50%;
@@ -121,7 +142,7 @@
   }
 
   .nav-link-mobile:active {
-    padding-left: 10px;
+    padding-left: 14px;
     color: var(--color-brand-green);
   }
 
@@ -131,6 +152,11 @@
 
   .nav-link-mobile.active {
     color: var(--color-brand-green);
+    padding-left: 14px;
+  }
+
+  .nav-link-mobile.active::before {
+    height: 100%;
   }
 
   .dark .nav-link-mobile {
@@ -157,11 +183,13 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-graphite);
-    transition: padding-left 0.3s ease, color 0.3s ease;
+    transition:
+      padding-left 0.3s ease,
+      color 0.3s ease;
   }
 
   .nav-dropdown-item::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 50%;
@@ -200,11 +228,13 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-graphite);
-    transition: padding-left 0.3s ease, color 0.3s ease;
+    transition:
+      padding-left 0.3s ease,
+      color 0.3s ease;
   }
 
   .nav-dropdown-item-mobile::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 50%;
@@ -233,4 +263,18 @@
     color: var(--color-brand-green);
   }
 
+  @keyframes menu-slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-menu-open {
+    animation: menu-slide-down 0.4s ease forwards;
+  }
 }
