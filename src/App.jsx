@@ -1,6 +1,7 @@
 import { useTheme } from '@context/useTheme'
 import Navbar from '@components/layout/Navbar'
 import Hero from '@components/sections/Hero'
+import Reviews from '@components/sections/Reviews'
 
 export default function App() {
   const { mode } = useTheme()
@@ -11,6 +12,7 @@ export default function App() {
         <Navbar />
         <main className="pt-22 xl:pt-25">
           <Hero />
+          <Reviews />
         </main>
       </div>
     </div>

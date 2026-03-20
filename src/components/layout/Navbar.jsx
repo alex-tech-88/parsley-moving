@@ -1,41 +1,62 @@
-import { useState, useEffect } from 'react'
-import { useTheme } from '@context/useTheme'
-import GetQuoteButton from '@components/ui/GetQuoteButton'
-import RequestCallButton from '@components/ui/RequestCallButton'
-import './Navbar.css'
-import { PHONE, NAV_LINKS } from '@/constants'
+import { useState, useEffect } from "react";
+import { useTheme } from "@context/useTheme";
+import GetQuoteButton from "@components/ui/GetQuoteButton";
+import RequestCallButton from "@components/ui/RequestCallButton";
+import "./Navbar.css";
+import { PHONE, NAV_LINKS } from "@/constants";
 
-
-function PhoneIcon({ className = '' }) {
+function PhoneIcon({ className = "" }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
       <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.47 11.47 0 003.58.57 1 1 0 011 1V21a1 1 0 01-1 1C10.61 22 2 13.39 2 3a1 1 0 011-1h3.5a1 1 0 011 1 11.47 11.47 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" />
     </svg>
-  )
+  );
 }
 
-function ChevronIcon({ className = '' }) {
+function ChevronIcon({ className = "" }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
     </svg>
-  )
+  );
 }
 
 export default function Navbar() {
-  const { toggleTheme, t, mode } = useTheme()
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [servicesOpen, setServicesOpen] = useState(false)
-  const [activeLink, setActiveLink] = useState('')
+  const { toggleTheme, t, mode } = useTheme();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const telHref = `tel:${PHONE.replace(/\D/g, '')}`
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const telHref = `tel:${PHONE.replace(/\D/g, "")}`;
 
   return (
     <>
@@ -47,16 +68,20 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b backdrop-blur-md shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-6 xl:px-10 h-22 xl:h-25 flex items-center justify-between">
-
           {/* Logo */}
           <a
             href="#"
             className="flex items-center gap-3"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            <img src="/favicon-96x96.png" alt="Parsley Moving" className="h-16 w-16 xl:h-20 xl:w-20" />
+            <img
+              src="/favicon-96x96.png"
+              alt="Parsley Moving"
+              className="h-16 w-16 xl:h-20 xl:w-20"
+            />
             <span className="font-bold text-lg xl:text-xl leading-tight text-graphite dark:text-white">
-              Parsley<br />
+              Parsley
+              <br />
               <span className="text-brand-green">Moving</span>
             </span>
           </a>
@@ -66,13 +91,17 @@ export default function Navbar() {
             {NAV_LINKS.map((link) =>
               link.dropdown ? (
                 <div key={link.href} className="relative group">
-                  <a href={link.href} className="nav-link flex items-center gap-1">
+                  <a
+                    href={link.href}
+                    className="nav-link flex items-center gap-1"
+                  >
                     {link.label}
                     <ChevronIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
                   </a>
 
                   {/* Desktop dropdown */}
-                  <div className="navbar-dropdown absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
+                  <div
+                    className="navbar-dropdown absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
                     opacity-0 invisible group-hover:opacity-100 group-hover:visible
                     transition-all duration-200 z-50 overflow-hidden"
                   >
@@ -91,7 +120,7 @@ export default function Navbar() {
                 <a key={link.href} href={link.href} className="nav-link">
                   {link.label}
                 </a>
-              )
+              ),
             )}
           </nav>
 
@@ -115,7 +144,7 @@ export default function Navbar() {
                 text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               aria-label="Toggle theme"
             >
-              {mode === 'light' ? '🌙' : '☀️'}
+              {mode === "light" ? "🌙" : "☀️"}
             </button>
           </div>
 
@@ -135,20 +164,25 @@ export default function Navbar() {
                 text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               aria-label="Toggle theme"
             >
-              {mode === 'light' ? '🌙' : '☀️'}
+              {mode === "light" ? "🌙" : "☀️"}
             </button>
             <button
               className="flex flex-col gap-1.5 p-2"
               onClick={() => {
-                if (menuOpen) setServicesOpen(false)
-                setMenuOpen(!menuOpen)
+                if (menuOpen) setServicesOpen(false);
+                setMenuOpen(!menuOpen);
               }}
               aria-label="Menu"
             >
-
-              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+              <span
+                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+              />
             </button>
           </div>
         </div>
@@ -158,28 +192,38 @@ export default function Navbar() {
       <div
         className={`mobile-menu fixed inset-0 z-40 lg:hidden overflow-y-auto
           transition-opacity duration-300
-          ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+          ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       >
         <div className="px-6 pb-8 pt-22 mt-6 flex flex-col items-center gap-6">
           {NAV_LINKS.map((link) => (
-            <div key={link.href} className="w-full flex flex-col items-center gap-3">
+            <div
+              key={link.href}
+              className="w-full flex flex-col items-center gap-3"
+            >
               {link.dropdown ? (
                 <>
                   <button
                     onClick={() => setServicesOpen(!servicesOpen)}
-                    className={`nav-link-mobile flex items-center gap-1 ${servicesOpen ? 'active' : ''}`}
+                    className={`nav-link-mobile flex items-center gap-1 ${servicesOpen ? "active" : ""}`}
                   >
                     {link.label}
-                    <ChevronIcon className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
+                    <ChevronIcon
+                      className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+                    />
                   </button>
 
-                  <div className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${servicesOpen ? 'max-h-96' : 'max-h-0'}`}>
+                  <div
+                    className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${servicesOpen ? "max-h-96" : "max-h-0"}`}
+                  >
                     <div className="mobile-menu-divider w-full h-px" />
                     {link.dropdown.map((item) => (
                       <a
                         key={item.href}
                         href={item.href}
-                        onClick={() => { setMenuOpen(false); setServicesOpen(false) }}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          setServicesOpen(false);
+                        }}
                         className="nav-dropdown-item-mobile"
                       >
                         {item.label}
@@ -191,8 +235,11 @@ export default function Navbar() {
               ) : (
                 <a
                   href={link.href}
-                  onClick={() => { setMenuOpen(false); setActiveLink(link.href) }}
-                  className={`nav-link-mobile ${activeLink === link.href ? 'active' : ''}`}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setActiveLink(link.href);
+                  }}
+                  className={`nav-link-mobile ${activeLink === link.href ? "active" : ""}`}
                 >
                   {link.label}
                 </a>
@@ -202,11 +249,17 @@ export default function Navbar() {
 
           {/* Buttons */}
           <div className="w-full flex flex-col gap-3 mt-2">
-            <GetQuoteButton onClick={() => setMenuOpen(false)} className="w-full text-sm" />
-            <RequestCallButton onClick={() => setMenuOpen(false)} className="w-full text-sm" />
+            <GetQuoteButton
+              onClick={() => setMenuOpen(false)}
+              className="w-full text-sm"
+            />
+            <RequestCallButton
+              onClick={() => setMenuOpen(false)}
+              className="w-full text-sm"
+            />
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }

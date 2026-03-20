@@ -33,7 +33,7 @@ export default function Hero() {
     <section
       id="contact"
       style={{ backgroundColor: t.bg.section }}
-      className="min-h-[calc(100vh-88px)] xl:min-h-[calc(100vh-100px)] flex items-start lg:items-center"
+      className="lg:min-h-[calc(100vh-88px)] xl:min-h-[calc(100vh-100px)] flex items-start lg:items-center"
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10 pt-4 pb-8 lg:py-16 w-full">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-20">
@@ -56,12 +56,12 @@ export default function Hero() {
             </div>
 
             <h1 className="text-4xl xl:text-5xl font-bold text-graphite dark:text-white leading-tight">
-              Where Every Move is
+              Professional Moving
               <br />
-              <span className="text-brand-green">Seasoned With Care</span>
+              <span className="text-brand-green">in the Bay Area</span>
             </h1>
             <p className="mt-4 text-base xl:text-lg text-[#6b7280] dark:text-[#a0a0a0]">
-              Professional Moving ervices in the Bay Area
+              Where Every Move is Seasoned With Care
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
               {['✅ Fast & Reliable', '⭐ 5-Star Rated', '🚛 Local & Long Distance'].map((badge) => (
@@ -90,12 +90,12 @@ export default function Hero() {
             {/* Heading — mobile/tablet only */}
             <div className="lg:hidden mb-6">
               <h1 className="text-3xl sm:text-4xl font-bold text-graphite dark:text-white leading-tight mb-3">
-                Where Every Move is
+                Professional Moving
                 <br />
-                <span className="text-brand-green">Seasoned With Care</span>
+                <span className="text-brand-green">in the Bay Area</span>
               </h1>
               <p className="text-sm text-[#6b7280] dark:text-[#a0a0a0]">
-                Professional Moving Services in the Bay Area
+                Where Every Move is Seasoned With Care
               </p>
             </div>
 
