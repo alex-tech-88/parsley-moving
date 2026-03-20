@@ -6,18 +6,26 @@ export const BREAKPOINTS = {
 export const PHONE = '(510) 806-7601'
 
 export const NAV_LINKS = [
-  { label: 'About Us', href: '#about' },
+  {
+    label: 'About Us',
+    href: '#about',
+    dropdown: [
+      { label: 'Company',  href: '#about' },
+      { label: 'Reviews',  href: '#reviews' },
+      { label: 'Contacts', href: '#contact' },
+    ],
+  },
   {
     label: 'Services',
     href: '#services',
     dropdown: [
-      { label: 'Local Moving',         href: '#local-moving' },
-      { label: 'Apartment Moving',     href: '#apartment-moving' },
-      { label: 'House Moving',         href: '#house-moving' },
-      { label: 'Office Moving',        href: '#office-moving' },
-      { label: 'Packing Services',     href: '#packing' },
-      { label: 'Loading & Unloading',  href: '#loading' },
-      { label: 'Furniture Assembly',   href: '#furniture' },
+      { label: 'Local Moving',        href: '#local-moving' },
+      { label: 'Apartment Moving',    href: '#apartment-moving' },
+      { label: 'House Moving',        href: '#house-moving' },
+      { label: 'Office Moving',       href: '#office-moving' },
+      { label: 'Packing Services',    href: '#packing' },
+      { label: 'Loading & Unloading', href: '#loading' },
+      { label: 'Furniture Assembly',  href: '#furniture' },
     ],
   },
   { label: 'Moving Areas', href: '#areas' },

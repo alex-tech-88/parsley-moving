@@ -141,10 +141,12 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               className="w-9 h-9 xl:w-11 xl:h-11 flex items-center justify-center rounded-lg
-                text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
               aria-label="Toggle theme"
             >
-              {mode === "light" ? "🌙" : "☀️"}
+              <span style={{ fontSize: "24px", lineHeight: 1 }}>
+                {mode === "light" ? "🌙" : "☀️"}
+              </span>
             </button>
           </div>
 
@@ -164,7 +166,9 @@ export default function Navbar() {
                 text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               aria-label="Toggle theme"
             >
-              {mode === "light" ? "🌙" : "☀️"}
+              <span style={{ fontSize: "24px", lineHeight: 1 }}>
+                {mode === "light" ? "🌙" : "☀️"}
+              </span>
             </button>
             <button
               className="flex flex-col gap-1.5 p-2"

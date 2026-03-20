@@ -33,9 +33,9 @@ export default function Hero() {
     <section
       id="contact"
       style={{ backgroundColor: t.bg.section }}
-      className="lg:min-h-[calc(100vh-88px)] xl:min-h-[calc(100vh-100px)] flex items-start lg:items-center"
+      className="lg:min-h-[70vh] xl:min-h-[75vh] flex items-center"
     >
-      <div className="max-w-7xl mx-auto px-6 xl:px-10 pt-4 pb-8 lg:py-16 w-full">
+      <div className="max-w-7xl mx-auto px-6 xl:px-10 pt-4 pb-1 lg:py-16 w-full">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-20">
 
           {/* Left column — desktop only */}
@@ -68,7 +68,7 @@ export default function Hero() {
                 <span
                   key={badge}
                   style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
-                  className="text-sm font-medium px-4 py-1.5 rounded-full cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-md"
+                  className="text-sm font-medium px-4 py-1.5 rounded-full cursor-default transition-all duration-200 hover:scale-105 hover:shadow-md"
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = t.brand.primary
                     e.currentTarget.style.color = '#fff'

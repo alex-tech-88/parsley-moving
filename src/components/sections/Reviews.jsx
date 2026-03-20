@@ -77,8 +77,8 @@ export default function Reviews() {
   return (
     <section
       id="reviews"
-      style={{ backgroundColor: t.bg.page }}
-      className="py-16 xl:py-24"
+      style={{ backgroundColor: t.bg.section }}
+      className="pt-0 pb-16 lg:py-24"
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10">
         {/* Header */}

@@ -1,6 +1,7 @@
 import { useTheme } from '@context/useTheme'
 import Navbar from '@components/layout/Navbar'
 import Hero from '@components/sections/Hero'
+import AboutUs from '@components/sections/AboutUs'
 import Reviews from '@components/sections/Reviews'
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
         <Navbar />
         <main className="pt-22 xl:pt-25">
           <Hero />
+          <AboutUs />
           <Reviews />
         </main>
       </div>
