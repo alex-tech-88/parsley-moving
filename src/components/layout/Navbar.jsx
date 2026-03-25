@@ -10,8 +10,14 @@ export default function Navbar() {
   const { toggleTheme, t, mode } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [openDropdowns, setOpenDropdowns] = useState({});
   const [activeLink, setActiveLink] = useState("");
+
+  const toggleDropdown = (href) => {
+    setOpenDropdowns((prev) => ({ ...prev, [href]: !prev[href] }));
+  };
+
+  const closeAllDropdowns = () => setOpenDropdowns({});
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -146,7 +152,7 @@ export default function Navbar() {
             <button
               className="flex flex-col gap-1.5 p-2"
               onClick={() => {
-                if (menuOpen) setServicesOpen(false);
+                if (menuOpen) closeAllDropdowns();
                 setMenuOpen(!menuOpen);
               }}
               aria-label="Menu"
@@ -171,17 +177,19 @@ export default function Navbar() {
               {link.dropdown ? (
                 <>
                   <button
-                    onClick={() => setServicesOpen(!servicesOpen)}
-                    className={`nav-link-mobile flex items-center gap-1 ${servicesOpen ? "active" : ""}`}
+                    onClick={() => toggleDropdown(link.href)}
+                    className={`nav-link-mobile flex items-center gap-1 ${openDropdowns[link.href] ? "active" : ""}`}
                   >
                     {link.label}
                     <ChevronIcon
-                      className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+                      className={`w-4 h-4 transition-transform duration-200 ${openDropdowns[link.href] ? "rotate-180" : ""}`}
                     />
                   </button>
 
                   <div
-                    className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${servicesOpen ? "max-h-96" : "max-h-0"}`}
+                    className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${
+                      openDropdowns[link.href] ? "max-h-96" : "max-h-0"
+                    }`}
                   >
                     <div className="mobile-menu-divider w-full h-px" />
                     {link.dropdown.map((item) => (
@@ -190,7 +198,7 @@ export default function Navbar() {
                         href={item.href}
                         onClick={() => {
                           setMenuOpen(false);
-                          setServicesOpen(false);
+                          closeAllDropdowns();
                         }}
                         className="nav-dropdown-item-mobile"
                       >
