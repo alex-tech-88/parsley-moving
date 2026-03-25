@@ -12,6 +12,7 @@ export const NAV_LINKS = [
     dropdown: [
       { label: 'Company',  href: '#about' },
       { label: 'Reviews',  href: '#reviews' },
+      { label: 'Gallery', href: '#gallery' },
       { label: 'Contacts', href: '#contact' },
     ],
   },

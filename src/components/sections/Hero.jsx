@@ -1,12 +1,18 @@
 import { useTheme } from '@context/useTheme'
 import ContactForm from '@components/ui/ContactForm'
+import { CheckIcon, StarIcon, TruckIcon } from '@components/ui/icons'
 import logoLight from '@/assets/Parsley_Light_Theme.webp'
 import logoDark from '@/assets/Parsley_Dark_Theme.webp'
+
+const BADGES = [
+  { label: 'Fast & Reliable',       Icon: CheckIcon },
+  { label: '5-Star Rated',          Icon: StarIcon  },
+  { label: 'Local & Long Distance', Icon: TruckIcon },
+]
 
 function MobileCard({ t, children }) {
   return (
     <>
-      {/* Mobile/tablet — visible card */}
       <div
         style={{
           borderColor: t.border,
@@ -18,7 +24,6 @@ function MobileCard({ t, children }) {
         {children}
       </div>
 
-      {/* Desktop — no wrapper, fully embedded */}
       <div className="hidden lg:block">
         {children}
       </div>
@@ -44,14 +49,16 @@ export default function Hero() {
               <img
                 src={logoLight}
                 alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === 'dark' ? 'opacity-0' : 'opacity-100'
-                  }`}
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
+                  mode === 'dark' ? 'opacity-0' : 'opacity-100'
+                }`}
               />
               <img
                 src={logoDark}
                 alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === 'dark' ? 'opacity-100' : 'opacity-0'
-                  }`}
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
+                  mode === 'dark' ? 'opacity-100' : 'opacity-0'
+                }`}
               />
             </div>
 
@@ -63,12 +70,14 @@ export default function Hero() {
             <p className="mt-4 text-base xl:text-lg text-[#6b7280] dark:text-[#a0a0a0]">
               Where Every Move is Seasoned With Care
             </p>
+
             <div className="flex flex-wrap gap-3 mt-8">
-              {['✅ Fast & Reliable', '⭐ 5-Star Rated', '🚛 Local & Long Distance'].map((badge) => (
+              {BADGES.map(({ label, Icon }) => (
                 <span
-                  key={badge}
+                  key={label}
                   style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
-                  className="text-sm font-medium px-4 py-1.5 rounded-full cursor-default transition-all duration-200 hover:scale-105 hover:shadow-md"
+                  className="flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-full
+                    cursor-default transition-all duration-200 hover:scale-105 hover:shadow-md"
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = t.brand.primary
                     e.currentTarget.style.color = '#fff'
@@ -78,7 +87,8 @@ export default function Hero() {
                     e.currentTarget.style.color = t.brand.primary
                   }}
                 >
-                  {badge}
+                  <Icon className="w-4 h-4 shrink-0" />
+                  {label}
                 </span>
               ))}
             </div>

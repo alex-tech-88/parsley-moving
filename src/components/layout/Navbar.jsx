@@ -2,39 +2,9 @@ import { useState, useEffect } from "react";
 import { useTheme } from "@context/useTheme";
 import GetQuoteButton from "@components/ui/GetQuoteButton";
 import RequestCallButton from "@components/ui/RequestCallButton";
+import { PhoneIcon, ChevronIcon, MoonIcon, SunIcon } from "@components/ui/icons";
 import "./Navbar.css";
 import { PHONE, NAV_LINKS } from "@/constants";
-
-function PhoneIcon({ className = "" }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className={className}
-    >
-      <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.47 11.47 0 003.58.57 1 1 0 011 1V21a1 1 0 01-1 1C10.61 22 2 13.39 2 3a1 1 0 011-1h3.5a1 1 0 011 1 11.47 11.47 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" />
-    </svg>
-  );
-}
-
-function ChevronIcon({ className = "" }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M19 9l-7 7-7-7"
-      />
-    </svg>
-  );
-}
 
 export default function Navbar() {
   const { toggleTheme, t, mode } = useTheme();
@@ -91,10 +61,7 @@ export default function Navbar() {
             {NAV_LINKS.map((link) =>
               link.dropdown ? (
                 <div key={link.href} className="relative group">
-                  <a
-                    href={link.href}
-                    className="nav-link flex items-center gap-1"
-                  >
+                  <a href={link.href} className="nav-link flex items-center gap-1">
                     {link.label}
                     <ChevronIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
                   </a>
@@ -102,15 +69,11 @@ export default function Navbar() {
                   {/* Desktop dropdown */}
                   <div
                     className="navbar-dropdown absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
-                    opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                    transition-all duration-200 z-50 overflow-hidden"
+                      opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                      transition-all duration-200 z-50 overflow-hidden"
                   >
                     {link.dropdown.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="nav-dropdown-item"
-                      >
+                      <a key={item.href} href={item.href} className="nav-dropdown-item">
                         {item.label}
                       </a>
                     ))}
@@ -138,15 +101,18 @@ export default function Navbar() {
 
             <GetQuoteButton className="text-sm xl:text-base px-5 xl:px-6" />
 
+            {/* Theme toggle — desktop */}
             <button
               onClick={toggleTheme}
               className="w-9 h-9 xl:w-11 xl:h-11 flex items-center justify-center rounded-lg
-                text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
+                text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5
+                transition-colors cursor-pointer"
               aria-label="Toggle theme"
             >
-              <span style={{ fontSize: "24px", lineHeight: 1 }}>
-                {mode === "light" ? "🌙" : "☀️"}
-              </span>
+              {mode === "light"
+                ? <MoonIcon className="w-6 h-6 xl:w-6 xl:h-6" />
+                : <SunIcon className="w-8 h-8 xl:w-8 xl:h-8" />
+              }
             </button>
           </div>
 
@@ -156,20 +122,27 @@ export default function Navbar() {
               href={telHref}
               aria-label={`Call ${PHONE}`}
               className="w-9 h-9 flex items-center justify-center rounded-lg
-                text-graphite dark:text-white hover:text-brand-green hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                text-graphite dark:text-white hover:text-brand-green hover:bg-black/5
+                dark:hover:bg-white/5 transition-colors"
             >
               <PhoneIcon className="w-7 h-7 phone-ring" />
             </a>
+
+            {/* Theme toggle — mobile */}
             <button
               onClick={toggleTheme}
               className="w-9 h-9 flex items-center justify-center rounded-lg
-                text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                text-graphite dark:text-white hover:bg-black/5 dark:hover:bg-white/5
+                transition-colors cursor-pointer"
               aria-label="Toggle theme"
             >
-              <span style={{ fontSize: "24px", lineHeight: 1 }}>
-                {mode === "light" ? "🌙" : "☀️"}
-              </span>
+              {mode === "light"
+                ? <MoonIcon className="w-7 h-7" />
+                : <SunIcon className="w-8 h-8" />
+              }
             </button>
+
+            {/* Burger */}
             <button
               className="flex flex-col gap-1.5 p-2"
               onClick={() => {
@@ -178,15 +151,9 @@ export default function Navbar() {
               }}
               aria-label="Menu"
             >
-              <span
-                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
-              />
-              <span
-                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
-              />
-              <span
-                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
-              />
+              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
             </button>
           </div>
         </div>
@@ -200,10 +167,7 @@ export default function Navbar() {
       >
         <div className="px-6 pb-8 pt-22 mt-6 flex flex-col items-center gap-6">
           {NAV_LINKS.map((link) => (
-            <div
-              key={link.href}
-              className="w-full flex flex-col items-center gap-3"
-            >
+            <div key={link.href} className="w-full flex flex-col items-center gap-3">
               {link.dropdown ? (
                 <>
                   <button
