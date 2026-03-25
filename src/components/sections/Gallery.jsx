@@ -1,4 +1,3 @@
-// src/components/sections/Gallery.jsx
 import { useTheme } from "@context/useTheme";
 import { useState } from "react";
 import LazyVideo from "@components/ui/LazyVideo";

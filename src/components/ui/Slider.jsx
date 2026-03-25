@@ -1,42 +1,43 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "@context/useTheme";
 
+// Pure function outside component — no dependencies on props or state
+const resolveCount = (visibleCount) => {
+  if (typeof visibleCount === "number") return visibleCount;
+  if (typeof window === "undefined") return visibleCount?.desktop ?? 1;
+  return window.innerWidth >= 640
+    ? (visibleCount?.desktop ?? 1)
+    : (visibleCount?.mobile ?? 1);
+};
+
 export default function Slider({
-  items,           // array of any data
-  renderItem,      // (item, index) => JSX
-  visibleCount,    // number of visible items (or { mobile, desktop })
-  autoPlay = false, // auto-advance slides
+  items,                    // array of any data
+  renderItem,               // (item, index) => JSX
+  visibleCount,             // number or { mobile, desktop }
+  autoPlay = false,         // auto-advance slides
   autoPlayInterval = 4500,
-  isPaused = false,
-  onSlideChange,   // optional callback (newIndex) => void
+  isPaused = false,         // external pause (e.g. when video is playing)
+  onSlideChange,            // optional callback (newIndex) => void
 }) {
   const { t } = useTheme();
   const total = items.length;
 
   const [current, setCurrent] = useState(0);
-  const [isInternalPaused, setIsInternalPaused] = useState(false);
+  const [isInternalPaused, setIsInternalPaused] = useState(false); // pause on hover
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState("next");
   const touchStartX = useRef(null);
 
-  // Resolve how many items to show
-  const resolveCount = () => {
-    if (typeof visibleCount === "number") return visibleCount;
-    if (typeof window === "undefined") return visibleCount?.desktop ?? 1;
-    return window.innerWidth >= 640
-      ? (visibleCount?.desktop ?? 1)
-      : (visibleCount?.mobile ?? 1);
-  };
+  const [count, setCount] = useState(() => resolveCount(visibleCount));
 
-  const [count, setCount] = useState(resolveCount);
-
+  // Update visible count on resize
   useEffect(() => {
-    const onResize = () => setCount(resolveCount());
+    const onResize = () => setCount(resolveCount(visibleCount));
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, []);
+  }, [visibleCount]);
 
-  // Navigate to slide
+  // Navigate to slide with animation
   const goTo = useCallback(
     (index, dir) => {
       if (animating) return;
@@ -55,7 +56,7 @@ export default function Slider({
   const prev = useCallback(() => goTo(current - 1, "prev"), [current, goTo]);
   const next = useCallback(() => goTo(current + 1, "next"), [current, goTo]);
 
-  // Auto-play
+  // Auto-play — paused by hover or external isPaused prop
   useEffect(() => {
     if (!autoPlay || isPaused || isInternalPaused) return;
     const timer = setInterval(() => goTo(current + 1, "next"), autoPlayInterval);
@@ -77,7 +78,7 @@ export default function Slider({
       : "opacity-0 translate-x-12 scale-[0.97]"
     : "opacity-100 translate-x-0 scale-100";
 
-  // Items to render
+  // Slice of items currently visible
   const visibleItems = Array.from(
     { length: count },
     (_, i) => ({ item: items[(current + i) % total], index: (current + i) % total })
