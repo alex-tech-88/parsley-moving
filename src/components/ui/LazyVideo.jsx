@@ -1,10 +1,9 @@
-// src/components/ui/LazyVideo.jsx
 import { useEffect, useRef } from "react";
 
-export default function LazyVideo({ sm, md, lg, poster, className, isActive, onPlay, onPause }) {
+export default function LazyVideo({ lg, poster, className, isActive, onPlay, onPause }) {
   const videoRef = useRef(null);
 
-  // Load video sources only when element enters viewport
+  // Load video source only when element enters viewport
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -12,9 +11,10 @@ export default function LazyVideo({ sm, md, lg, poster, className, isActive, onP
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          video.querySelectorAll("source").forEach((s) => {
-            s.src = s.dataset.src;
-          });
+          const source = video.querySelector("source");
+          if (source.dataset.src) {
+            source.src = source.dataset.src;
+          }
           video.load();
           observer.disconnect();
         }
@@ -63,9 +63,6 @@ export default function LazyVideo({ sm, md, lg, poster, className, isActive, onP
         poster={poster}
         onEnded={onPause}
       >
-        {/* Browser picks first matching source by screen width */}
-        <source data-src={sm} type="video/mp4" media="(max-width: 639px)" />
-        <source data-src={md} type="video/mp4" media="(max-width: 1023px)" />
         <source data-src={lg} type="video/mp4" />
       </video>
 
