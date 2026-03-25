@@ -3,6 +3,7 @@ import Navbar from '@components/layout/Navbar'
 import Hero from '@components/sections/Hero'
 import AboutUs from '@components/sections/AboutUs'
 import Reviews from '@components/sections/Reviews'
+import Gallery from "@components/sections/Gallery";
 
 export default function App() {
   const { mode } = useTheme()
@@ -15,6 +16,7 @@ export default function App() {
           <Hero />
           <AboutUs />
           <Reviews />
+          <Gallery />
         </main>
       </div>
     </div>

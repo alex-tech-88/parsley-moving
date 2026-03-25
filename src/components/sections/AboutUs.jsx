@@ -68,38 +68,22 @@ export default function AboutUs() {
             </p>
 
             {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 mt-2">
-  {STATS.map(({ value, label }) => (
-    <div
-      key={label}
-      style={{
-        backgroundColor: t.bg.card,
-        borderColor: t.border,
-      }}
-      className="border rounded-2xl p-5 text-center transition-all duration-200
-        hover:border-brand-green hover:scale-105 hover:shadow-md cursor-default"
-    >
-      <p className="text-2xl xl:text-3xl font-bold text-brand-green">{value}</p>
-      <p className="text-xs xl:text-sm text-[#9ca3af] dark:text-[#6b6b6b] mt-1">{label}</p>
-    </div>
-  ))}
-</div>
-
-
-            {/* CTA */}
-            <a
-              href="https://maps.app.goo.gl/kaG1jHoVHxGi2KuL8"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ borderColor: t.border }}
-              className="inline-flex items-center justify-center gap-2 border rounded-xl
-                px-6 py-4 text-base font-semibold
-               text-graphite dark:text-white hover:border-brand-green hover:text-brand-green
-               hover:bg-brand-green/5 transition-all duration-200
-               w-full sm:w-auto mt-2 text-center"
-            >
-              📍 Find Us on Google Maps
-            </a>
+            <div className="grid grid-cols-3 gap-4 mt-2">
+              {STATS.map(({ value, label }) => (
+                <div
+                  key={label}
+                  style={{
+                    backgroundColor: t.bg.card,
+                    borderColor: t.border,
+                  }}
+                  className="border rounded-2xl p-5 text-center transition-all duration-200
+                    hover:border-brand-green hover:scale-105 hover:shadow-md cursor-default"
+                >
+                  <p className="text-2xl xl:text-3xl font-bold text-brand-green">{value}</p>
+                  <p className="text-xs xl:text-sm text-[#9ca3af] dark:text-[#6b6b6b] mt-1">{label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
