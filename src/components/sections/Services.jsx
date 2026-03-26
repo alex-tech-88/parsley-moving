@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useTheme } from '@context/useTheme'
 import { ChevronIcon } from '@components/ui/icons'
 
-import localMovingImg from '@assets/services/local-moving.png'
+import localMovingImg from '@assets/services/house-moving.png'
 
 const SERVICES = [
   {
