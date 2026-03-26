@@ -3,7 +3,12 @@ import { useState } from 'react'
 import { useTheme } from '@context/useTheme'
 import { ChevronIcon } from '@components/ui/icons'
 
-import localMovingImg from '@assets/services/house-moving.png'
+import localMovingImg from '@assets/services/local-moving.png'
+import packingServicesImg from '@assets/services/packing-services.png'
+import residentialMovingImg from '@assets/services/residential-moving.png'
+import commercialMovingImg from '@assets/services/commercial-moving.png'
+import instateMovingImgImg from '@assets/services/instate-moving.png'
+import furnitureMovingImg from '@assets/services/furniture-moving.png'
 
 const SERVICES = [
   {
@@ -17,35 +22,35 @@ const SERVICES = [
     id: 'residential-moving',
     title: 'Residential Moving',
     description: 'We take full care of your home relocation — wrapping furniture, protecting floors, and securing fragile items so everything arrives exactly as it left.',
-    img: localMovingImg,
+    img: residentialMovingImg,
     href: '#residential-moving',
   },
   {
     id: 'commercial-moving',
     title: 'Commercial Moving',
     description: 'We relocate offices and businesses with minimal disruption. Our team works around your schedule — evenings, weekends, and holidays — to keep your downtime as short as possible.',
-    img: localMovingImg,
+    img: commercialMovingImg,
     href: '#commercial-moving',
   },
-  {
-    id: 'long-distance',
-    title: 'Long Distance Moving',
-    description: 'Moving out of the Bay Area? We manage the full process — packing, inventory, and safe delivery — for moves across California and to any state in the US.',
-    img: localMovingImg,
-    href: '#long-distance',
+    {
+    id: 'in-state-moving',
+    title: 'In-State Moving',
+    description: 'Long distance moving services within California. We handle residential and apartment moves between cities across the state with careful loading, transportation and safe delivery.',
+    img: instateMovingImgImg,
+    href: '#in-state-moving',
   },
   {
     id: 'packing',
     title: 'Packing Services',
     description: 'Our team packs your entire home or just the fragile pieces — using quality materials to keep everything safe. We label and organize boxes so unpacking is easy.',
-    img: localMovingImg,
+    img: packingServicesImg,
     href: '#packing',
   },
   {
     id: 'furniture',
     title: 'Furniture Moving',
     description: 'We wrap, pad, and secure every piece before it moves. Large sofas, antiques, or custom builds — we handle disassembly at pickup and reassembly at delivery.',
-    img: localMovingImg,
+    img: furnitureMovingImg,
     href: '#furniture',
   },
 ]
@@ -56,7 +61,7 @@ function ServiceCard({ service, t }) {
       style={{ backgroundColor: t.bg.section }}
       className="flex flex-col"
     >
-      <div className="w-32 h-32 mb-4">
+      <div className="w-38 h-38 mb-4">
         <img
           src={service.img}
           alt={service.title}
@@ -92,9 +97,9 @@ function AccordionItem({ service, t, isOpen, onToggle }) {
         className="w-full flex items-center justify-between py-4 text-left gap-3"
       >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 shrink-0">
+          <div className="w-15 h-15 shrink-0">
             <img
-              src="/favicon.ico"
+              src={service.img}
               alt={service.title}
               className="w-full h-full object-contain"
             />
