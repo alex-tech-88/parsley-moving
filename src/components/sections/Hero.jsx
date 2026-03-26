@@ -1,14 +1,14 @@
-import { useTheme } from '@context/useTheme'
-import ContactForm from '@components/ui/ContactForm'
-import { CheckIcon, StarIcon, TruckIcon } from '@components/ui/icons'
-import logoLight from '@/assets/Parsley_Light_Theme.webp'
-import logoDark from '@/assets/Parsley_Dark_Theme.webp'
+import { useTheme } from "@context/useTheme";
+import ContactForm from "@components/ui/ContactForm";
+import { CheckIcon, StarIcon, TruckIcon } from "@components/ui/icons";
+import logoLight from "@/assets/Parsley_Light_Theme.webp";
+import logoDark from "@/assets/Parsley_Dark_Theme.webp";
 
 const BADGES = [
-  { label: 'Fast & Reliable',       Icon: CheckIcon },
-  { label: '5-Star Rated',          Icon: StarIcon  },
-  { label: 'Local & Long Distance', Icon: TruckIcon },
-]
+  { label: "Fast & Reliable", Icon: CheckIcon },
+  { label: "5-Star Rated", Icon: StarIcon },
+  { label: "Local & Long Distance", Icon: TruckIcon },
+];
 
 function MobileCard({ t, children }) {
   return (
@@ -24,15 +24,13 @@ function MobileCard({ t, children }) {
         {children}
       </div>
 
-      <div className="hidden lg:block">
-        {children}
-      </div>
+      <div className="hidden lg:block">{children}</div>
     </>
-  )
+  );
 }
 
 export default function Hero() {
-  const { t, mode } = useTheme()
+  const { t, mode } = useTheme();
 
   return (
     <section
@@ -42,23 +40,20 @@ export default function Hero() {
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10 pt-4 pb-1 lg:py-16 w-full">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-20">
-
           {/* Left column — desktop only */}
           <div className="hidden lg:flex flex-1 flex-col items-start text-left">
             <div className="relative w-72 h-72 xl:w-96 xl:h-96 mb-6 mx-auto">
               <img
                 src={logoLight}
                 alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
-                  mode === 'dark' ? 'opacity-0' : 'opacity-100'
-                }`}
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-0" : "opacity-100"
+                  }`}
               />
               <img
                 src={logoDark}
                 alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
-                  mode === 'dark' ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-100" : "opacity-0"
+                  }`}
               />
             </div>
 
@@ -72,23 +67,25 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-3 mt-8">
-              {BADGES.map(({ label, Icon }) => (
+              {BADGES.map((badge) => (
                 <span
-                  key={label}
-                  style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
-                  className="flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-full
-                    cursor-default transition-all duration-200 hover:scale-105 hover:shadow-md"
+                  key={badge.label}
+                  style={{
+                    backgroundColor: t.bg.accent,
+                    color: t.brand.primary,
+                  }}
+                  className="flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-full cursor-default transition-all duration-200 hover:scale-105 hover:shadow-md"
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = t.brand.primary
-                    e.currentTarget.style.color = '#fff'
+                    e.currentTarget.style.backgroundColor = t.brand.primary;
+                    e.currentTarget.style.color = "#fff";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = t.bg.accent
-                    e.currentTarget.style.color = t.brand.primary
+                    e.currentTarget.style.backgroundColor = t.bg.accent;
+                    e.currentTarget.style.color = t.brand.primary;
                   }}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  {label}
+                  <badge.Icon className="w-4 h-4 shrink-0" />
+                  {badge.label}
                 </span>
               ))}
             </div>
@@ -96,7 +93,6 @@ export default function Hero() {
 
           {/* Right column — heading on mobile, form always */}
           <div className="w-full lg:max-w-md xl:max-w-lg">
-
             {/* Heading — mobile/tablet only */}
             <div className="lg:hidden mb-6">
               <h1 className="text-3xl sm:text-4xl font-bold text-graphite dark:text-white leading-tight mb-3">
@@ -112,11 +108,9 @@ export default function Hero() {
             <MobileCard t={t}>
               <ContactForm />
             </MobileCard>
-
           </div>
-
         </div>
       </div>
     </section>
-  )
+  );
 }

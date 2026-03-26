@@ -11,13 +11,13 @@ const resolveCount = (visibleCount) => {
 };
 
 export default function Slider({
-  items,                    // array of any data
-  renderItem,               // (item, index) => JSX
-  visibleCount,             // number or { mobile, desktop }
-  autoPlay = false,         // auto-advance slides
+  items, // array of any data
+  renderItem, // (item, index) => JSX
+  visibleCount, // number or { mobile, desktop }
+  autoPlay = false, // auto-advance slides
   autoPlayInterval = 4500,
-  isPaused = false,         // external pause (e.g. when video is playing)
-  onSlideChange,            // optional callback (newIndex) => void
+  isPaused = false, // external pause (e.g. when video is playing)
+  onSlideChange, // optional callback (newIndex) => void
 }) {
   const { t } = useTheme();
   const total = items.length;
@@ -50,7 +50,7 @@ export default function Slider({
         onSlideChange?.(next);
       }, 500);
     },
-    [animating, total, onSlideChange]
+    [animating, total, onSlideChange],
   );
 
   const prev = useCallback(() => goTo(current - 1, "prev"), [current, goTo]);
@@ -59,12 +59,17 @@ export default function Slider({
   // Auto-play — paused by hover or external isPaused prop
   useEffect(() => {
     if (!autoPlay || isPaused || isInternalPaused) return;
-    const timer = setInterval(() => goTo(current + 1, "next"), autoPlayInterval);
+    const timer = setInterval(
+      () => goTo(current + 1, "next"),
+      autoPlayInterval,
+    );
     return () => clearInterval(timer);
   }, [autoPlay, isPaused, isInternalPaused, current, goTo, autoPlayInterval]);
 
   // Swipe support
-  const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const onTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
   const onTouchEnd = (e) => {
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
@@ -79,10 +84,10 @@ export default function Slider({
     : "opacity-100 translate-x-0 scale-100";
 
   // Slice of items currently visible
-  const visibleItems = Array.from(
-    { length: count },
-    (_, i) => ({ item: items[(current + i) % total], index: (current + i) % total })
-  );
+  const visibleItems = Array.from({ length: count }, (_, i) => ({
+    item: items[(current + i) % total],
+    index: (current + i) % total,
+  }));
 
   return (
     <div
@@ -104,9 +109,9 @@ export default function Slider({
         <button
           onClick={prev}
           style={{ borderColor: t.border }}
-          className="w-10 h-10 rounded-full border flex cursor-pointer items-center
-            justify-center text-3xl text-graphite dark:text-white
-            hover:border-brand-green hover:text-brand-green transition-colors duration-200"
+          className="w-14 h-14 sm:w-10 sm:h-10 rounded-full border flex cursor-pointer items-center
+          justify-center text-4xl sm:text-3xl text-graphite dark:text-white
+         hover:border-brand-green hover:text-brand-green transition-colors duration-200"
         >
           ‹
         </button>
@@ -117,10 +122,10 @@ export default function Slider({
             <button
               key={i}
               onClick={() => goTo(i, i > current ? "next" : "prev")}
-              className="h-2 rounded-full transition-all duration-300"
+              className="h-2.5 sm:h-2 rounded-full transition-all duration-300"
               style={{
                 backgroundColor: i === current ? t.brand.primary : t.border,
-                width: i === current ? "20px" : "8px",
+                width: i === current ? "24px" : "10px",
               }}
             />
           ))}
@@ -129,9 +134,9 @@ export default function Slider({
         <button
           onClick={next}
           style={{ borderColor: t.border }}
-          className="w-10 h-10 rounded-full border flex cursor-pointer items-center
-            justify-center text-3xl text-graphite dark:text-white
-            hover:border-brand-green hover:text-brand-green transition-colors duration-200"
+          className="w-14 h-14 sm:w-10 sm:h-10 rounded-full border flex cursor-pointer items-center
+          justify-center text-4xl sm:text-3xl text-graphite dark:text-white
+         hover:border-brand-green hover:text-brand-green transition-colors duration-200"
         >
           ›
         </button>

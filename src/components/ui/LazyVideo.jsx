@@ -36,11 +36,17 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
     }
   }, [isActive]);
 
+    const handleLoadedMetadata = () => {
+    const video = videoRef.current;
+    if (video) video.volume = 0.01; // start with very low volume to avoid loud auto-play
+  };
+
   // Toggle play/pause on click
   const handleClick = () => {
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
+      video.volume = 0.01; // ensure volume is low when starting
       video.play();
       onPlay();
     } else {
@@ -62,6 +68,7 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
         preload="none"
         poster={poster}
         onEnded={onPause}
+        onLoadedMetadata={handleLoadedMetadata}
       >
         <source data-src={lg} type="video/mp4" />
       </video>
@@ -78,9 +85,9 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
               flex items-center justify-center backdrop-blur-sm
               group-hover:bg-white/30 transition-all duration-200
               after:content-[''] after:block after:w-0 after:h-0
-              after:border-t-[10px] after:border-t-transparent
-              after:border-b-[10px] after:border-b-transparent
-              after:border-l-[18px] after:border-l-white after:ml-1"
+              after:border-t-10 after:border-t-transparent
+              after:border-b-10 after:border-b-transparent
+              after:border-l-18 after:border-l-white after:ml-1"
           />
         </div>
       )}

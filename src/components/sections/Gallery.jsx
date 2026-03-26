@@ -50,7 +50,7 @@ export default function Gallery() {
               <div
                 key={i}
                 style={{ borderColor: t.border }}
-                className="rounded-2xl overflow-hidden shadow-lg border aspect-[9/16]"
+                className="rounded-2xl overflow-hidden shadow-lg border aspect-9/16"
               >
                 <LazyVideo
                   lg={v.lg}
@@ -70,7 +70,7 @@ export default function Gallery() {
             <div
               key={i}
               style={{ borderColor: t.border }}
-              className="rounded-2xl overflow-hidden shadow-lg border aspect-[9/16]"
+              className="rounded-2xl overflow-hidden shadow-lg border aspect-9/16"
             >
               <LazyVideo
                 lg={v.lg}

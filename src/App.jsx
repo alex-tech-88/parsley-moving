@@ -3,7 +3,8 @@ import Navbar from '@components/layout/Navbar'
 import Hero from '@components/sections/Hero'
 import AboutUs from '@components/sections/AboutUs'
 import Reviews from '@components/sections/Reviews'
-import Gallery from "@components/sections/Gallery";
+import Gallery from "@components/sections/Gallery"
+import Services from '@components/sections/Services'
 
 export default function App() {
   const { mode } = useTheme()
@@ -17,6 +18,7 @@ export default function App() {
           <AboutUs />
           <Reviews />
           <Gallery />
+          <Services />
         </main>
       </div>
     </div>

@@ -25,7 +25,6 @@ export const NAV_LINKS = [
       { label: 'House Moving',        href: '#house-moving' },
       { label: 'Office Moving',       href: '#office-moving' },
       { label: 'Packing Services',    href: '#packing' },
-      { label: 'Loading & Unloading', href: '#loading' },
       { label: 'Furniture Assembly',  href: '#furniture' },
     ],
   },
