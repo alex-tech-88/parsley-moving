@@ -5,6 +5,7 @@ import AboutUs from '@components/sections/AboutUs'
 import Reviews from '@components/sections/Reviews'
 import Gallery from "@components/sections/Gallery"
 import Services from '@components/sections/Services'
+import Footer from '@components/layout/Footer'
 
 export default function App() {
   const { mode } = useTheme()
@@ -19,6 +20,7 @@ export default function App() {
           <Reviews />
           <Gallery />
           <Services />
+          <Footer />
         </main>
       </div>
     </div>
