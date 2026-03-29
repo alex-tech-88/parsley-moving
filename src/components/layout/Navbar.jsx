@@ -2,9 +2,14 @@ import { useState, useEffect } from "react";
 import { useTheme } from "@context/useTheme";
 import GetQuoteButton from "@components/ui/GetQuoteButton";
 import RequestCallButton from "@components/ui/RequestCallButton";
-import { PhoneIcon, ChevronIcon, MoonIcon, SunIcon } from "@components/ui/icons";
+import {
+  PhoneIcon,
+  ChevronIcon,
+  MoonIcon,
+  SunIcon,
+} from "@components/ui/icons";
 import "./Navbar.css";
-import { PHONE, NAV_LINKS } from "@/constants";
+import { PHONE, NAV_LINKS } from "@/constant";
 
 export default function Navbar() {
   const { toggleTheme, t, mode } = useTheme();
@@ -55,10 +60,9 @@ export default function Navbar() {
               alt="Parsley Moving"
               className="h-16 w-16 xl:h-20 xl:w-20"
             />
-            <span className="font-bold text-lg xl:text-xl leading-tight text-graphite dark:text-white">
-              Parsley
-              <br />
-              <span className="text-brand-green">Moving</span>
+            <span className="font-bold text-lg xl:text-xl leading-none text-graphite dark:text-white flex flex-col items-center">
+              <span className="text-3xl">parsley</span>
+              <span className="text-brand-green font-normal -mt-2">moving</span>
             </span>
           </a>
 
@@ -67,7 +71,10 @@ export default function Navbar() {
             {NAV_LINKS.map((link) =>
               link.dropdown ? (
                 <div key={link.href} className="relative group">
-                  <a href={link.href} className="nav-link flex items-center gap-1">
+                  <a
+                    href={link.href}
+                    className="nav-link flex items-center gap-1"
+                  >
                     {link.label}
                     <ChevronIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
                   </a>
@@ -79,7 +86,11 @@ export default function Navbar() {
                       transition-all duration-200 z-50 overflow-hidden"
                   >
                     {link.dropdown.map((item) => (
-                      <a key={item.href} href={item.href} className="nav-dropdown-item">
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        className="nav-dropdown-item"
+                      >
                         {item.label}
                       </a>
                     ))}
@@ -115,10 +126,11 @@ export default function Navbar() {
                 transition-colors cursor-pointer"
               aria-label="Toggle theme"
             >
-              {mode === "light"
-                ? <MoonIcon className="w-6 h-6 xl:w-6 xl:h-6" />
-                : <SunIcon className="w-8 h-8 xl:w-8 xl:h-8" />
-              }
+              {mode === "light" ? (
+                <MoonIcon className="w-6 h-6 xl:w-6 xl:h-6" />
+              ) : (
+                <SunIcon className="w-8 h-8 xl:w-8 xl:h-8" />
+              )}
             </button>
           </div>
 
@@ -142,10 +154,11 @@ export default function Navbar() {
                 transition-colors cursor-pointer"
               aria-label="Toggle theme"
             >
-              {mode === "light"
-                ? <MoonIcon className="w-7 h-7" />
-                : <SunIcon className="w-8 h-8" />
-              }
+              {mode === "light" ? (
+                <MoonIcon className="w-7 h-7" />
+              ) : (
+                <SunIcon className="w-8 h-8" />
+              )}
             </button>
 
             {/* Burger */}
@@ -157,9 +170,15 @@ export default function Navbar() {
               }}
               aria-label="Menu"
             >
-              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+              <span
+                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-graphite dark:bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+              />
             </button>
           </div>
         </div>
@@ -173,7 +192,10 @@ export default function Navbar() {
       >
         <div className="px-6 pb-8 pt-22 mt-6 flex flex-col items-center gap-6">
           {NAV_LINKS.map((link) => (
-            <div key={link.href} className="w-full flex flex-col items-center gap-3">
+            <div
+              key={link.href}
+              className="w-full flex flex-col items-center gap-3"
+            >
               {link.dropdown ? (
                 <>
                   <button

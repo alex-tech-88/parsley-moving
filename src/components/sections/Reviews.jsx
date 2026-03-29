@@ -1,5 +1,5 @@
 import { useTheme } from "@context/useTheme";
-import { REVIEWS } from "@/constants";
+import { REVIEWS } from "@/constant";
 import ReviewCard from "@components/ui/ReviewCard";
 import Slider from "@components/ui/Slider";
 

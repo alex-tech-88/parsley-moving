@@ -1,5 +1,5 @@
 import { useTheme } from '@context/useTheme'
-import { PHONE } from '@/constants'
+import { PHONE } from '@/constant'
 import { PhoneIcon } from '@components/ui/icons' 
 
 export default function RequestCallButton({ onClick, className = '' }) {
