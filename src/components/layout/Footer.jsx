@@ -47,8 +47,9 @@ export default function Footer() {
 
   return (
     <footer
+      id="contact"
       style={{ backgroundColor: t.bg.card, borderColor: t.border }}
-      className="border-t"
+      className="border-t scroll-mt-22"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 xl:px-10 pt-10 pb-6">
 

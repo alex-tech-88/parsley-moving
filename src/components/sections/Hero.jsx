@@ -34,7 +34,6 @@ export default function Hero() {
 
   return (
     <section
-      id="contact"
       style={{ backgroundColor: t.bg.section }}
       className="lg:min-h-[70vh] xl:min-h-[75vh] flex items-center"
     >
