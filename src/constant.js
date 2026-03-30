@@ -4,6 +4,10 @@ export const BREAKPOINTS = {
 }
 
 export const PHONE = '(510) 806-7601'
+export const EMAIL = "info@parsleymoving.com";
+export const ADDRESS = "Bay Area, California";
+export const YEAR = new Date().getFullYear();
+export const WORKING_HOURS = [{ label: "Mon – Sun", hours: "9:00 AM – 9:00 PM" }];
 
 export const NAV_LINKS = [
   {
@@ -141,3 +145,12 @@ export const SERVICES = [
     href: '#furniture',
   },
 ]
+
+export const MOVING_AREAS = [
+  { label: "San Francisco", href: "#" },
+  { label: "San Jose", href: "#" },
+  { label: "Oakland", href: "#" },
+  { label: "Berkeley", href: "#" },
+  { label: "Fremont", href: "#" },
+  { label: "Palo Alto", href: "#" },
+];

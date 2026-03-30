@@ -38,7 +38,7 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
 
     const handleLoadedMetadata = () => {
     const video = videoRef.current;
-    if (video) video.volume = 0.01; // start with very low volume to avoid loud auto-play
+    if (video) video.volume = 0.2; // start with very low volume to avoid loud auto-play
   };
 
   // Toggle play/pause on click
@@ -46,7 +46,7 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
-      video.volume = 0.01; // ensure volume is low when starting
+      video.volume = 0.2; // ensure volume is low when starting
       video.play();
       onPlay();
     } else {
