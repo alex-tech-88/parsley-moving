@@ -51,7 +51,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-6 xl:px-10 h-22 xl:h-25 flex items-center justify-between">
           {/* Logo */}
           <a
-            href="#"
+            href="#home"
             className="flex items-center gap-3"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
@@ -209,9 +209,8 @@ export default function Navbar() {
                   </button>
 
                   <div
-                    className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${
-                      openDropdowns[link.href] ? "max-h-96" : "max-h-0"
-                    }`}
+                    className={`w-full flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${openDropdowns[link.href] ? "max-h-96" : "max-h-0"
+                      }`}
                   >
                     <div className="mobile-menu-divider w-full h-px" />
                     {link.dropdown.map((item) => (
