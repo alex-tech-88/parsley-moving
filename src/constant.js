@@ -147,10 +147,60 @@ export const SERVICES = [
 ]
 
 export const MOVING_AREAS = [
-  { label: "San Francisco", href: "#" },
-  { label: "San Jose", href: "#" },
-  { label: "Oakland", href: "#" },
-  { label: "Berkeley", href: "#" },
-  { label: "Fremont", href: "#" },
-  { label: "Palo Alto", href: "#" },
+  { label: "San Francisco", href: "#san-francisco" },
+  { label: "San Jose", href: "#san-jose" },
+  { label: "Oakland", href: "#oakland" },
+  { label: "Berkeley", href: "#berkeley" },
+  { label: "Fremont", href: "#fremont" },
+  { label: "Palo Alto", href: "#palo-alto" },
+];
+
+export const ACCORDION_AREAS = [
+  {
+    id: "east-bay",
+    label: "East Bay",
+    cities: [
+      { name: "Richmond", href: "#richmond" },
+      { name: "Berkeley", href: "#berkeley" },
+      { name: "Oakland", href: "#oakland" },
+      { name: "Albany", href: "#albany" },
+      { name: "El Cerrito", href: "#el-cerrito" },
+      { name: "San Pablo", href: "#san-pablo" },
+      { name: "Pinole", href: "#pinole" },
+      { name: "Hercules", href: "#hercules" },
+      { name: "San Leandro", href: "#san-leandro" },
+      { name: "Hayward", href: "#hayward" },
+      { name: "Alameda", href: "#alameda" },
+      { name: "Castro Valley", href: "#castro-valley" },
+    ],
+  },
+  {
+    id: "contra-costa",
+    label: "Contra Costa",
+    cities: [
+      { name: "Concord", href: "#concord" },
+      { name: "Walnut Creek", href: "#walnut-creek" },
+      { name: "Pleasant Hill", href: "#pleasant-hill" },
+      { name: "Martinez", href: "#martinez" },
+      { name: "Lafayette", href: "#lafayette" },
+      { name: "Orinda", href: "#orinda" },
+      { name: "Danville", href: "#danville" },
+      { name: "San Ramon", href: "#san-ramon" },
+      { name: "Dublin", href: "#dublin" },
+      { name: "Pleasanton", href: "#pleasanton" },
+    ],
+  },
+  {
+    id: "peninsula",
+    label: "Peninsula & SF",
+    cities: [
+      { name: "San Francisco", href: "#san-francisco" },
+      { name: "Daly City", href: "#daly-city" },
+      { name: "South San Francisco", href: "#south-san-francisco" },
+      { name: "San Mateo", href: "#san-mateo" },
+      { name: "Fremont", href: "#fremont" },
+      { name: "Newark", href: "#newark" },
+      { name: "Union City", href: "#union-city" },
+    ],
+  },
 ];

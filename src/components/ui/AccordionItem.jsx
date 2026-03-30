@@ -11,7 +11,7 @@ export default function AccordionItem({ service, isOpen, onToggle }) {
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-4 text-left gap-3"
+        className="w-full flex items-center justify-between py-2 text-left gap-3"
       >
         <div className="flex items-center gap-3">
           <div className="w-15 h-15 shrink-0">
@@ -21,7 +21,7 @@ export default function AccordionItem({ service, isOpen, onToggle }) {
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-bold text-base text-graphite dark:text-white uppercase tracking-wide">
+          <span className="font-bold text-xl text-graphite dark:text-white  tracking-wide">
             {service.title}
           </span>
         </div>
