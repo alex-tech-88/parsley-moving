@@ -23,13 +23,16 @@ function MobileCard({ t, children }) {
       >
         {children}
       </div>
-
       <div className="hidden lg:block">{children}</div>
     </>
   );
 }
 
-export default function Hero() {
+export default function Hero({
+  title = "Professional Moving",
+  highlight = "in the Bay Area",
+  subtitle = "Where Every Move is Seasoned With Care",
+}) {
   const { t, mode } = useTheme();
 
   return (
@@ -39,30 +42,33 @@ export default function Hero() {
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10 pt-4 pb-1 lg:py-16 w-full">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-0 lg:gap-20">
+
           {/* Left column — desktop only */}
           <div className="hidden lg:flex flex-1 flex-col items-start text-left">
             <div className="relative w-72 h-72 xl:w-96 xl:h-96 mb-6 mx-auto">
               <img
                 src={logoLight}
                 alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-0" : "opacity-100"
-                  }`}
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
+                  mode === "dark" ? "opacity-0" : "opacity-100"
+                }`}
               />
               <img
                 src={logoDark}
                 alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-100" : "opacity-0"
-                  }`}
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
+                  mode === "dark" ? "opacity-100" : "opacity-0"
+                }`}
               />
             </div>
 
             <h1 className="text-4xl xl:text-5xl font-bold text-graphite dark:text-white leading-tight">
-              Professional Moving
+              {title}
               <br />
-              <span className="text-brand-green">in the Bay Area</span>
+              <span className="text-brand-green">{highlight}</span>
             </h1>
             <p className="mt-4 text-base xl:text-lg text-[#6b7280] dark:text-[#a0a0a0]">
-              Where Every Move is Seasoned With Care
+              {subtitle}
             </p>
 
             <div className="flex flex-wrap gap-3 mt-8">
@@ -95,12 +101,12 @@ export default function Hero() {
             {/* Heading — mobile/tablet only */}
             <div className="lg:hidden mb-6">
               <h1 className="text-3xl sm:text-4xl font-bold text-graphite dark:text-white leading-tight mb-3">
-                Professional Moving
+                {title}
                 <br />
-                <span className="text-brand-green">in the Bay Area</span>
+                <span className="text-brand-green">{highlight}</span>
               </h1>
               <p className="text-sm text-[#6b7280] dark:text-[#a0a0a0]">
-                Where Every Move is Seasoned With Care
+                {subtitle}
               </p>
             </div>
 
@@ -108,6 +114,7 @@ export default function Hero() {
               <ContactForm />
             </MobileCard>
           </div>
+
         </div>
       </div>
     </section>
