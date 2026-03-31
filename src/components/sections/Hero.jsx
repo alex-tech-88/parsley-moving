@@ -32,6 +32,7 @@ export default function Hero({
   title = "Professional Moving",
   highlight = "in the Bay Area",
   subtitle = "Where Every Move is Seasoned With Care",
+  image = null,
 }) {
   const { t, mode } = useTheme();
 
@@ -46,20 +47,28 @@ export default function Hero({
           {/* Left column — desktop only */}
           <div className="hidden lg:flex flex-1 flex-col items-start text-left">
             <div className="relative w-72 h-72 xl:w-96 xl:h-96 mb-6 mx-auto">
-              <img
-                src={logoLight}
-                alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
-                  mode === "dark" ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <img
-                src={logoDark}
-                alt="Parsley Moving"
-                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${
-                  mode === "dark" ? "opacity-100" : "opacity-0"
-                }`}
-              />
+              {image ? (
+                <img
+                  src={image}
+                  alt={title}
+                  className="absolute inset-0 w-full h-full object-contain rounded-2xl"
+                />
+              ) : (
+                <>
+                  <img
+                    src={logoLight}
+                    alt="Parsley Moving"
+                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-0" : "opacity-100"
+                      }`}
+                  />
+                  <img
+                    src={logoDark}
+                    alt="Parsley Moving"
+                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-100" : "opacity-0"
+                      }`}
+                  />
+                </>
+              )}
             </div>
 
             <h1 className="text-4xl xl:text-5xl font-bold text-graphite dark:text-white leading-tight">

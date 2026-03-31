@@ -1,6 +1,7 @@
 import { useTheme } from "@context/useTheme";
 import { PHONE, SERVICES, EMAIL, ADDRESS, YEAR, MOVING_AREAS, WORKING_HOURS } from "@/constant";
 import { FooterPhoneIcon, FooterMailIcon, FooterPinIcon } from "@components/ui/icons";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   const { t } = useTheme();
@@ -40,13 +41,13 @@ export default function Footer() {
             <ul className="flex flex-col gap-2 items-center sm:items-start">
               {SERVICES.map((s) => (
                 <li key={s.id}>
-                  <a
-                    href={s.href}
+                  <Link
+                    to={s.href}
                     style={{ color: t.text.secondary }}
                     className="text-sm hover:text-brand-green transition-colors"
                   >
                     {s.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -139,7 +140,7 @@ export default function Footer() {
           style={{ color: t.text.secondary }}
           className="pt-1 text-center text-xs"
         >
-         © {YEAR} Parsley Moving. All Rights Reserved.
+          © {YEAR} Parsley Moving. All Rights Reserved.
         </div>
       </div>
     </footer>

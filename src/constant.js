@@ -21,17 +21,17 @@ export const NAV_LINKS = [
     ],
   },
   {
-    label: 'Services',
-    href: '#services',
-    dropdown: [
-      { label: 'Local Moving',        href: '#local-moving' },
-      { label: 'Apartment Moving',    href: '#apartment-moving' },
-      { label: 'House Moving',        href: '#house-moving' },
-      { label: 'Office Moving',       href: '#office-moving' },
-      { label: 'Packing Services',    href: '#packing' },
-      { label: 'Furniture Assembly',  href: '#furniture' },
-    ],
-  },
+  label: 'Services',
+  href: '/services/local-moving',
+  dropdown: [
+    { label: 'Local Moving',       href: '/services/local-moving' },
+    { label: 'Residential Moving', href: '/services/residential-moving' },
+    { label: 'Commercial Moving',  href: '/services/commercial-moving' },
+    { label: 'In-State Moving',    href: '/services/in-state-moving' },
+    { label: 'Packing Services',   href: '/services/packing' },
+    { label: 'Furniture Moving',   href: '/services/furniture' },
+  ],
+},
   { label: 'Moving Areas', href: '#areas' },
 ]
 

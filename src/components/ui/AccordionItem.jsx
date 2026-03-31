@@ -1,5 +1,6 @@
 import { useTheme } from '@context/useTheme'
 import { ChevronIcon } from '@components/ui/icons'
+import { Link } from 'react-router-dom'
 
 export default function AccordionItem({ service, isOpen, onToggle }) {
   const { t } = useTheme()
@@ -21,7 +22,7 @@ export default function AccordionItem({ service, isOpen, onToggle }) {
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-bold text-xl text-graphite dark:text-white  tracking-wide">
+          <span className="font-bold text-xl text-graphite dark:text-white tracking-wide">
             {service.title}
           </span>
         </div>
@@ -41,13 +42,13 @@ export default function AccordionItem({ service, isOpen, onToggle }) {
         <p className="text-sm text-[#6b7280] dark:text-[#a0a0a0] leading-relaxed mb-3">
           {service.description}
         </p>
-        <a
-          href={service.href}
+        <Link
+          to={service.href}
           style={{ color: t.brand.primary }}
           className="text-sm font-semibold inline-flex items-center gap-1"
         >
           Learn More <span>↗</span>
-        </a>
+        </Link>
       </div>
     </div>
   )

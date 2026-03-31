@@ -1,5 +1,6 @@
 import { useTheme } from "@context/useTheme";
 import { ChevronIcon, PinIcon } from "@components/ui/icons";
+import { Link } from "react-router-dom";
 
 export default function AccordionGroup({ items, openId, onToggle }) {
   const { t } = useTheme();
@@ -45,8 +46,8 @@ export default function AccordionGroup({ items, openId, onToggle }) {
             <ul className="flex flex-wrap gap-x-6 gap-y-3">
               {item.cities.map((city) => (
                 <li key={city.name}>
-                  <a
-                    href={city.href}
+                  <Link
+                    to={city.href}
                     style={{ color: t.text.secondary }}
                     className="text-lg font-medium transition-colors duration-200"
                     onMouseEnter={(e) =>
@@ -57,7 +58,7 @@ export default function AccordionGroup({ items, openId, onToggle }) {
                     }
                   >
                     {city.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

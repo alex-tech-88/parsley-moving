@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
-import { ACCORDION_AREAS } from "@/constant";
+import { ACCORDION_AREAS, SERVICES } from "@/constant";
 import Hero from "@components/sections/Hero";
+
+const defaultImage = SERVICES.find((s) => s.id === "local-moving")?.img;
 
 export default function AreaPage() {
   const { slug } = useParams();
@@ -15,6 +17,7 @@ export default function AreaPage() {
     <Hero
       title="Professional Moving"
       highlight={`in ${city.name}`}
+      image={defaultImage}
     />
   );
 }

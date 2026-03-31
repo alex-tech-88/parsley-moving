@@ -1,4 +1,5 @@
 import { useTheme } from '@context/useTheme'
+import { Link } from 'react-router-dom'
 
 export default function ServiceCard({ service }) {
   const { t } = useTheme()
@@ -21,14 +22,14 @@ export default function ServiceCard({ service }) {
       <p className="text-sm text-[#6b7280] dark:text-[#a0a0a0] leading-relaxed flex-1">
         {service.description}
       </p>
-      <a
-        href={service.href}
+      <Link
+        to={service.href}
         style={{ color: t.brand.primary }}
         className="mt-4 text-sm font-semibold inline-flex items-center gap-1
           hover:gap-2 transition-all duration-200"
       >
         Learn More <span className="text-base">↗</span>
-      </a>
+      </Link>
     </div>
   )
 }

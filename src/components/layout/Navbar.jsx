@@ -10,6 +10,9 @@ import {
 } from "@components/ui/icons";
 import "./Navbar.css";
 import { PHONE, NAV_LINKS } from "@/constant";
+import { Link } from "react-router-dom";
+
+const isRoute = (href) => href.startsWith("/");
 
 export default function Navbar() {
   const { toggleTheme, t, mode } = useTheme();
@@ -50,10 +53,9 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 xl:px-10 h-22 xl:h-25 flex items-center justify-between">
           {/* Logo */}
-          <a
-            href="#home"
+          <Link
+            to="/"
             className="flex items-center gap-3"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             <img
               src="/favicon-96x96.png"
@@ -64,43 +66,47 @@ export default function Navbar() {
               <span className="text-3xl">parsley</span>
               <span className="text-brand-green font-normal -mt-2">moving</span>
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-8 xl:gap-12">
             {NAV_LINKS.map((link) =>
               link.dropdown ? (
                 <div key={link.href} className="relative group">
-                  <a
-                    href={link.href}
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById("services");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
+                    }}
                     className="nav-link flex items-center gap-1"
                   >
                     {link.label}
                     <ChevronIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
-                  </a>
+                  </button>
 
                   {/* Desktop dropdown */}
-                  <div
-                    className="navbar-dropdown absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
-                      opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                      transition-all duration-200 z-50 overflow-hidden"
+                  <div className="navbar-dropdown absolute top-full left-0 mt-2 w-64 rounded-xl border shadow-lg
+        opacity-0 invisible group-hover:opacity-100 group-hover:visible
+        transition-all duration-200 z-50 overflow-hidden"
                   >
-                    {link.dropdown.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="nav-dropdown-item"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
+                    {link.dropdown.map((item) =>
+                      isRoute(item.href) ? (
+                        <Link key={item.href} to={item.href} className="nav-dropdown-item">
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a key={item.href} href={item.href} className="nav-dropdown-item">
+                          {item.label}
+                        </a>
+                      )
+                    )}
                   </div>
                 </div>
               ) : (
                 <a key={link.href} href={link.href} className="nav-link">
                   {link.label}
                 </a>
-              ),
+              )
             )}
           </nav>
 
@@ -213,19 +219,33 @@ export default function Navbar() {
                       }`}
                   >
                     <div className="mobile-menu-divider w-full h-px" />
-                    {link.dropdown.map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => {
-                          setMenuOpen(false);
-                          closeAllDropdowns();
-                        }}
-                        className="nav-dropdown-item-mobile"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
+                    {link.dropdown.map((item) =>
+                      isRoute(item.href) ? (
+                        <Link
+                          key={item.href}
+                          to={item.href}
+                          onClick={() => {
+                            setMenuOpen(false);
+                            closeAllDropdowns();
+                          }}
+                          className="nav-dropdown-item-mobile"
+                        >
+                          {item.label}
+                        </Link>
+                      ) : (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => {
+                            setMenuOpen(false);
+                            closeAllDropdowns();
+                          }}
+                          className="nav-dropdown-item-mobile"
+                        >
+                          {item.label}
+                        </a>
+                      )
+                    )}
                     <div className="mobile-menu-divider w-full h-px" />
                   </div>
                 </>
