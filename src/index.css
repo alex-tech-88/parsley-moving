@@ -32,6 +32,10 @@
   #root {
     min-height: 100vh;
   }
+
+  button {
+  cursor: pointer;
+}
 }
 
 @keyframes phone-ring {

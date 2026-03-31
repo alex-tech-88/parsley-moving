@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 const isRoute = (href) => href.startsWith("/");
 
 const SCROLL_SECTIONS = {
+  "About Us": "about",
   Services: "services",
   "Moving Areas": "areas",
 };
@@ -112,12 +113,12 @@ export default function Navbar() {
                           <div key={group.label} className="relative group/sub">
 
                             {/* Region label */}
-                            <div className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-                              <span className="text-sm font-bold uppercase tracking-wider text-brand-green">
-                                {group.label}
-                              </span>
-                              <ChevronIcon className="w-4 h-4 text-brand-green -rotate-90" />
-                            </div>
+                            <button className="w-full flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+  <span className="text-sm font-bold uppercase tracking-wider text-brand-green">
+    {group.label}
+  </span>
+  <ChevronIcon className="w-4 h-4 text-brand-green -rotate-90" />
+</button>
 
                             {/* City list — appears to the right on hover */}
                             <div
