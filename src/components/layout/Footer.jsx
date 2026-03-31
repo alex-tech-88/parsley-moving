@@ -64,13 +64,13 @@ export default function Footer() {
             <ul className="flex flex-col gap-2 items-center sm:items-start">
               {MOVING_AREAS.map((area) => (
                 <li key={area.label}>
-                  <a
-                    href={area.href}
+                  <Link
+                    to={area.href}  // нужно обновить MOVING_AREAS на /areas/... пути
                     style={{ color: t.text.secondary }}
                     className="text-sm hover:text-brand-green transition-colors"
                   >
                     {area.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
