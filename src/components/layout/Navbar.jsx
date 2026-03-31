@@ -100,11 +100,11 @@ export default function Navbar() {
                     <ChevronIcon className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" />
                   </button>
 
-                  {/* Desktop dropdown — no overflow-hidden to allow nested popups */}
+                  {/* Desktop dropdown */}
                   <div
                     className="navbar-dropdown absolute top-full left-0 mt-2 rounded-xl border shadow-lg
-                      opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                      transition-all duration-200 z-50"
+    opacity-0 invisible group-hover:opacity-100 group-hover:visible
+    transition-all duration-200 z-50"
                   >
                     {link.groups ? (
                       // Moving Areas — regions with nested city popups on hover
@@ -114,17 +114,17 @@ export default function Navbar() {
 
                             {/* Region label */}
                             <button className="w-full flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
-  <span className="text-sm font-bold uppercase tracking-wider text-brand-green">
-    {group.label}
-  </span>
-  <ChevronIcon className="w-4 h-4 text-brand-green -rotate-90" />
-</button>
+                              <span className="text-sm font-bold uppercase tracking-wider text-brand-green">
+                                {group.label}
+                              </span>
+                              <ChevronIcon className="w-4 h-4 text-brand-green -rotate-90" />
+                            </button>
 
                             {/* City list — appears to the right on hover */}
                             <div
                               className="navbar-dropdown absolute top-0 left-full ml-1 min-w-55 rounded-xl border shadow-lg
-                                opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible
-                                transition-all duration-200 z-50 overflow-hidden py-2"
+    opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible
+    transition-all duration-200 z-50 overflow-hidden py-2"
                             >
                               {group.cities.map((city) => (
                                 <Link
@@ -142,7 +142,7 @@ export default function Navbar() {
                       </div>
                     ) : (
                       // Services / About Us — flat dropdown list
-                      <div className={`overflow-hidden rounded-xl ${link.label === "Services" ? "min-w-64" :
+                      <div className={`rounded-xl ${link.label === "Services" ? "min-w-64" :
                           link.label === "About Us" ? "min-w-40" :
                             "min-w-52"
                         }`}>
@@ -266,81 +266,86 @@ export default function Navbar() {
                     />
                   </button>
 
+                  {/* Grid trick — плавная анимация высоты */}
                   <div
-                    className={`w-full flex flex-col overflow-hidden transition-all duration-300 ${openDropdowns[link.href] ? "h-auto" : "max-h-0"
+                    className={`w-full grid transition-[grid-template-rows] duration-300 ${openDropdowns[link.href] ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                       }`}
                   >
-                    <div className="mobile-menu-divider w-full h-px mb-3" />
+                    <div className="overflow-hidden flex flex-col">
+                      <div className="mobile-menu-divider w-full h-px mb-3" />
 
-                    {link.groups ? (
-                      // Moving Areas — two-level accordion
-                      link.groups.map((group) => (
-                        <div key={group.label} className="w-full flex flex-col">
+                      {link.groups ? (
+                        // Moving Areas — two-level accordion
+                        link.groups.map((group) => (
+                          <div key={group.label} className="w-full flex flex-col">
 
-                          {/* Region toggle */}
-                          <button
-                            onClick={() => toggleGroup(group.label)}
-                            className="flex items-center justify-between px-2 py-2 w-full"
-                          >
-                            <span className="text-sm font-bold uppercase tracking-wider text-brand-green">
-                              {group.label}
-                            </span>
-                            <ChevronIcon
-                              className={`w-4 h-4 transition-transform duration-200 text-brand-green ${openGroups[group.label] ? "rotate-180" : ""
+                            {/* Region toggle */}
+                            <button
+                              onClick={() => toggleGroup(group.label)}
+                              className="flex items-center justify-between px-2 py-2 w-full cursor-pointer"
+                            >
+                              <span className="text-sm font-bold uppercase tracking-wider text-brand-green">
+                                {group.label}
+                              </span>
+                              <ChevronIcon
+                                className={`w-4 h-4 transition-transform duration-200 text-brand-green ${openGroups[group.label] ? "rotate-180" : ""
+                                  }`}
+                              />
+                            </button>
+
+                            {/* City list — grid trick */}
+                            <div
+                              className={`grid transition-[grid-template-rows] duration-300 ${openGroups[group.label] ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                                 }`}
-                            />
-                          </button>
+                            >
+                              <div className="overflow-hidden flex flex-col items-center gap-3">
+                                {group.cities.map((city) => (
+                                  <Link
+                                    key={city.href}
+                                    to={city.href}
+                                    onClick={() => {
+                                      setMenuOpen(false);
+                                      closeAllDropdowns();
+                                    }}
+                                    className="nav-dropdown-item-mobile"
+                                  >
+                                    {city.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
 
-                          {/* City list */}
-                          <div
-                            className={`flex flex-col items-center gap-3 overflow-hidden transition-all duration-300 ${openGroups[group.label] ? "max-h-96" : "max-h-0"
-                              }`}
-                          >
-                            {group.cities.map((city) => (
+                          </div>
+                        ))
+                      ) : (
+                        // Services / About Us — flat list
+                        <div className="flex flex-col items-center gap-3">
+                          {link.dropdown.map((item) =>
+                            isRoute(item.href) ? (
                               <Link
-                                key={city.href}
-                                to={city.href}
-                                onClick={() => {
-                                  setMenuOpen(false);
-                                  closeAllDropdowns();
-                                }}
+                                key={item.href}
+                                to={item.href}
+                                onClick={() => { setMenuOpen(false); closeAllDropdowns(); }}
                                 className="nav-dropdown-item-mobile"
                               >
-                                {city.label}
+                                {item.label}
                               </Link>
-                            ))}
-                          </div>
-
+                            ) : (
+                              <a
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => { setMenuOpen(false); closeAllDropdowns(); }}
+                                className="nav-dropdown-item-mobile"
+                              >
+                                {item.label}
+                              </a>
+                            )
+                          )}
                         </div>
-                      ))
-                    ) : (
-                      // Services / About Us — flat list
-                      <div className="flex flex-col items-center gap-3">
-                        {link.dropdown.map((item) =>
-                          isRoute(item.href) ? (
-                            <Link
-                              key={item.href}
-                              to={item.href}
-                              onClick={() => { setMenuOpen(false); closeAllDropdowns(); }}
-                              className="nav-dropdown-item-mobile"
-                            >
-                              {item.label}
-                            </Link>
-                          ) : (
-                            <a
-                              key={item.href}
-                              href={item.href}
-                              onClick={() => { setMenuOpen(false); closeAllDropdowns(); }}
-                              className="nav-dropdown-item-mobile"
-                            >
-                              {item.label}
-                            </a>
-                          )
-                        )}
-                      </div>
-                    )}
+                      )}
 
-                    <div className="mobile-menu-divider w-full h-px mt-3" />
+                      <div className="mobile-menu-divider w-full h-px mt-3" />
+                    </div>
                   </div>
                 </>
               ) : (
