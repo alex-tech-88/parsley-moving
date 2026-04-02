@@ -30,7 +30,7 @@ function MobileCard({ t, children }) {
 
 export default function Hero({
   title = "Professional Moving",
-  highlight = "in the Bay Area",
+  highlight = "in San Francisco",
   subtitle = "Where Every Move is Seasoned With Care",
   image = null,
 }) {

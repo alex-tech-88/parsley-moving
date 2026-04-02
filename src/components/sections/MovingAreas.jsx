@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "@context/useTheme";
 import { useLocation } from "react-router-dom";
 import AccordionGroup from "@components/ui/AccordionGroup";
@@ -8,6 +8,12 @@ export default function MovingAreas() {
   const { t } = useTheme();
   const { state } = useLocation();
   const [openId, setOpenId] = useState(state?.openAreaId ?? "east-bay");
+
+  useEffect(() => {
+    if (state?.openAreaId) {
+      setOpenId(state.openAreaId);
+    }
+  }, [state?.openAreaId]);
 
   const toggle = (id) => setOpenId((prev) => (prev === id ? null : id));
 

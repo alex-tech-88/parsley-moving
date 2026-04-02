@@ -1,10 +1,25 @@
 import { useTheme } from "@context/useTheme";
 import { PHONE, SERVICES, EMAIL, ADDRESS, YEAR, MOVING_AREAS, WORKING_HOURS } from "@/constant";
 import { FooterPhoneIcon, FooterMailIcon, FooterPinIcon } from "@components/ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Footer() {
   const { t } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Handles area link clicks — scrolls to #areas and sets open accordion id
+  const handleAreaClick = (e, area) => {
+    e.preventDefault();
+    if (location.pathname === "/") {
+      // Already on home — update state and scroll to section
+      navigate("/", { state: { openAreaId: area.areaId }, replace: true });
+      document.getElementById("areas")?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // On another page — navigate home with state
+      navigate("/", { state: { openAreaId: area.areaId } });
+    }
+  };
 
   return (
     <footer
@@ -13,8 +28,10 @@ export default function Footer() {
       className="border-t scroll-mt-22"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 xl:px-10 pt-10 pb-6">
+
         {/* Main row */}
         <div className="flex flex-col items-center sm:items-start sm:flex-row sm:flex-wrap justify-between gap-8 mb-10">
+
           {/* Logo + name */}
           <div className="flex flex-col items-center gap-1 self-center">
             <img
@@ -53,7 +70,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Moving Areas */}
+          {/* Moving Areas — each link opens the matching accordion group */}
           <div className="flex flex-col gap-3 items-center sm:items-start">
             <h4
               style={{ color: t.text.primary }}
@@ -64,14 +81,14 @@ export default function Footer() {
             <ul className="flex flex-col gap-2 items-center sm:items-start">
               {MOVING_AREAS.map((area) => (
                 <li key={area.label}>
-                  <Link
-                    to="/#areas"
-                    state={{ openAreaId: area.areaId }}
+                  <a
+                    href="/#areas"
+                    onClick={(e) => handleAreaClick(e, area)}
                     style={{ color: t.text.secondary }}
-                    className="text-sm hover:text-brand-green transition-colors"
+                    className="text-sm hover:text-brand-green transition-colors cursor-pointer"
                   >
                     {area.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -110,7 +127,7 @@ export default function Footer() {
                 {ADDRESS}
               </p>
 
-              {/* Working Hours */}
+              {/* Working hours */}
               <div
                 style={{ borderColor: t.border }}
                 className="flex flex-col gap-1 pt-3 border-t"
@@ -128,6 +145,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
+
         </div>
 
         {/* Copyright bottom */}
@@ -143,6 +161,7 @@ export default function Footer() {
         >
           © {YEAR} Parsley Moving. All Rights Reserved.
         </div>
+
       </div>
     </footer>
   );
