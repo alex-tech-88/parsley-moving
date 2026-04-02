@@ -1,9 +1,9 @@
 export const MOVING_AREAS = [
-  { label: "East Bay",                       href: "/areas/east-bay" },
-  { label: "Tri-Valley & Walnut Creek Area", href: "/areas/tri-valley" },
-  { label: "Fremont Area",                   href: "/areas/fremont-area" },
-  { label: "San Francisco",                  href: "/areas/san-francisco" },
-  { label: "Peninsula",                      href: "/areas/peninsula" },
+  { label: "East Bay",                       href: "#areas", areaId: "east-bay" },
+  { label: "Tri-Valley & Walnut Creek Area", href: "#areas", areaId: "tri-valley" },
+  { label: "Fremont Area",                   href: "#areas", areaId: "fremont-area" },
+  { label: "San Francisco",                  href: "#areas", areaId: "san-francisco" },
+  { label: "Peninsula",                      href: "#areas", areaId: "peninsula" },
 ]
 
 export const ACCORDION_AREAS = [

@@ -65,7 +65,8 @@ export default function Footer() {
               {MOVING_AREAS.map((area) => (
                 <li key={area.label}>
                   <Link
-                    to={area.href}  // нужно обновить MOVING_AREAS на /areas/... пути
+                    to="/#areas"
+                    state={{ openAreaId: area.areaId }}
                     style={{ color: t.text.secondary }}
                     className="text-sm hover:text-brand-green transition-colors"
                   >

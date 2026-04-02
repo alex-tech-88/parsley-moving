@@ -12,23 +12,24 @@ export default function FAQ() {
   }
 
   return (
-    <section style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24">
-      <div className="max-w-3xl mx-auto">
+    <section id="faq" style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 xl:px-10">
+        <span
+          style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
+          className="text-sm font-semibold px-4 py-1.5 rounded-full"
+        >
+          FAQ
+        </span>
+        <h2
+          style={{ color: t.text.primary }}
+          className="text-3xl xl:text-4xl font-bold text-graphite dark:text-white mt-4"
+        >
+          Frequently Asked Questions
+        </h2>
+        <p style={{ color: t.text.secondary }} className="text-base mb-6">
+          Everything you need to know before your move.
+        </p>
 
-        {/* Heading */}
-        <div className="mb-10 text-center">
-          <h2
-            style={{ color: t.text.primary }}
-            className="text-3xl md:text-4xl font-bold tracking-tight mb-3"
-          >
-            Frequently Asked Questions
-          </h2>
-          <p style={{ color: t.text.secondary }} className="text-base md:text-lg">
-            Everything you need to know before your move.
-          </p>
-        </div>
-
-        {/* Accordion — reuses AccordionGroup/AccordionItem visual pattern */}
         <div
           style={{ borderColor: t.border, backgroundColor: t.bg.card }}
           className="border rounded-2xl px-6"
@@ -41,31 +42,29 @@ export default function FAQ() {
             >
               <button
                 onClick={() => handleToggle(item.id)}
-                className="w-full flex items-center justify-between py-4 text-left gap-3"
+                className="w-full flex items-center justify-between py-6 text-left gap-3"
                 aria-expanded={openId === item.id}
               >
                 <span
                   style={{ color: t.text.primary }}
-                  className="font-semibold text-lg tracking-wide"
+                  className="font-semibold text-xl tracking-wide"
                 >
                   {item.question}
                 </span>
                 <ChevronIcon
-                  className={`w-5 h-5 shrink-0 transition-transform duration-300 ${
-                    openId === item.id ? 'rotate-180' : ''
-                  }`}
+                  className={`w-5 h-5 shrink-0 transition-transform duration-300 ${openId === item.id ? 'rotate-180' : ''
+                    }`}
                   style={{ color: t.brand.primary }}
                 />
               </button>
 
               <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  openId === item.id ? 'max-h-56 pb-5' : 'max-h-0'
-                }`}
+                className={`overflow-hidden transition-all duration-300 ${openId === item.id ? 'max-h-56 pb-5' : 'max-h-0'
+                  }`}
               >
                 <p
                   style={{ color: t.text.secondary }}
-                  className="text-base leading-relaxed"
+                  className="text-lg leading-relaxed"
                 >
                   {item.answer}
                 </p>
