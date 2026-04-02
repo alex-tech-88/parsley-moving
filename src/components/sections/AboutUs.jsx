@@ -1,13 +1,20 @@
 import { useTheme } from "@context/useTheme";
-import aboutImg from "@/assets/about-us.webp";
+import defaultAboutImg from "@/assets/about-us.webp";
 
 const STATS = [
   { value: "500+", label: "Moves Completed" },
-  { value: "5★", label: "Google Rating" },
+  { value: "5★",   label: "Google Rating" },
   { value: "100%", label: "Satisfaction Rate" },
 ];
 
-export default function AboutUs() {
+export default function AboutUs({
+  title     = "Your Local",
+  highlight = "Moving Experts",
+  text1     = "At Parsley Moving, we provide a fresh approach to relocation, dedicated to making your move as smooth as possible. Our experienced team understands the challenges of relocating and offers reliable residential and commercial moving, packing, and unpacking services throughout the Bay Area at affordable prices.",
+  text2     = "We guarantee the safety of your belongings, focusing on customer satisfaction by handling your items with care and ensuring timely delivery. Choose Parsley Moving, where every move is seasoned with care, for moves of any complexity and in any direction!",
+  img       = defaultAboutImg,
+  location  = "Bay Area, CA",
+}) {
   const { t } = useTheme();
 
   return (
@@ -18,20 +25,17 @@ export default function AboutUs() {
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 xl:gap-20">
+
           {/* Left — photo */}
           <div className="w-full lg:w-1/2 shrink-0">
             <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <img
-                src={aboutImg}
-                alt="Parsley Moving trucks"
+                src={img}
+                alt={location}
                 className="w-full h-72 sm:h-96 lg:h-120 object-cover"
               />
-              {/* Badge */}
-              <div
-                className="absolute bottom-4 left-4 bg-brand-green text-white
-                px-4 py-2 rounded-xl text-sm font-semibold shadow-lg"
-              >
-                📍 Bay Area, CA
+              <div className="absolute bottom-4 left-4 bg-brand-green text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-lg">
+                📍 {location}
               </div>
             </div>
           </div>
@@ -46,25 +50,17 @@ export default function AboutUs() {
                 About Us
               </span>
               <h2 className="text-3xl xl:text-4xl font-bold text-graphite dark:text-white mt-4 leading-tight">
-                Your Local
+                {title}
                 <br />
-                <span className="text-brand-green">Moving Experts</span>
+                <span className="text-brand-green">{highlight}</span>
               </h2>
             </div>
 
             <p className="text-base xl:text-lg text-[#6b7280] dark:text-[#a0a0a0] leading-relaxed">
-              At Parsley Moving, we provide a fresh approach to relocation,
-              dedicated to making your move as smooth as possible. Our
-              experienced team understands the challenges of relocating and
-              offers reliable residential and commercial moving, packing, and
-              unpacking services throughout the Bay Area at affordable prices
+              {text1}
             </p>
-
             <p className="text-base text-[#6b7280] dark:text-[#a0a0a0] leading-relaxed">
-              We guarantee the safety of your belongings, focusing on customer
-              satisfaction by handling your items with care and ensuring timely
-              delivery. Choose Parsley Moving, where every move is seasoned with
-              care, for moves of any complexity and in any direction!
+              {text2}
             </p>
 
             {/* Stats */}
@@ -72,10 +68,7 @@ export default function AboutUs() {
               {STATS.map(({ value, label }) => (
                 <div
                   key={label}
-                  style={{
-                    backgroundColor: t.bg.card,
-                    borderColor: t.border,
-                  }}
+                  style={{ backgroundColor: t.bg.card, borderColor: t.border }}
                   className="border rounded-2xl p-5 text-center transition-all duration-200
                     hover:border-brand-green hover:scale-105 hover:shadow-md cursor-default"
                 >
@@ -85,6 +78,7 @@ export default function AboutUs() {
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>

@@ -11,7 +11,7 @@ export default function GetQuoteButton({ onClick, className = '' }) {
       className={`hover:opacity-90 text-white font-semibold px-5 py-3 rounded-xl
         text-center transition-opacity ${className}`}
     >
-      GET QUOTE
+      GET FREE QUOTE
     </a>
   )
 }

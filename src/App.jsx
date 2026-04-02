@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useTheme } from "@context/useTheme";
 import Navbar from "@components/layout/Navbar";
 import Footer from "@components/layout/Footer";
-import AboutUs from "@components/sections/AboutUs";
 import Reviews from "@components/sections/Reviews";
 import Gallery from "@components/sections/Gallery";
 import Services from "@components/sections/Services";
@@ -24,12 +23,12 @@ export default function App() {
           <main className="pt-22 xl:pt-25">
 
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/areas/:slug" element={<AreaPage />} />
-              <Route path="/services/:slug" element={<ServicePage />} />
+              <Route path="/"                element={<HomePage />} />
+              <Route path="/areas/:slug"     element={<AreaPage />} />
+              <Route path="/services/:slug"  element={<ServicePage />} />
             </Routes>
 
-            <AboutUs />
+            {/* Shared sections — render once, never remount on navigation */}
             <Reviews />
             <Gallery />
             <Services />
