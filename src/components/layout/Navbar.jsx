@@ -108,7 +108,7 @@ export default function Navbar() {
                   >
                     {link.groups ? (
                       // Moving Areas — regions with nested city popups on hover
-                      <div className="flex flex-col py-2 min-w-50">
+                      <div className="flex flex-col py-2 min-w-85">
                         {link.groups.map((group) => (
                           <div key={group.label} className="relative group/sub">
 
@@ -122,7 +122,7 @@ export default function Navbar() {
 
                             {/* City list — appears to the right on hover */}
                             <div
-                              className="navbar-dropdown absolute top-0 left-full ml-1 min-w-55 rounded-xl border shadow-lg
+                              className="navbar-dropdown absolute top-0 left-full ml-1 min-w-50 rounded-xl border shadow-lg
     opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible
     transition-all duration-200 z-50 overflow-hidden py-2"
                             >

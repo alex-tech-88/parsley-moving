@@ -1,13 +1,19 @@
+// ─── Breakpoints ─────────────────────────────────────────────────────────────
+
 export const BREAKPOINTS = {
   tablet: 768,
   desktop: 1024,
 }
 
+// ─── Company Info ─────────────────────────────────────────────────────────────
+
 export const PHONE = '(510) 806-7601'
-export const EMAIL = "info@parsleymoving.com";
-export const ADDRESS = "Bay Area, California";
-export const YEAR = new Date().getFullYear();
-export const WORKING_HOURS = [{ label: "7 days a week", hours: "9:00 AM – 9:00 PM" }];
+export const EMAIL = "info@parsleymoving.com"
+export const ADDRESS = "Bay Area, California"
+export const YEAR = new Date().getFullYear()
+export const WORKING_HOURS = [{ label: "7 days a week", hours: "9:00 AM – 9:00 PM" }]
+
+// ─── Navigation ───────────────────────────────────────────────────────────────
 
 export const NAV_LINKS = [
   {
@@ -47,14 +53,11 @@ export const NAV_LINKS = [
           { label: 'San Pablo',     href: '/areas/san-pablo' },
           { label: 'Pinole',        href: '/areas/pinole' },
           { label: 'Hercules',      href: '/areas/hercules' },
-          { label: 'San Leandro',   href: '/areas/san-leandro' },
-          { label: 'Hayward',       href: '/areas/hayward' },
           { label: 'Alameda',       href: '/areas/alameda' },
-          { label: 'Castro Valley', href: '/areas/castro-valley' },
         ],
       },
       {
-        label: 'Contra Costa',
+        label: 'Tri-Valley & Walnut Creek Area',
         cities: [
           { label: 'Concord',       href: '/areas/concord' },
           { label: 'Walnut Creek',  href: '/areas/walnut-creek' },
@@ -69,20 +72,36 @@ export const NAV_LINKS = [
         ],
       },
       {
-        label: 'Peninsula & SF',
+        label: 'Fremont Area',
         cities: [
-          { label: 'San Francisco',      href: '/areas/san-francisco' },
-          { label: 'Daly City',          href: '/areas/daly-city' },
-          { label: 'South San Francisco',href: '/areas/south-san-francisco' },
-          { label: 'San Mateo',          href: '/areas/san-mateo' },
-          { label: 'Fremont',            href: '/areas/fremont' },
-          { label: 'Newark',             href: '/areas/newark' },
-          { label: 'Union City',         href: '/areas/union-city' },
+          { label: 'San Leandro',   href: '/areas/san-leandro' },
+          { label: 'Hayward',       href: '/areas/hayward' },
+          { label: 'Castro Valley', href: '/areas/castro-valley' },
+          { label: 'Fremont',       href: '/areas/fremont' },
+          { label: 'Newark',        href: '/areas/newark' },
+          { label: 'Union City',    href: '/areas/union-city' },
+        ],
+      },
+      {
+        label: 'San Francisco',
+        cities: [
+          { label: 'San Francisco', href: '/areas/san-francisco' },
+        ],
+      },
+      {
+        label: 'Peninsula',
+        cities: [
+          { label: 'Daly City',           href: '/areas/daly-city' },
+          { label: 'South San Francisco', href: '/areas/south-san-francisco' },
+          { label: 'San Mateo',           href: '/areas/san-mateo' },
+          { label: 'San Bruno',           href: '/areas/san-bruno' },
         ],
       },
     ],
   },
 ]
+
+// ─── Reviews ──────────────────────────────────────────────────────────────────
 
 export const REVIEWS = [
   {
@@ -143,12 +162,14 @@ export const REVIEWS = [
   },
 ]
 
-import localMovingImg from '@assets/services/local-moving.png'
-import packingServicesImg from '@assets/services/packing-services.png'
+// ─── Services ─────────────────────────────────────────────────────────────────
+
+import localMovingImg       from '@assets/services/local-moving.png'
+import packingServicesImg   from '@assets/services/packing-services.png'
 import residentialMovingImg from '@assets/services/residential-moving.png'
-import commercialMovingImg from '@assets/services/commercial-moving.png'
-import instateMovingImgImg from '@assets/services/instate-moving.png'
-import furnitureMovingImg from '@assets/services/furniture-moving.png'
+import commercialMovingImg  from '@assets/services/commercial-moving.png'
+import instateMovingImgImg  from '@assets/services/instate-moving.png'
+import furnitureMovingImg   from '@assets/services/furniture-moving.png'
 
 export const SERVICES = [
   {
@@ -193,7 +214,9 @@ export const SERVICES = [
     img: furnitureMovingImg,
     href: "/services/furniture",
   },
-];
+]
+
+// ─── Moving Areas — Hero/Footer quick links ───────────────────────────────────
 
 export const MOVING_AREAS = [
   { label: "San Francisco", href: "/areas/san-francisco" },
@@ -202,54 +225,69 @@ export const MOVING_AREAS = [
   { label: "Berkeley",      href: "/areas/berkeley" },
   { label: "Fremont",       href: "/areas/fremont" },
   { label: "Palo Alto",     href: "/areas/palo-alto" },
-];
+]
+
+// ─── Moving Areas — Accordion (Areas page) ────────────────────────────────────
 
 export const ACCORDION_AREAS = [
   {
     id: "east-bay",
     label: "East Bay",
     cities: [
-      { name: "Richmond", slug: "richmond", href: "/areas/richmond" },
-      { name: "Berkeley", slug: "berkeley", href: "/areas/berkeley" },
-      { name: "Oakland", slug: "oakland", href: "/areas/oakland" },
-      { name: "Albany", slug: "albany", href: "/areas/albany" },
-      { name: "El Cerrito", slug: "el-cerrito", href: "/areas/el-cerrito" },
-      { name: "San Pablo", slug: "san-pablo", href: "/areas/san-pablo" },
-      { name: "Pinole", slug: "pinole", href: "/areas/pinole" },
-      { name: "Hercules", slug: "hercules", href: "/areas/hercules" },
-      { name: "San Leandro", slug: "san-leandro", href: "/areas/san-leandro" },
-      { name: "Hayward", slug: "hayward", href: "/areas/hayward" },
-      { name: "Alameda", slug: "alameda", href: "/areas/alameda" },
-      { name: "Castro Valley", slug: "castro-valley", href: "/areas/castro-valley" },
+      { name: "Richmond",      slug: "richmond",      href: "/areas/richmond" },
+      { name: "Berkeley",      slug: "berkeley",      href: "/areas/berkeley" },
+      { name: "Oakland",       slug: "oakland",       href: "/areas/oakland" },
+      { name: "Albany",        slug: "albany",        href: "/areas/albany" },
+      { name: "El Cerrito",    slug: "el-cerrito",    href: "/areas/el-cerrito" },
+      { name: "San Pablo",     slug: "san-pablo",     href: "/areas/san-pablo" },
+      { name: "Pinole",        slug: "pinole",        href: "/areas/pinole" },
+      { name: "Hercules",      slug: "hercules",      href: "/areas/hercules" },
+      { name: "Alameda",       slug: "alameda",       href: "/areas/alameda" },
     ],
   },
   {
-    id: "contra-costa",
-    label: "Contra Costa",
+    id: "tri-valley",
+    label: "Tri-Valley & Walnut Creek Area",
     cities: [
-      { name: "Concord", slug: "concord", href: "/areas/concord" },
-      { name: "Walnut Creek", slug: "walnut-creek", href: "/areas/walnut-creek" },
+      { name: "Concord",       slug: "concord",       href: "/areas/concord" },
+      { name: "Walnut Creek",  slug: "walnut-creek",  href: "/areas/walnut-creek" },
       { name: "Pleasant Hill", slug: "pleasant-hill", href: "/areas/pleasant-hill" },
-      { name: "Martinez", slug: "martinez", href: "/areas/martinez" },
-      { name: "Lafayette", slug: "lafayette", href: "/areas/lafayette" },
-      { name: "Orinda", slug: "orinda", href: "/areas/orinda" },
-      { name: "Danville", slug: "danville", href: "/areas/danville" },
-      { name: "San Ramon", slug: "san-ramon", href: "/areas/san-ramon" },
-      { name: "Dublin", slug: "dublin", href: "/areas/dublin" },
-      { name: "Pleasanton", slug: "pleasanton", href: "/areas/pleasanton" },
+      { name: "Martinez",      slug: "martinez",      href: "/areas/martinez" },
+      { name: "Lafayette",     slug: "lafayette",     href: "/areas/lafayette" },
+      { name: "Orinda",        slug: "orinda",        href: "/areas/orinda" },
+      { name: "Danville",      slug: "danville",      href: "/areas/danville" },
+      { name: "San Ramon",     slug: "san-ramon",     href: "/areas/san-ramon" },
+      { name: "Dublin",        slug: "dublin",        href: "/areas/dublin" },
+      { name: "Pleasanton",    slug: "pleasanton",    href: "/areas/pleasanton" },
+    ],
+  },
+  {
+    id: "fremont-area",
+    label: "Fremont Area",
+    cities: [
+      { name: "San Leandro",   slug: "san-leandro",   href: "/areas/san-leandro" },
+      { name: "Hayward",       slug: "hayward",       href: "/areas/hayward" },
+      { name: "Castro Valley", slug: "castro-valley", href: "/areas/castro-valley" },
+      { name: "Fremont",       slug: "fremont",       href: "/areas/fremont" },
+      { name: "Newark",        slug: "newark",        href: "/areas/newark" },
+      { name: "Union City",    slug: "union-city",    href: "/areas/union-city" },
+    ],
+  },
+  {
+    id: "san-francisco",
+    label: "San Francisco",
+    cities: [
+      { name: "San Francisco", slug: "san-francisco", href: "/areas/san-francisco" },
     ],
   },
   {
     id: "peninsula",
-    label: "Peninsula & SF",
+    label: "Peninsula",
     cities: [
-      { name: "San Francisco", slug: "san-francisco", href: "/areas/san-francisco" },
-      { name: "Daly City", slug: "daly-city", href: "/areas/daly-city" },
+      { name: "Daly City",           slug: "daly-city",           href: "/areas/daly-city" },
       { name: "South San Francisco", slug: "south-san-francisco", href: "/areas/south-san-francisco" },
-      { name: "San Mateo", slug: "san-mateo", href: "/areas/san-mateo" },
-      { name: "Fremont", slug: "fremont", href: "/areas/fremont" },
-      { name: "Newark", slug: "newark", href: "/areas/newark" },
-      { name: "Union City", slug: "union-city", href: "/areas/union-city" },
+      { name: "San Mateo",           slug: "san-mateo",           href: "/areas/san-mateo" },
+      { name: "San Bruno",           slug: "san-bruno",           href: "/areas/san-bruno" },
     ],
   },
-];
+]
