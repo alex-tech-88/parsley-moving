@@ -10,6 +10,7 @@ import ScrollToTop from "@components/utils/ScrollToTop";
 import HomePage from "@/pages/HomePage";
 import AreaPage from "@/pages/AreaPage";
 import ServicePage from "@/pages/ServicePage";
+import FAQ from "@components/sections/FAQ";
 
 export default function App() {
   const { mode } = useTheme();
@@ -33,6 +34,7 @@ export default function App() {
             <Gallery />
             <Services />
             <MovingAreas />
+            <FAQ />
             <Footer />
 
           </main>
