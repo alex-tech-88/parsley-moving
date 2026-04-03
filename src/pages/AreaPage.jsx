@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { ACCORDION_AREAS, SERVICES, ABOUT_BY_CITY, getPhotoBySlug } from "@/constant";
 import Hero from "@components/sections/Hero";
 import AboutUs from "@components/sections/AboutUs";
+import AreaWhy from "@components/sections/AreaWhy";
+import AreaFAQ from "@components/sections/AreaFAQ";
 
 const defaultImage = SERVICES.find((s) => s.id === "local-moving")?.img;
 
@@ -41,6 +43,8 @@ export default function AreaPage() {
         text1={cityAbout.text1}
         text2={cityAbout.text2}
       />
+      <AreaWhy city={city.name} />
+     <AreaFAQ slug={slug} cityName={city.name} />
     </>
   );
 }
