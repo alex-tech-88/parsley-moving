@@ -9,7 +9,7 @@ export const faqItems = [
     id: 2,
     question: "What areas do you serve?",
     answer:
-      "Parsley Moving serves the greater metropolitan area and surrounding regions. Check our Moving Areas section for a full list of cities and neighborhoods we cover, or call us to confirm your location."
+      "Parsley Moving serves the San Francisco Bay Area — including the East Bay, Peninsula, Tri-Valley, and Walnut Creek regions. Check our Moving Areas section for a full list of cities we cover, or call us to confirm your location."
   },
   {
     id: 3,
@@ -27,12 +27,19 @@ export const faqItems = [
     id: 5,
     question: "How is the cost of my move calculated?",
     answer:
-      "Pricing is based on the volume of items, distance, any add-on services (packing, storage, specialty items), and date/time. Get a free, no-obligation quote through our contact form or by phone."
+      "We use a simple and transparent hourly pricing model — you only pay for the time the move actually takes. The total cost depends on the number of movers and hours required, including driving time. Our hourly rate is all-inclusive: moving blankets, shrink wrap, basic equipment, and standard furniture protection are all covered. No hidden fees, no extra charges for stairs, no surprise add-ons. Additional services like packing or long-distance moving are always discussed and agreed on in advance. We're happy to provide a clear estimate based on your move details so you know exactly what to expect."
   },
   {
     id: 6,
     question: "Can you move large or specialty items like pianos or safes?",
     answer:
       "Absolutely. Our crew is trained and equipped for specialty moves including pianos, safes, artwork, and antiques. Please mention these items when requesting a quote so we can plan accordingly."
+  },
+  {
+    id: 7,
+    question: "Are there any hidden fees with local moving?",
+    answer:
+      "No. Our pricing is always transparent. We provide upfront estimates that include labor, travel time, and any agreed-upon services"
   }
+
 ]
