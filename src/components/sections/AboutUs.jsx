@@ -12,6 +12,7 @@ export default function AboutUs({
   highlight = "Moving Experts",
   text1     = "At Parsley Moving, we provide a fresh approach to relocation, dedicated to making your move as smooth as possible. Our experienced team understands the challenges of relocating and offers reliable residential and commercial moving, packing, and unpacking services throughout the Bay Area at affordable prices.",
   text2     = "We guarantee the safety of your belongings, focusing on customer satisfaction by handling your items with care and ensuring timely delivery. Choose Parsley Moving, where every move is seasoned with care, for moves of any complexity and in any direction!",
+  text3     = null,
   img       = defaultAboutImg,
   location  = "Bay Area, CA",
 }) {
@@ -62,6 +63,11 @@ export default function AboutUs({
             <p className="text-base text-[#6b7280] dark:text-[#a0a0a0] leading-relaxed">
               {text2}
             </p>
+            {text3 && (
+              <p className="text-base text-[#6b7280] dark:text-[#a0a0a0] leading-relaxed">
+                {text3}
+              </p>
+            )}
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mt-2">
