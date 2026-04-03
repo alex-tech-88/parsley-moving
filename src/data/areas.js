@@ -133,3 +133,48 @@ export const AREA_PARKING_FAQ = {
   "san-mateo":           "Near downtown and in apartment-dense areas, street parking can be limited. Having a reserved spot near your building helps keep the move efficient and on schedule.",
   "san-bruno":           "In most areas parking is manageable, but near apartment buildings and busier streets it's worth planning ahead to avoid any delays on moving day.",
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Block 6 — Nearby cities keyed by slug (5 per city)
+// ─────────────────────────────────────────────────────────────────────────────
+export const AREA_NEARBY = {
+  // ── East Bay ──────────────────────────────────────────────────────────────
+  richmond:             ["berkeley", "el-cerrito", "san-pablo", "albany", "oakland"],
+  berkeley:             ["richmond", "albany", "el-cerrito", "oakland", "san-francisco"],
+  oakland:              ["berkeley", "alameda", "san-leandro", "san-francisco", "hayward"],
+  albany:               ["richmond", "berkeley", "el-cerrito", "san-pablo", "pinole"],
+  "el-cerrito":         ["richmond", "albany", "san-pablo", "berkeley", "pinole"],
+  "san-pablo":          ["richmond", "el-cerrito", "pinole", "hercules", "albany"],
+  pinole:               ["san-pablo", "hercules", "richmond", "el-cerrito", "concord"],
+  hercules:             ["pinole", "san-pablo", "richmond", "concord", "martinez"],
+  alameda:              ["oakland", "san-leandro", "san-francisco", "berkeley", "hayward"],
+
+  // ── Tri-Valley & Walnut Creek ─────────────────────────────────────────────
+  concord:              ["walnut-creek", "pleasant-hill", "martinez", "hercules", "lafayette"],
+  "walnut-creek":       ["concord", "pleasant-hill", "lafayette", "orinda", "danville"],
+  "pleasant-hill":      ["concord", "walnut-creek", "martinez", "lafayette", "danville"],
+  martinez:             ["concord", "pleasant-hill", "hercules", "walnut-creek", "pinole"],
+  lafayette:            ["walnut-creek", "orinda", "pleasant-hill", "concord", "danville"],
+  orinda:               ["lafayette", "walnut-creek", "berkeley", "concord", "danville"],
+  danville:             ["san-ramon", "pleasanton", "walnut-creek", "dublin", "lafayette"],
+  "san-ramon":          ["danville", "pleasanton", "dublin", "walnut-creek", "fremont"],
+  dublin:               ["san-ramon", "pleasanton", "fremont", "union-city", "hayward"],
+  pleasanton:           ["dublin", "san-ramon", "fremont", "union-city", "danville"],
+
+  // ── Fremont Area ──────────────────────────────────────────────────────────
+  "san-leandro":        ["oakland", "hayward", "alameda", "castro-valley", "fremont"],
+  hayward:              ["san-leandro", "castro-valley", "fremont", "union-city", "newark"],
+  "castro-valley":      ["hayward", "san-leandro", "oakland", "fremont", "dublin"],
+  fremont:              ["newark", "union-city", "hayward", "san-ramon", "dublin"],
+  newark:               ["fremont", "union-city", "hayward", "san-leandro", "pleasanton"],
+  "union-city":         ["fremont", "newark", "hayward", "san-leandro", "san-ramon"],
+
+  // ── San Francisco ─────────────────────────────────────────────────────────
+  "san-francisco":      ["daly-city", "oakland", "berkeley", "south-san-francisco", "alameda"],
+
+  // ── Peninsula ─────────────────────────────────────────────────────────────
+  "daly-city":            ["san-francisco", "south-san-francisco", "san-bruno", "san-mateo", "oakland"],
+  "south-san-francisco":  ["daly-city", "san-bruno", "san-mateo", "san-francisco", "san-leandro"],
+  "san-mateo":            ["south-san-francisco", "san-bruno", "daly-city", "san-francisco", "hayward"],
+  "san-bruno":            ["daly-city", "south-san-francisco", "san-mateo", "san-francisco", "san-leandro"],
+}

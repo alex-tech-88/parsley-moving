@@ -15,16 +15,40 @@ export function getPhotoBySlug(slug) {
 
 export const ABOUT_BY_CITY = {
   "san-francisco": {
+    intro1: "Looking for reliable movers in San Francisco, CA? Parsley Moving provides professional local and long-distance moving services in San Francisco and the surrounding Bay Area. We focus on efficient work, careful handling, and transparent pricing with no hidden fees.",
+    intro2: "Whether you're moving from an apartment, house, or storage unit in SF, our team is fully equipped to handle your move from start to finish — including elevator reservations, parking permits, and building requirements.",
     text1: "San Francisco moves come with unique challenges — steep hills, tight parking on narrow streets, and strict building elevator rules. Our crew works in SF regularly and knows how to navigate the city without delays.",
     text2: "Whether you're moving into a Victorian flat in the Mission or a high-rise in SoMa, we handle every detail so your move stays on schedule.",
+    text3: "We coordinate with building management, secure the necessary permits, and keep your belongings protected throughout every step of the move.",
+    expect: [
+      "San Francisco is one of the most logistically challenging cities to move in. Steep hills, one-way streets, and strict parking rules mean every move requires planning.",
+      "Many buildings require advance elevator reservations and designated loading zones. We handle this coordination so you don't have to.",
+      "Our crew is experienced with SF-specific requirements and keeps your move efficient regardless of the building type or neighborhood.",
+    ],
   },
   "oakland": {
+    intro1: "Looking for reliable movers in Oakland, CA? Parsley Moving provides professional local and long-distance moving services in Oakland and the surrounding East Bay. We focus on efficient work, careful handling, and transparent pricing with no hidden fees.",
+    intro2: "Whether you're relocating within Oakland or moving to a nearby city, our team is fully equipped to handle every aspect of your move with care and precision.",
     text1: "Oakland is one of our most active service areas. From the hills to the flatlands, we move families and businesses across every neighborhood in the city.",
     text2: "Our team knows Oakland's streets, parking restrictions, and building access requirements, so we plan your move accordingly and avoid surprises.",
+    text3: "We treat every Oakland move with the same level of professionalism — careful wrapping, reliable scheduling, and respectful communication throughout.",
+    expect: [
+      "Oakland neighborhoods vary significantly in access and layout — from hillside homes with steep driveways to flatland apartments with limited street parking.",
+      "Downtown buildings may require elevator reservations and loading zone coordination. Residential areas are generally more accessible but still require planning.",
+      "Our team assesses the specifics of your location in advance to make sure moving day runs smoothly and on schedule.",
+    ],
   },
   "berkeley": {
+    intro1: "Looking for reliable movers in Berkeley, CA? Parsley Moving provides professional local and long-distance moving services in Berkeley and the surrounding East Bay. We focus on efficient work, careful handling, and transparent pricing with no hidden fees.",
+    intro2: "Whether you're moving near the university or into a hillside home, our crew is experienced with Berkeley's unique layout and ready to handle your relocation from start to finish.",
     text1: "Berkeley moves often involve multi-story homes, tight driveways, and university housing with specific move-in windows. We work around all of it.",
     text2: "From the Berkeley Hills to the flatlands near the bay, our team handles local moves with the care and efficiency the area demands.",
+    text3: "We communicate clearly in advance, confirm all access requirements, and show up prepared — so there are no delays or surprises on moving day.",
+    expect: [
+      "Berkeley has a mix of student housing, historic homes, and hillside properties — each with its own access challenges.",
+      "University-adjacent buildings often have strict move-in windows and elevator restrictions. We coordinate ahead of time to fit your schedule.",
+      "Hillside properties may require additional planning for truck access and loading. Our team assesses this before arrival to keep things on track.",
+    ],
   },
 }
 
