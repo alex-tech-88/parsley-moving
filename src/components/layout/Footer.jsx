@@ -8,15 +8,12 @@ export default function Footer() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Handles area link clicks — scrolls to #areas and sets open accordion id
   const handleAreaClick = (e, area) => {
     e.preventDefault();
     if (location.pathname === "/") {
-      // Already on home — update state and scroll to section
       navigate("/", { state: { openAreaId: area.areaId }, replace: true });
       document.getElementById("areas")?.scrollIntoView({ behavior: "smooth" });
     } else {
-      // On another page — navigate home with state
       navigate("/", { state: { openAreaId: area.areaId } });
     }
   };
@@ -33,19 +30,19 @@ export default function Footer() {
         <div className="flex flex-col items-center sm:items-start sm:flex-row sm:flex-wrap justify-between gap-8 mb-10">
 
           {/* Logo + name */}
-          <div className="flex flex-col items-center gap-1 self-center">
+          <Link to="/" className="flex flex-col items-center gap-1 self-center">
             <img
               src="/favicon.svg"
               alt="Parsley Moving"
               className="w-15 h-15 lg:w-22 lg:h-22 object-contain"
             />
-            <span className="font-bold leading-none text-graphite dark:text-white flex flex-col items-center">
+            <span className="font-bold leading-none flex flex-col items-center">
               <span className="text-3xl" style={{ color: t.text.primary }}>
                 parsley
               </span>
               <span className="text-brand-green font-normal -mt-2">moving</span>
             </span>
-          </div>
+          </Link>
 
           {/* Services */}
           <div className="flex flex-col gap-3 items-center sm:items-start">
@@ -70,7 +67,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Moving Areas — each link opens the matching accordion group */}
+          {/* Moving Areas */}
           <div className="flex flex-col gap-3 items-center sm:items-start">
             <h4
               style={{ color: t.text.primary }}

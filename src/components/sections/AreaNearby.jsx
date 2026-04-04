@@ -21,21 +21,20 @@ export default function AreaNearby({ slug }) {
 
   return (
     <section style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-5xl mx-auto px-6 xl:px-10 text-center">
         <h2
           style={{ color: t.text.primary }}
           className="text-3xl md:text-4xl font-bold tracking-tight mb-6"
         >
           Areas We Also Serve Nearby
         </h2>
-        <ul className="flex flex-wrap gap-3">
+        <ul className="flex flex-wrap justify-center gap-3">
           {nearbyCities.map((city) => (
             <li key={city.slug}>
               <Link
                 to={city.href}
                 style={{ color: t.brand.primary, borderColor: t.brand.primary }}
-                className="inline-block px-4 py-2 rounded-full border text-sm font-medium
-                           transition-all duration-200 hover:text-white"
+                className="inline-block px-4 py-2 rounded-full border text-lg sm:text-xl sm:px-6 sm:py-3 font-medium transition-all duration-200"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = t.brand.primary
                   e.currentTarget.style.color = '#fff'

@@ -4,7 +4,7 @@ import { SERVICES } from '@/constant'
 import ServiceCard from '@components/ui/ServiceCard'
 import AccordionItem from '@components/ui/AccordionItem'
 
-export default function Services() {
+export default function Services({ cityName }) {
   const { t } = useTheme()
   const [openIndex, setOpenIndex] = useState(0)
 
@@ -27,9 +27,19 @@ export default function Services() {
             Services
           </span>
           <h2 className="text-3xl xl:text-4xl font-bold text-graphite dark:text-white mt-4 leading-tight">
-            What We
-            <br />
-            <span className="text-brand-green">Offer</span>
+            {cityName ? (
+              <>
+                What We Offer
+                <br />
+                <span className="text-brand-green">in {cityName}</span>
+              </>
+            ) : (
+              <>
+                What We
+                <br />
+                <span className="text-brand-green">Offer</span>
+              </>
+            )}
           </h2>
         </div>
 

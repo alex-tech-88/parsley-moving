@@ -6,7 +6,7 @@ export default function AreaExpect({ cityName, items, photos = [] }) {
   if (!items?.length) return null
 
   return (
-    <section style={{ backgroundColor: t.bg.section }} className="pt-6 pb-16 xl:pt-10 xl:pb-24">
+    <section style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24 xl:pt-24">
       <div className="max-w-7xl mx-auto px-6 xl:px-10">
         <div className="flex flex-col lg:flex-row items-stretch gap-12 xl:gap-20">
 

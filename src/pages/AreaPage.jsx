@@ -4,10 +4,10 @@ import Hero         from '@components/sections/Hero'
 // import AreaIntro    from '@components/sections/AreaIntro'
 import AboutUs      from '@components/sections/AboutUs'
 import AreaExpect   from '@components/sections/AreaExpect'
-import AreaServices from '@components/sections/AreaServices'
 import AreaWhy      from '@components/sections/AreaWhy'
 import AreaNearby   from '@components/sections/AreaNearby'
 import AreaFAQ      from '@components/sections/AreaFAQ'
+import Services from '@components/sections/Services'
 
 const defaultImage = SERVICES.find((s) => s.id === 'local-moving')?.img
 
@@ -74,7 +74,7 @@ export default function AreaPage() {
       />
 
       {/* Block 4 — Services */}
-      <AreaServices cityName={city.name} />
+      <Services  cityName={city.name} />
 
       {/* Block 5 — Why Choose */}
       <AreaWhy city={city.name} />
