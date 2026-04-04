@@ -2,9 +2,10 @@ import aboutImg1 from "@assets/about-us-1.webp"
 import aboutImg2 from "@assets/about-us-2.webp"
 import aboutImg3 from "@assets/about-us-3.webp"
 import aboutImg4 from "@assets/about-us-4.webp"
+import aboutImg5 from "@assets/about-us-5.webp"
 import packingImg from "@assets/packing.webp"
 
-export const ABOUT_PHOTOS = [aboutImg1, aboutImg2, aboutImg3, aboutImg4, packingImg]
+export const ABOUT_PHOTOS = [aboutImg1, aboutImg2, aboutImg3, aboutImg4, aboutImg5, packingImg]
 
 export function getPhotoBySlug(slug) {
   const index = slug

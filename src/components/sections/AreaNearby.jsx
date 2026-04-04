@@ -20,7 +20,7 @@ export default function AreaNearby({ slug }) {
   if (!nearbyCities.length) return null
 
   return (
-    <section className="py-16 px-4 md:px-8 xl:px-16">
+    <section style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24">
       <div className="max-w-3xl mx-auto">
         <h2
           style={{ color: t.text.primary }}

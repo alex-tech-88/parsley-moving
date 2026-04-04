@@ -9,7 +9,6 @@ export default function AreaFAQ({ slug, cityName }) {
 
   const parkingAnswer = AREA_PARKING_FAQ[slug]
 
-  // Guard: если slug не найден — не рендерим секцию
   if (!parkingAnswer) return null
 
   const faqItems = [
@@ -30,16 +29,28 @@ export default function AreaFAQ({ slug, cityName }) {
     },
   ]
 
-  return (
-    <section className="py-16 px-4 md:px-8 xl:px-16">
-      <div className="max-w-3xl mx-auto">
+  const handleToggle = (id) => {
+    setOpenId((prev) => (prev === id ? null : id))
+  }
 
+  return (
+    <section id="faq" style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 xl:px-10">
+        <span
+          style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
+          className="text-sm font-semibold px-4 py-1.5 rounded-full"
+        >
+          FAQ
+        </span>
         <h2
           style={{ color: t.text.primary }}
-          className="text-3xl md:text-4xl font-bold tracking-tight mb-8"
+          className="text-3xl xl:text-4xl font-bold text-graphite dark:text-white mt-4"
         >
           Frequently Asked Questions
         </h2>
+        <p style={{ color: t.text.secondary }} className="text-base mb-6">
+          Everything you need to know before your move.
+        </p>
 
         <div
           style={{ borderColor: t.border, backgroundColor: t.bg.card }}
@@ -52,13 +63,13 @@ export default function AreaFAQ({ slug, cityName }) {
               className="border-b last:border-b-0"
             >
               <button
-                onClick={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
-                className="w-full flex items-center justify-between py-4 text-left gap-3"
+                onClick={() => handleToggle(item.id)}
+                className="w-full flex items-center justify-between py-6 text-left gap-3"
                 aria-expanded={openId === item.id}
               >
                 <span
                   style={{ color: t.text.primary }}
-                  className="font-semibold text-lg tracking-wide"
+                  className="font-semibold text-xl tracking-wide"
                 >
                   {item.question}
                 </span>
@@ -77,7 +88,7 @@ export default function AreaFAQ({ slug, cityName }) {
               >
                 <p
                   style={{ color: t.text.secondary }}
-                  className="text-base leading-relaxed"
+                  className="text-lg leading-relaxed"
                 >
                   {item.answer}
                 </p>
@@ -85,7 +96,6 @@ export default function AreaFAQ({ slug, cityName }) {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   )

@@ -1,29 +1,59 @@
 import { useTheme } from '@context/useTheme'
 
-export default function AreaExpect({ cityName, items }) {
+export default function AreaExpect({ cityName, items, photos = [] }) {
   const { t } = useTheme()
 
   if (!items?.length) return null
 
   return (
-    <section className="py-16 px-4 md:px-8 xl:px-16">
-      <div className="max-w-3xl mx-auto">
-        <h2
-          style={{ color: t.text.primary }}
-          className="text-3xl md:text-4xl font-bold tracking-tight mb-6"
-        >
-          Moving in {cityName} – What to Expect
-        </h2>
-        <div className="flex flex-col gap-4">
-          {items.map((item, i) => (
-            <p
-              key={i}
-              style={{ color: t.text.secondary }}
-              className="text-base leading-relaxed"
-            >
-              {item}
-            </p>
-          ))}
+    <section style={{ backgroundColor: t.bg.section }} className="pt-6 pb-16 xl:pt-10 xl:pb-24">
+      <div className="max-w-7xl mx-auto px-6 xl:px-10">
+        <div className="flex flex-col lg:flex-row items-stretch gap-12 xl:gap-20">
+
+          {/* Left — text */}
+          <div className="w-full lg:w-1/2 flex flex-col gap-6">
+            <div>
+              <span
+                style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
+                className="text-sm font-semibold px-4 py-1.5 rounded-full"
+              >
+                What to Expect
+              </span>
+              <h2 className="text-3xl xl:text-4xl font-bold text-graphite dark:text-white mt-4 leading-tight">
+                Moving in{' '}
+                <span className="text-brand-green">{cityName}</span>
+              </h2>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {items.map((item, i) => (
+                <p
+                  key={i}
+                  style={{ color: t.text.secondary }}
+                  className="text-base xl:text-lg leading-relaxed"
+                >
+                  {item}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          {/* Right — 2 photos */}
+          <div className="w-full lg:w-1/2 shrink-0">
+            <div className="grid grid-cols-2 gap-3 h-full min-h-64">
+              {photos.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt={`Moving in ${cityName} ${i + 1}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover rounded-2xl shadow-xl"
+                />
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

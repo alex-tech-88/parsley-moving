@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
-import { ACCORDION_AREAS, SERVICES, ABOUT_BY_CITY, getPhotoBySlug } from '@/constant'
+import { ACCORDION_AREAS, SERVICES, ABOUT_BY_CITY, getPhotoBySlug, getExpectPhotosBySlug } from '@/constant'
 import Hero         from '@components/sections/Hero'
-import AreaIntro    from '@components/sections/AreaIntro'
+// import AreaIntro    from '@components/sections/AreaIntro'
 import AboutUs      from '@components/sections/AboutUs'
 import AreaExpect   from '@components/sections/AreaExpect'
 import AreaServices from '@components/sections/AreaServices'
@@ -27,6 +27,8 @@ export default function AreaPage() {
     )
   }
 
+  const expectPhotos = getExpectPhotosBySlug(slug)
+
   const cityData = ABOUT_BY_CITY[slug] ?? {
     intro1: `Looking for reliable movers in ${city.name}, CA? Parsley Moving provides professional local and long-distance moving services in ${city.name} and the surrounding Bay Area.`,
     intro2: `Whether you're moving from an apartment, house, or storage unit, our team is fully equipped to handle your move from start to finish.`,
@@ -42,16 +44,16 @@ export default function AreaPage() {
 
   return (
     <>
-      {/* Block 1 — Hero + Intro */}
+      {/* Block 1 — Hero */}
       <Hero
         title="Professional Moving"
         highlight={`in ${city.name}`}
         image={defaultImage}
       />
-      <AreaIntro
+      {/* <AreaIntro
         intro1={cityData.intro1}
         intro2={cityData.intro2}
-      />
+      /> */}
 
       {/* Block 2 — About */}
       <AboutUs
@@ -68,6 +70,7 @@ export default function AreaPage() {
       <AreaExpect
         cityName={city.name}
         items={cityData.expect}
+        photos={expectPhotos}
       />
 
       {/* Block 4 — Services */}

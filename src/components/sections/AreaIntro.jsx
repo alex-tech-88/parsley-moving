@@ -8,7 +8,7 @@ export default function AreaIntro({ intro1, intro2 }) {
   return (
     <section
       style={{ backgroundColor: t.bg.section }}
-      className="pt-0 pb-8 xl:pb-10"
+      className="pt-0 pb-16 xl:pb-24"
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10 flex flex-col gap-4">
         {intro1 && (
