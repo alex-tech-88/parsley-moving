@@ -1,14 +1,13 @@
 import { useTheme } from '@context/useTheme'
-import { PHONE } from '@/constant'
-import { PhoneIcon } from '@components/ui/icons' 
+import { PhoneIcon } from '@components/ui/icons'
+import { Link } from 'react-router-dom'
 
 export default function RequestCallButton({ onClick, className = '' }) {
   const { t, mode } = useTheme()
-  const telHref = `tel:${PHONE.replace(/\D/g, '')}`
 
   return (
-    <a
-      href={telHref}
+    <Link
+      to="/contact"
       onClick={onClick}
       style={{
         color: mode === 'light' ? '#3b3b3b' : '#f5f5f5',
@@ -21,6 +20,6 @@ export default function RequestCallButton({ onClick, className = '' }) {
     >
       <PhoneIcon className="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform duration-200 phone-ring" />
       REQUEST CALL
-    </a>
+    </Link>
   )
 }

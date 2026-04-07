@@ -28,7 +28,7 @@ export default function ServicePage() {
     <>
       <Hero
         title={service.title}
-        highlight="in the Bay Area"
+        highlight="in San Francisco"
         image={service.img}
       />
       <AboutUs

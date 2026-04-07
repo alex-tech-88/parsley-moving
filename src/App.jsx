@@ -11,11 +11,13 @@ import HomePage from "@/pages/HomePage";
 import AreaPage from "@/pages/AreaPage";
 import ServicePage from "@/pages/ServicePage";
 import FAQ from "@components/sections/FAQ";
+import ContactPage from "@/pages/ContactPage";
 
 function AppLayout() {
   const { mode } = useTheme();
 
-  const isAreaPage = useMatch("/areas/:slug");
+  const isAreaPage    = useMatch("/areas/:slug");
+  const isContactPage = useMatch("/contact");      
 
   return (
     <div className={mode}>
@@ -28,12 +30,17 @@ function AppLayout() {
             <Route path="/"               element={<HomePage />} />
             <Route path="/areas/:slug"    element={<AreaPage />} />
             <Route path="/services/:slug" element={<ServicePage />} />
+            <Route path="/contact"        element={<ContactPage />} />
           </Routes>
 
-          <Reviews />
-          <Gallery />
+          {!isContactPage && (
+            <>
+              <Reviews />
+              <Gallery />
+            </>
+          )}
 
-          {!isAreaPage && (
+          {!isAreaPage && !isContactPage && (
             <>
               <Services />
               <MovingAreas />
