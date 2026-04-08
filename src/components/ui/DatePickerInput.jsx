@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/style.css'
 
-export default function DatePickerInput({ value, onChange, hasError = false, label, required }) {
+export default function DatePickerInput({ value, onChange, hasError = false }) {
   const [open, setOpen] = useState(false)
   const wrapRef = useRef(null)
 

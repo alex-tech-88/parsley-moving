@@ -10,7 +10,7 @@ import { PHONE } from '@/constant'
 const initialState = { name: '', phone: '' }
 
 export default function ContactPage() {
-  const { t, mode } = useTheme()
+  const { t } = useTheme()
   const [form, setForm] = useState(initialState)
   const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'success' | 'error'
   const [errors, setErrors] = useState({})

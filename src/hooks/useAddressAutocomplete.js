@@ -28,7 +28,7 @@ export function useAddressAutocomplete() {
         const res  = await fetch(url)
         const data = await res.json()
         setSuggestions(data.features || [])
-      } catch (e) {
+      } catch {
         setSuggestions([])
       } finally {
         setLoading(false)
