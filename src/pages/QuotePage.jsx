@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useTheme } from '@context/useTheme'
 import DatePickerInput from '@components/ui/DatePickerInput'
 
-
 // 🔥 Uncomment when Firebase is connected:
 // import { db } from '@/firebase'
 // import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
@@ -23,6 +22,7 @@ export default function QuotePage() {
   const [step, setStep] = useState(1)
   const [status, setStatus] = useState('idle')
   const [errors, setErrors] = useState({})
+  const [touched, setTouched] = useState({})
 
   const [form, setForm] = useState({
     moveFrom: '', moveTo: '',
@@ -31,44 +31,124 @@ export default function QuotePage() {
     firstName: '', lastName: '', phone: '', email: '', heardFrom: '', notes: '',
   })
 
-  // Pre-fill from Hero search params
   useEffect(() => {
     const from = searchParams.get('from') || ''
     const to = searchParams.get('to') || ''
     setForm((p) => ({ ...p, moveFrom: from, moveTo: to }))
   }, [searchParams])
 
+  // ── Validators ────────────────────────────────────────
+
+  const validatePersonalField = (name, value) => {
+    const v = value.trim()
+
+    if (name === 'firstName') {
+      if (!v)                          return 'First name is required'
+      if (!/^[A-Za-z\s'-]+$/.test(v)) return 'Name can only contain letters (A–Z)'
+      if (v.length < 2)                return 'Name must be at least 2 characters'
+      if (v.length > 50)               return 'Name must be no longer than 50 characters'
+    }
+
+    if (name === 'lastName') {
+      if (!v)                          return 'Last name is required'
+      if (!/^[A-Za-z\s'-]+$/.test(v)) return 'Last name can only contain letters (A–Z)'
+      if (v.length < 2)                return 'Last name must be at least 2 characters'
+      if (v.length > 50)               return 'Last name must be no longer than 50 characters'
+    }
+
+    if (name === 'phone') {
+      if (!v)                               return 'Phone number is required'
+      if (!/^\+?[\d\s\-()]+$/.test(v))      return 'Only digits, spaces, +, - and () allowed'
+      if (v.replace(/\D/g, '').length < 7)  return 'Enter a valid phone number (min 7 digits)'
+      if (v.replace(/\D/g, '').length > 15) return 'Phone number is too long'
+    }
+
+    return ''
+  }
+
+  const validateAddressField = (name, value) => {
+    const v = value.trim()
+
+    if (name === 'moveFrom' || name === 'moveTo') {
+    if (!v)                                  return 'Address is required'
+    if (v.length < 5)                        return 'Please enter a full address'
+    if (v.length > 200)                      return 'Address is too long'
+    if (!/^[A-Za-z0-9\s,.\-#/()]+$/.test(v)) return 'Address can only contain letters (A–Z)'
+    if (!/\d/.test(v))                       return 'Address should include a street number'
+  }
+
+    return ''
+  }
+
+  const PERSONAL_FIELDS = ['firstName', 'lastName', 'phone']
+  const ADDRESS_FIELDS  = ['moveFrom', 'moveTo']  
+
   const set = (field, value) => {
     setForm((p) => ({ ...p, [field]: value }))
-    if (errors[field]) setErrors((p) => ({ ...p, [field]: '' }))
+    if (PERSONAL_FIELDS.includes(field)) {
+      if (touched[field]) {
+        setErrors((p) => ({ ...p, [field]: validatePersonalField(field, value) }))
+      }
+    } else if (ADDRESS_FIELDS.includes(field)) {  
+      if (touched[field]) {
+        setErrors((p) => ({ ...p, [field]: validateAddressField(field, value) }))
+      }
+    } else {
+      if (errors[field]) setErrors((p) => ({ ...p, [field]: '' }))
+    }
+  }
+
+  const handlePersonalBlur = (field) => {
+    setTouched((prev) => ({ ...prev, [field]: true }))
+    setErrors((prev) => ({
+      ...prev,
+      [field]: validatePersonalField(field, form[field]),
+    }))
+  }
+
+  const handleAddressBlur = (field) => {
+    setTouched((prev) => ({ ...prev, [field]: true }))
+    setErrors((prev) => ({
+      ...prev,
+      [field]: validateAddressField(field, form[field]),
+    }))
   }
 
   const validateStep = (s) => {
     const e = {}
     if (s === 1) {
-      if (!form.moveDate) e.moveDate = 'Required'
+      if (!form.moveDate)   e.moveDate   = 'Required'
       if (!form.pickupTime) e.pickupTime = 'Required'
-      if (!form.moveType) e.moveType = 'Required'
+      if (!form.moveType)   e.moveType   = 'Required'
     }
     if (s === 2) {
-      if (!form.moveFrom.trim()) e.moveFrom = 'Required'
+      const mfErr = validateAddressField('moveFrom', form.moveFrom)
+      const mtErr = validateAddressField('moveTo',   form.moveTo)
+      if (mfErr) e.moveFrom = mfErr
+      if (mtErr) e.moveTo   = mtErr
       if (!form.fromAccess) e.fromAccess = 'Required'
-      if (!form.moveTo.trim()) e.moveTo = 'Required'
-      if (!form.toAccess) e.toAccess = 'Required'
+      if (!form.toAccess)   e.toAccess   = 'Required'
     }
     if (s === 3) {
-      if (!form.firstName.trim()) e.firstName = 'Required'
-      if (!form.lastName.trim()) e.lastName = 'Required'
-      if (!form.phone.trim()) e.phone = 'Required'
-      else if (!/^\+?[\d\s\-()]{7,}$/.test(form.phone)) e.phone = 'Invalid phone number'
-      if (!form.email.trim()) e.email = 'Required'
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email'
+      const fnErr = validatePersonalField('firstName', form.firstName)
+      const lnErr = validatePersonalField('lastName',  form.lastName)
+      const phErr = validatePersonalField('phone',     form.phone)
+      if (fnErr) e.firstName = fnErr
+      if (lnErr) e.lastName  = lnErr
+      if (phErr) e.phone     = phErr
+
+      if (!form.email.trim())                                    e.email = 'Email is required'
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email address'
+
       if (!form.heardFrom) e.heardFrom = 'Required'
     }
     return e
   }
 
   const next = () => {
+    if (step === 2) {
+      setTouched((prev) => ({ ...prev, moveFrom: true, moveTo: true }))
+    }
     const e = validateStep(step)
     if (Object.keys(e).length) { setErrors(e); return }
     setErrors({})
@@ -84,6 +164,7 @@ export default function QuotePage() {
   }
 
   const handleSubmit = async () => {
+    setTouched({ firstName: true, lastName: true, phone: true, moveFrom: true, moveTo: true })
     const e = validateStep(3)
     if (Object.keys(e).length) { setErrors(e); return }
     setStatus('loading')
@@ -94,8 +175,9 @@ export default function QuotePage() {
       //   createdAt: serverTimestamp(),
       //   source: window.location.href,
       // })
-      await new Promise((r) => setTimeout(r, 1000)) // placeholder
+      await new Promise((r) => setTimeout(r, 1000))
       setStatus('success')
+      setTouched({})
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch {
       setStatus('idle')
@@ -145,16 +227,16 @@ export default function QuotePage() {
           type="button"
           onClick={() => set(field, opt)}
           className={`
-          w-full sm:w-auto
-          px-4 py-3 sm:py-2 rounded-xl border
-          text-sm sm:text-base font-medium
-          min-h-11 sm:min-h-0
-          transition-all duration-200
-          ${form[field] === opt
+            w-full sm:w-auto
+            px-4 py-3 sm:py-2 rounded-xl border
+            text-sm sm:text-base font-medium
+            min-h-11 sm:min-h-0
+            transition-all duration-200
+            ${form[field] === opt
               ? 'border-brand-green bg-brand-green/10 text-brand-green'
               : 'border-[#e5e7eb] dark:border-[#3a3a3a] text-[#6b7280] dark:text-[#a0a0a0] hover:border-brand-green hover:text-brand-green'
             }
-        `}
+          `}
         >
           {opt}
         </button>
@@ -201,8 +283,6 @@ export default function QuotePage() {
           <>
             {/* ── Progress header ── */}
             <div className="mb-10 sm:mb-14">
-
-              {/* Step label */}
               <p className="text-sm sm:text-base font-medium text-brand-green uppercase tracking-widest mb-1">
                 Step {step} of {STEPS.length}
               </p>
@@ -210,7 +290,6 @@ export default function QuotePage() {
                 {STEPS[step - 1]}
               </h1>
 
-              {/* Progress bar */}
               <div className="flex items-center gap-2 sm:gap-3">
                 {STEPS.map((label, i) => {
                   const s = i + 1
@@ -233,20 +312,18 @@ export default function QuotePage() {
                 })}
               </div>
 
-              {/* Step labels below bar */}
               <div className="hidden sm:flex justify-between mt-2">
                 {STEPS.map((label, i) => (
                   <span key={i}
                     className={`text-xs font-medium transition-colors duration-300 ${i + 1 <= step
                       ? 'text-brand-green'
                       : 'text-[#9ca3af] dark:text-[#6b6b6b]'
-                      }`}
+                    }`}
                   >
                     {label}
                   </span>
                 ))}
               </div>
-
             </div>
 
             {/* ── Step content ── */}
@@ -291,13 +368,11 @@ export default function QuotePage() {
                   </div>
                   <Err field="moveType" />
                 </div>
-
               </div>
             )}
 
             {step === 2 && (
               <div className="flex flex-col gap-7 sm:gap-8">
-
                 {/* Pick up */}
                 <div>
                   <h3 className="text-sm sm:text-base font-semibold text-brand-green uppercase tracking-wide mb-4">
@@ -309,6 +384,7 @@ export default function QuotePage() {
                       <input type="text" value={form.moveFrom}
                         placeholder="Enter full address with zip code"
                         onChange={(e) => set('moveFrom', e.target.value)}
+                        onBlur={() => handleAddressBlur('moveFrom')}
                         className={inputClass('moveFrom')} />
                       <p className="text-xs sm:text-sm text-[#9ca3af] mt-1.5">
                         *Please include the zip code
@@ -344,6 +420,7 @@ export default function QuotePage() {
                       <input type="text" value={form.moveTo}
                         placeholder="Enter full address with zip code"
                         onChange={(e) => set('moveTo', e.target.value)}
+                        onBlur={() => handleAddressBlur('moveTo')}
                         className={inputClass('moveTo')} />
                       <p className="text-xs sm:text-sm text-[#9ca3af] mt-1.5">
                         *Please include the zip code
@@ -365,7 +442,6 @@ export default function QuotePage() {
                     </div>
                   </div>
                 </div>
-
               </div>
             )}
 
@@ -376,6 +452,7 @@ export default function QuotePage() {
                     <Label text="First Name" required />
                     <input type="text" value={form.firstName} placeholder="First name"
                       onChange={(e) => set('firstName', e.target.value)}
+                      onBlur={() => handlePersonalBlur('firstName')}
                       className={inputClass('firstName')} />
                     <Err field="firstName" />
                   </div>
@@ -383,6 +460,7 @@ export default function QuotePage() {
                     <Label text="Last Name" required />
                     <input type="text" value={form.lastName} placeholder="Last name"
                       onChange={(e) => set('lastName', e.target.value)}
+                      onBlur={() => handlePersonalBlur('lastName')}
                       className={inputClass('lastName')} />
                     <Err field="lastName" />
                   </div>
@@ -392,6 +470,7 @@ export default function QuotePage() {
                   <Label text="Phone Number" required />
                   <input type="tel" value={form.phone} placeholder="+1 (555) 000-0000"
                     onChange={(e) => set('phone', e.target.value)}
+                    onBlur={() => handlePersonalBlur('phone')}
                     className={inputClass('phone')} />
                   <Err field="phone" />
                 </div>

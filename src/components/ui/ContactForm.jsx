@@ -4,10 +4,38 @@ import AddressInput from '@components/ui/AddressInput'
 import GetQuoteButton from '@components/ui/GetQuoteButton'
 import RequestCallButton from '@components/ui/RequestCallButton'
 
+// ── Validation ──────────────────────────────────
+const validateAddress = (value) => {
+  const v = value.trim()
+  if (!v)             return 'required'
+  if (v.length < 5)   return 'short'
+  if (v.length > 200) return 'long'
+  if (!/^[A-Za-z0-9\s,.\-#/()]+$/.test(v)) return 'latin'
+  if (!/\d/.test(v))  return 'number'
+  return ''
+}
+
+const ADDRESS_MESSAGES = {
+  from: {
+    required: 'Enter your pickup address',
+    short:    'Please enter a full address',
+    long:     'Address is too long',
+    latin:    'Address can only contain letters (A–Z)',
+    number:   'Address should include a street number',
+  },
+  to: {
+    required: 'Enter your drop-off address',
+    short:    'Please enter a full address',
+    long:     'Address is too long',
+    latin:    'Address can only contain letters (A–Z)',
+    number:   'Address should include a street number',
+  },
+}
+
 export default function ContactForm() {
-  const [form, setForm]         = useState({ from: '', to: '' })
-  const [hint, setHint]         = useState('')
-  const [showHint, setShowHint] = useState(false)
+  const [form, setForm]     = useState({ from: '', to: '' })
+  const [errors, setErrors] = useState({ from: '', to: '' })
+  const [touched, setTouched] = useState({ from: false, to: false })
   const navigate = useNavigate()
 
   const inputBase = `
@@ -18,32 +46,46 @@ export default function ContactForm() {
     focus:outline-none focus:border-brand-green dark:focus:border-brand-green
   `
 
-  const getInputClass = (field) => {
-    const hasError = showHint && (hint === 'both' || hint === field)
-    return `${inputBase} ${hasError
+  const getInputClass = (field) => `${inputBase} ${
+    errors[field]
       ? 'border-red-400 dark:border-red-400'
       : 'border-[#e5e7eb] dark:border-[#3a3a3a]'
-    }`
+  }`
+
+  const handleChange = (field, value) => {
+    setForm((p) => ({ ...p, [field]: value }))
+    if (touched[field]) {
+      setErrors((p) => ({ ...p, [field]: validateAddress(value) }))
+    }
+  }
+
+  const handleBlur = (field) => {
+    setTouched((p) => ({ ...p, [field]: true }))
+    setErrors((p) => ({ ...p, [field]: validateAddress(form[field]) }))
   }
 
   const handleGetQuote = () => {
-    const missingFrom = !form.from.trim()
-    const missingTo   = !form.to.trim()
+    setTouched({ from: true, to: true })
+    const fromErr = validateAddress(form.from)
+    const toErr   = validateAddress(form.to)
+    setErrors({ from: fromErr, to: toErr })
+    if (fromErr || toErr) return
 
-    if (missingFrom || missingTo) {
-      setHint(missingFrom && missingTo ? 'both' : missingFrom ? 'from' : 'to')
-      setShowHint(true)
-      setTimeout(() => setShowHint(false), 4000)
-      return
-    }
-
-    setShowHint(false)
     const params = new URLSearchParams({ from: form.from, to: form.to })
     navigate(`/quote?${params.toString()}`)
   }
 
-  const fromError = showHint && (hint === 'both' || hint === 'from')
-  const toError   = showHint && (hint === 'both' || hint === 'to')
+  const ErrMsg = ({ field }) => errors[field] ? (
+    <p className="text-xs text-red-400 flex items-center gap-1 pl-1">
+      <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="2.5">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      {ADDRESS_MESSAGES[field][errors[field]]}
+    </p>
+  ) : null
 
   return (
     <div className="w-full min-w-0">
@@ -63,58 +105,28 @@ export default function ContactForm() {
           <AddressInput
             name="from"
             value={form.from}
-            onChange={(e) => {
-              setForm((p) => ({ ...p, from: e.target.value }))
-              if (showHint) setShowHint(false)
-            }}
-            onSelect={(val) => {
-              setForm((p) => ({ ...p, from: val }))
-              if (showHint) setShowHint(false)
-            }}
+            onChange={(e) => handleChange('from', e.target.value)}
+            onSelect={(val) => handleChange('from', val)}
+            onBlur={() => handleBlur('from')}
             placeholder="Moving from address"
-            hasError={fromError}
+            hasError={!!errors.from}
             inputClassName={getInputClass('from')}
           />
-          {fromError && (
-            <p className="text-xs text-red-400 flex items-center gap-1 pl-1">
-              <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-              Enter your pickup address
-            </p>
-          )}
+          <ErrMsg field="from" />
         </div>
 
         <div className="flex flex-col gap-1">
           <AddressInput
             name="to"
             value={form.to}
-            onChange={(e) => {
-              setForm((p) => ({ ...p, to: e.target.value }))
-              if (showHint) setShowHint(false)
-            }}
-            onSelect={(val) => {
-              setForm((p) => ({ ...p, to: val }))
-              if (showHint) setShowHint(false)
-            }}
+            onChange={(e) => handleChange('to', e.target.value)}
+            onSelect={(val) => handleChange('to', val)}
+            onBlur={() => handleBlur('to')}
             placeholder="Moving to address"
-            hasError={toError}
+            hasError={!!errors.to}
             inputClassName={getInputClass('to')}
           />
-          {toError && (
-            <p className="text-xs text-red-400 flex items-center gap-1 pl-1">
-              <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-              Enter your drop-off address
-            </p>
-          )}
+          <ErrMsg field="to" />
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-1 sm:mt-2 gap-2 sm:gap-4">
@@ -128,12 +140,6 @@ export default function ContactForm() {
           </div>
           <RequestCallButton className="w-full sm:flex-1 text-sm sm:text-base" />
         </div>
-
-        {showHint && hint === 'both' && (
-          <p className="text-xs text-center text-[#6b7280] dark:text-[#a0a0a0] mt-1">
-            Please enter both pickup and drop-off addresses
-          </p>
-        )}
 
       </div>
     </div>
