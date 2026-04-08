@@ -6,10 +6,11 @@ export default function AddressInput({
   value,
   onChange,
   onSelect,
+  onBlur,
   placeholder = 'Enter address',
   className = '',
   inputClassName = '',
-  hasError = false,
+  hasError: _hasError = false,
 }) {
   const [open, setOpen]       = useState(false)
   const [focused, setFocused] = useState(false)
@@ -17,7 +18,6 @@ export default function AddressInput({
 
   const { suggestions, loading, fetchSuggestions, clear } = useAddressAutocomplete()
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) {
@@ -56,7 +56,7 @@ export default function AddressInput({
         value={value}
         onChange={handleChange}
         onFocus={() => { setFocused(true); if (value.length >= 3) setOpen(true) }}
-        onBlur={() => setFocused(false)}
+        onBlur={() => { setFocused(false); onBlur?.() }}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         autoComplete="off"
@@ -65,14 +65,12 @@ export default function AddressInput({
         aria-expanded={showDropdown}
       />
 
-      {/* Spinner inside input */}
       {loading && (
         <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
           <span className="w-4 h-4 border-2 border-brand-green/30 border-t-brand-green rounded-full animate-spin block" />
         </div>
       )}
 
-      {/* Dropdown */}
       {showDropdown && (
         <ul
           role="listbox"
@@ -96,7 +94,6 @@ export default function AddressInput({
                   transition-colors duration-150
                   border-b border-[#f3f4f6] dark:border-[#383838] last:border-0"
               >
-                {/* Pin icon */}
                 <svg className="w-4 h-4 mt-0.5 shrink-0 text-brand-green" viewBox="0 0 24 24"
                   fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>

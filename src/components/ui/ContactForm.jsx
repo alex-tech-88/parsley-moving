@@ -3,89 +3,52 @@ import { useNavigate } from 'react-router-dom'
 import AddressInput from '@components/ui/AddressInput'
 import GetQuoteButton from '@components/ui/GetQuoteButton'
 import RequestCallButton from '@components/ui/RequestCallButton'
-
-// ── Validation ──────────────────────────────────
-const validateAddress = (value) => {
-  const v = value.trim()
-  if (!v)             return 'required'
-  if (v.length < 5)   return 'short'
-  if (v.length > 200) return 'long'
-  if (!/^[A-Za-z0-9\s,.\-#/()]+$/.test(v)) return 'latin'
-  if (!/\d/.test(v))  return 'number'
-  return ''
-}
-
-const ADDRESS_MESSAGES = {
-  from: {
-    required: 'Enter your pickup address',
-    short:    'Please enter a full address',
-    long:     'Address is too long',
-    latin:    'Address can only contain letters (A–Z)',
-    number:   'Address should include a street number',
-  },
-  to: {
-    required: 'Enter your drop-off address',
-    short:    'Please enter a full address',
-    long:     'Address is too long',
-    latin:    'Address can only contain letters (A–Z)',
-    number:   'Address should include a street number',
-  },
-}
+import FormField from '@components/ui/FormField'
+import { getAddressError } from '@utils/validation'
 
 export default function ContactForm() {
-  const [form, setForm]     = useState({ from: '', to: '' })
-  const [errors, setErrors] = useState({ from: '', to: '' })
+  const [form,    setForm]    = useState({ from: '', to: '' })
+  const [errors,  setErrors]  = useState({ from: '', to: '' })
   const [touched, setTouched] = useState({ from: false, to: false })
   const navigate = useNavigate()
 
-  const inputBase = `
-    w-full px-3 py-3 sm:px-4 sm:py-4 rounded-xl border
-    text-sm sm:text-base transition-colors duration-200
-    bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white
-    placeholder:text-[#9ca3af] dark:placeholder:text-[#6b6b6b]
-    focus:outline-none focus:border-brand-green dark:focus:border-brand-green
-  `
+  const inputBase = [
+    'w-full px-3 py-3 sm:px-4 sm:py-4 rounded-xl border',
+    'text-sm sm:text-base transition-colors duration-200',
+    'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
+    'placeholder:text-[#9ca3af] dark:placeholder:text-[#6b6b6b]',
+    'focus:outline-none focus:border-brand-green dark:focus:border-brand-green',
+  ].join(' ')
 
-  const getInputClass = (field) => `${inputBase} ${
-    errors[field]
-      ? 'border-red-400 dark:border-red-400'
-      : 'border-[#e5e7eb] dark:border-[#3a3a3a]'
-  }`
+  const getInputClass = (field) =>
+    `${inputBase} ${
+      errors[field]
+        ? 'border-red-400 dark:border-red-400'
+        : 'border-[#e5e7eb] dark:border-[#3a3a3a]'
+    }`
 
   const handleChange = (field, value) => {
     setForm((p) => ({ ...p, [field]: value }))
     if (touched[field]) {
-      setErrors((p) => ({ ...p, [field]: validateAddress(value) }))
+      setErrors((p) => ({ ...p, [field]: getAddressError(value) }))
     }
   }
 
   const handleBlur = (field) => {
     setTouched((p) => ({ ...p, [field]: true }))
-    setErrors((p) => ({ ...p, [field]: validateAddress(form[field]) }))
+    setErrors((p) => ({ ...p, [field]: getAddressError(form[field]) }))
   }
 
   const handleGetQuote = () => {
     setTouched({ from: true, to: true })
-    const fromErr = validateAddress(form.from)
-    const toErr   = validateAddress(form.to)
+    const fromErr = getAddressError(form.from)
+    const toErr   = getAddressError(form.to)
     setErrors({ from: fromErr, to: toErr })
     if (fromErr || toErr) return
 
     const params = new URLSearchParams({ from: form.from, to: form.to })
     navigate(`/quote?${params.toString()}`)
   }
-
-  const ErrMsg = ({ field }) => errors[field] ? (
-    <p className="text-xs text-red-400 flex items-center gap-1 pl-1">
-      <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" strokeWidth="2.5">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="8" x2="12" y2="12"/>
-        <line x1="12" y1="16" x2="12.01" y2="16"/>
-      </svg>
-      {ADDRESS_MESSAGES[field][errors[field]]}
-    </p>
-  ) : null
 
   return (
     <div className="w-full min-w-0">
@@ -101,7 +64,7 @@ export default function ContactForm() {
 
       <div className="flex flex-col gap-2 sm:gap-3">
 
-        <div className="flex flex-col gap-1">
+        <FormField error={errors.from}>
           <AddressInput
             name="from"
             value={form.from}
@@ -112,10 +75,9 @@ export default function ContactForm() {
             hasError={!!errors.from}
             inputClassName={getInputClass('from')}
           />
-          <ErrMsg field="from" />
-        </div>
+        </FormField>
 
-        <div className="flex flex-col gap-1">
+        <FormField error={errors.to}>
           <AddressInput
             name="to"
             value={form.to}
@@ -126,8 +88,7 @@ export default function ContactForm() {
             hasError={!!errors.to}
             inputClassName={getInputClass('to')}
           />
-          <ErrMsg field="to" />
-        </div>
+        </FormField>
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-1 sm:mt-2 gap-2 sm:gap-4">
           <GetQuoteButton
