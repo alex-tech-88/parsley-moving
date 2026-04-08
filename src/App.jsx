@@ -12,12 +12,17 @@ import AreaPage from "@/pages/AreaPage";
 import ServicePage from "@/pages/ServicePage";
 import FAQ from "@components/sections/FAQ";
 import ContactPage from "@/pages/ContactPage";
+import QuotePage from "@/pages/QuotePage";
 
 function AppLayout() {
   const { mode } = useTheme();
 
   const isAreaPage    = useMatch("/areas/:slug");
-  const isContactPage = useMatch("/contact");      
+  const isContactPage = useMatch("/contact");
+  const isQuotePage   = useMatch("/quote");
+
+  // Hide sections on "clean" pages
+  const isCleanPage = isContactPage || isQuotePage;
 
   return (
     <div className={mode}>
@@ -31,16 +36,17 @@ function AppLayout() {
             <Route path="/areas/:slug"    element={<AreaPage />} />
             <Route path="/services/:slug" element={<ServicePage />} />
             <Route path="/contact"        element={<ContactPage />} />
+            <Route path="/quote"          element={<QuotePage />} />
           </Routes>
 
-          {!isContactPage && (
+          {!isCleanPage && (
             <>
               <Reviews />
               <Gallery />
             </>
           )}
 
-          {!isAreaPage && !isContactPage && (
+          {!isAreaPage && !isCleanPage && (
             <>
               <Services />
               <MovingAreas />
