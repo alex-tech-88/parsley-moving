@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useTheme } from '@context/useTheme'
+import DatePickerInput from '@components/ui/DatePickerInput'
+
 
 // 🔥 Uncomment when Firebase is connected:
 // import { db } from '@/firebase'
 // import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
-const MOVE_TYPES   = ['Local Move', 'Long Distance', 'Commercial', 'International']
+const MOVE_TYPES = ['Residential', 'Commercial', 'Special Event', 'Other']
 const ACCESS_TYPES = ['House / Ground floor', 'Apartment with elevator', 'Apartment with stairs', 'Storage unit', 'Office']
-const TIME_SLOTS   = ['Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible']
+const TIME_SLOTS = ['Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible']
 const HEAR_OPTIONS = ['Google', 'Yelp', 'Instagram / Facebook', 'Friend / Referral', 'Other']
 
 const STEPS = ['Moving Info', 'Addresses', 'Personal Info']
@@ -18,13 +20,13 @@ export default function QuotePage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
-  const [step,   setStep]   = useState(1)
+  const [step, setStep] = useState(1)
   const [status, setStatus] = useState('idle')
   const [errors, setErrors] = useState({})
 
   const [form, setForm] = useState({
     moveFrom: '', moveTo: '',
-    moveDate: '', pickupTime: '', moveType: '', needStorage: '',
+    moveDate: '', pickupTime: '', moveType: '',
     fromAccess: '', toAccess: '',
     firstName: '', lastName: '', phone: '', email: '', heardFrom: '', notes: '',
   })
@@ -32,7 +34,7 @@ export default function QuotePage() {
   // Pre-fill from Hero search params
   useEffect(() => {
     const from = searchParams.get('from') || ''
-    const to   = searchParams.get('to')   || ''
+    const to = searchParams.get('to') || ''
     setForm((p) => ({ ...p, moveFrom: from, moveTo: to }))
   }, [searchParams])
 
@@ -44,25 +46,24 @@ export default function QuotePage() {
   const validateStep = (s) => {
     const e = {}
     if (s === 1) {
-      if (!form.moveDate)    e.moveDate    = 'Required'
-      if (!form.pickupTime)  e.pickupTime  = 'Required'
-      if (!form.moveType)    e.moveType    = 'Required'
-      if (!form.needStorage) e.needStorage = 'Required'
+      if (!form.moveDate) e.moveDate = 'Required'
+      if (!form.pickupTime) e.pickupTime = 'Required'
+      if (!form.moveType) e.moveType = 'Required'
     }
     if (s === 2) {
-      if (!form.moveFrom.trim())   e.moveFrom   = 'Required'
-      if (!form.fromAccess)        e.fromAccess = 'Required'
-      if (!form.moveTo.trim())     e.moveTo     = 'Required'
-      if (!form.toAccess)          e.toAccess   = 'Required'
+      if (!form.moveFrom.trim()) e.moveFrom = 'Required'
+      if (!form.fromAccess) e.fromAccess = 'Required'
+      if (!form.moveTo.trim()) e.moveTo = 'Required'
+      if (!form.toAccess) e.toAccess = 'Required'
     }
     if (s === 3) {
-      if (!form.firstName.trim())  e.firstName = 'Required'
-      if (!form.lastName.trim())   e.lastName  = 'Required'
-      if (!form.phone.trim())      e.phone     = 'Required'
+      if (!form.firstName.trim()) e.firstName = 'Required'
+      if (!form.lastName.trim()) e.lastName = 'Required'
+      if (!form.phone.trim()) e.phone = 'Required'
       else if (!/^\+?[\d\s\-()]{7,}$/.test(form.phone)) e.phone = 'Invalid phone number'
-      if (!form.email.trim())      e.email     = 'Required'
+      if (!form.email.trim()) e.email = 'Required'
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email'
-      if (!form.heardFrom)         e.heardFrom = 'Required'
+      if (!form.heardFrom) e.heardFrom = 'Required'
     }
     return e
   }
@@ -132,21 +133,28 @@ export default function QuotePage() {
   const SelectArrow = () => (
     <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9ca3af] pointer-events-none"
       viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="6 9 12 15 18 9"/>
+      <polyline points="6 9 12 15 18 9" />
     </svg>
   )
 
   const PillGroup = ({ field, options }) => (
-    <div className="flex flex-wrap gap-2 mt-1">
+    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 mt-1">
       {options.map((opt) => (
-        <button key={opt} type="button" onClick={() => set(field, opt)}
+        <button
+          key={opt}
+          type="button"
+          onClick={() => set(field, opt)}
           className={`
-            px-4 py-2 rounded-xl border text-sm sm:text-base font-medium transition-all duration-200
-            ${form[field] === opt
+          w-full sm:w-auto
+          px-4 py-3 sm:py-2 rounded-xl border
+          text-sm sm:text-base font-medium
+          min-h-11 sm:min-h-0
+          transition-all duration-200
+          ${form[field] === opt
               ? 'border-brand-green bg-brand-green/10 text-brand-green'
               : 'border-[#e5e7eb] dark:border-[#3a3a3a] text-[#6b7280] dark:text-[#a0a0a0] hover:border-brand-green hover:text-brand-green'
             }
-          `}
+        `}
         >
           {opt}
         </button>
@@ -206,7 +214,7 @@ export default function QuotePage() {
               <div className="flex items-center gap-2 sm:gap-3">
                 {STEPS.map((label, i) => {
                   const s = i + 1
-                  const done    = s < step
+                  const done = s < step
                   const current = s === step
                   return (
                     <div key={s} className="flex items-center gap-2 sm:gap-3 flex-1">
@@ -229,11 +237,10 @@ export default function QuotePage() {
               <div className="hidden sm:flex justify-between mt-2">
                 {STEPS.map((label, i) => (
                   <span key={i}
-                    className={`text-xs font-medium transition-colors duration-300 ${
-                      i + 1 <= step
-                        ? 'text-brand-green'
-                        : 'text-[#9ca3af] dark:text-[#6b6b6b]'
-                    }`}
+                    className={`text-xs font-medium transition-colors duration-300 ${i + 1 <= step
+                      ? 'text-brand-green'
+                      : 'text-[#9ca3af] dark:text-[#6b6b6b]'
+                      }`}
                   >
                     {label}
                   </span>
@@ -249,10 +256,11 @@ export default function QuotePage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                   <div>
                     <Label text="Estimated move date" required />
-                    <input type="date" value={form.moveDate}
-                      onChange={(e) => set('moveDate', e.target.value)}
-                      min={new Date().toISOString().split('T')[0]}
-                      className={inputClass('moveDate')} />
+                    <DatePickerInput
+                      value={form.moveDate}
+                      onChange={(val) => set('moveDate', val)}
+                      hasError={!!errors.moveDate}
+                    />
                     <Err field="moveDate" />
                   </div>
                   <div>
@@ -272,15 +280,18 @@ export default function QuotePage() {
 
                 <div>
                   <Label text="Type of move" required />
-                  <PillGroup field="moveType" options={MOVE_TYPES} />
+                  <div className="relative">
+                    <select value={form.moveType}
+                      onChange={(e) => set('moveType', e.target.value)}
+                      className={selectClass('moveType')}>
+                      <option value="">Choose an option</option>
+                      {MOVE_TYPES.map((s) => <option key={s}>{s}</option>)}
+                    </select>
+                    <SelectArrow />
+                  </div>
                   <Err field="moveType" />
                 </div>
 
-                <div>
-                  <Label text="Do you require storage services?" required />
-                  <PillGroup field="needStorage" options={['Yes', 'No']} />
-                  <Err field="needStorage" />
-                </div>
               </div>
             )}
 
@@ -430,7 +441,7 @@ export default function QuotePage() {
                   transition-all duration-200"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <polyline points="15 18 9 12 15 6"/>
+                  <polyline points="15 18 9 12 15 6" />
                 </svg>
                 {step === 1 ? 'Cancel' : 'Back'}
               </button>
@@ -445,7 +456,7 @@ export default function QuotePage() {
                 >
                   Continue
                   <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="9 18 15 12 9 6"/>
+                    <polyline points="9 18 15 12 9 6" />
                   </svg>
                 </button>
               ) : (
@@ -467,7 +478,7 @@ export default function QuotePage() {
                     <>
                       Submit Request
                       <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <polyline points="9 18 15 12 9 6"/>
+                        <polyline points="9 18 15 12 9 6" />
                       </svg>
                     </>
                   )}
