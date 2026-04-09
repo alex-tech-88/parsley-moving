@@ -11,45 +11,44 @@ import {
   validateEmail,
 } from '@utils/validation'
 
-// 🔥 Uncomment when Firebase is connected:
-// import { db } from '@/firebase'
-// import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { db } from '@/firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
-const MOVE_TYPES   = ['Residential', 'Commercial', 'Special Event', 'Other']
+const MOVE_TYPES = ['Residential', 'Commercial', 'Special Event', 'Other']
 const ACCESS_TYPES = ['House / Ground floor', 'Apartment with elevator', 'Apartment with stairs', 'Storage unit', 'Office']
-const TIME_SLOTS   = ['Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible']
+const TIME_SLOTS = ['Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible']
 const HEAR_OPTIONS = ['Google', 'Yelp', 'Instagram / Facebook', 'Friend / Referral', 'Other']
 
 const STEPS = ['Moving Info', 'Addresses', 'Personal Info']
 
 const PERSONAL_FIELDS = ['firstName', 'lastName', 'phone']
-const ADDRESS_FIELDS  = ['moveFrom', 'moveTo']
+const ADDRESS_FIELDS = ['moveFrom', 'moveTo']
 
 export default function QuotePage() {
   const { t } = useTheme()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
-  const [step,    setStep]    = useState(1)
-  const [status,  setStatus]  = useState('idle')
-  const [errors,  setErrors]  = useState({})
+  const [step, setStep] = useState(1)
+  const [status, setStatus] = useState('idle')
+  const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState({})
 
   const [form, setForm] = useState(() => ({
-  moveFrom:    searchParams.get('from') || '',
-  moveTo:      searchParams.get('to')   || '',
-  moveDate:    '',
-  pickupTime:  '',
-  moveType:    '',
-  fromAccess:  '',
-  toAccess:    '',
-  firstName:   '',
-  lastName:    '',
-  phone:       '',
-  email:       '',
-  heardFrom:   '',
-  notes:       '',
-}))
+    moveFrom: searchParams.get('from') || '',
+    moveTo: searchParams.get('to') || '',
+    moveDate: '',
+    pickupTime: '',
+    moveType: '',
+    fromAccess: '',
+    toAccess: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    heardFrom: '',
+    notes: '',
+  }))
 
   // ── Field change handler ──────────────────────────────────────────
 
@@ -73,9 +72,9 @@ export default function QuotePage() {
   const handleBlur = (field) => {
     setTouched((p) => ({ ...p, [field]: true }))
     let msg = ''
-    if (PERSONAL_FIELDS.includes(field))     msg = validatePersonal(field, form[field])
+    if (PERSONAL_FIELDS.includes(field)) msg = validatePersonal(field, form[field])
     else if (ADDRESS_FIELDS.includes(field)) msg = getAddressError(form[field])
-    else if (field === 'email')              msg = validateEmail(form[field])
+    else if (field === 'email') msg = validateEmail(form[field])
     setErrors((p) => ({ ...p, [field]: msg }))
   }
 
@@ -84,28 +83,28 @@ export default function QuotePage() {
   const validateStep = (s) => {
     const e = {}
     if (s === 1) {
-      if (!form.moveDate)   e.moveDate   = 'Required'
+      if (!form.moveDate) e.moveDate = 'Required'
       if (!form.pickupTime) e.pickupTime = 'Required'
-      if (!form.moveType)   e.moveType   = 'Required'
+      if (!form.moveType) e.moveType = 'Required'
     }
     if (s === 2) {
       const mfErr = getAddressError(form.moveFrom)
       const mtErr = getAddressError(form.moveTo)
       if (mfErr) e.moveFrom = mfErr
-      if (mtErr) e.moveTo   = mtErr
+      if (mtErr) e.moveTo = mtErr
       if (!form.fromAccess) e.fromAccess = 'Required'
-      if (!form.toAccess)   e.toAccess   = 'Required'
+      if (!form.toAccess) e.toAccess = 'Required'
     }
     if (s === 3) {
       const fnErr = validatePersonal('firstName', form.firstName)
-      const lnErr = validatePersonal('lastName',  form.lastName)
-      const phErr = validatePersonal('phone',     form.phone)
+      const lnErr = validatePersonal('lastName', form.lastName)
+      const phErr = validatePersonal('phone', form.phone)
       const emErr = validateEmail(form.email)
       if (fnErr) e.firstName = fnErr
-      if (lnErr) e.lastName  = lnErr
-      if (phErr) e.phone     = phErr
-      if (emErr) e.email     = emErr
-      if (!form.heardFrom)   e.heardFrom = 'Required'
+      if (lnErr) e.lastName = lnErr
+      if (phErr) e.phone = phErr
+      if (emErr) e.email = emErr
+      if (!form.heardFrom) e.heardFrom = 'Required'
     }
     return e
   }
@@ -136,12 +135,11 @@ export default function QuotePage() {
     if (Object.keys(e).length) { setErrors(e); return }
     setStatus('loading')
     try {
-      // 🔥 Uncomment when Firebase is connected:
-      // await addDoc(collection(db, 'quoteRequests'), {
-      //   ...form,
-      //   createdAt: serverTimestamp(),
-      //   source: window.location.href,
-      // })
+      await addDoc(collection(db, 'quoteRequests'), {
+        ...form,
+        createdAt: serverTimestamp(),
+        source: window.location.href,
+      })
       await new Promise((r) => setTimeout(r, 1000))
       setStatus('success')
       setTouched({})
@@ -224,8 +222,8 @@ export default function QuotePage() {
 
               <div className="flex items-center gap-2 sm:gap-3">
                 {STEPS.map((label, i) => {
-                  const s       = i + 1
-                  const done    = s < step
+                  const s = i + 1
+                  const done = s < step
                   const current = s === step
                   return (
                     <div key={s} className="flex items-center gap-2 sm:gap-3 flex-1">

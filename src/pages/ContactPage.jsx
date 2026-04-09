@@ -3,9 +3,8 @@ import { useTheme } from '@context/useTheme'
 import { PhoneIcon } from '@components/ui/icons'
 import { PHONE } from '@/constant'
 
-// 🔥 Uncomment when Firebase is connected:
-// import { db } from '@/firebase'
-// import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { db } from '@/firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const initialState = { name: '', phone: '' }
 
@@ -20,16 +19,16 @@ export default function ContactPage() {
     const v = value.trim()
 
     if (name === 'name') {
-      if (!v)                               return 'First name is required'
-      if (!/^[A-Za-z\s'-]+$/.test(v))      return 'Name can only contain letters (A–Z)'
-      if (v.length < 2)                     return 'Name must be at least 2 characters'
-      if (v.length > 50)                    return 'Name must be no longer than 50 characters'
+      if (!v) return 'First name is required'
+      if (!/^[A-Za-z\s'-]+$/.test(v)) return 'Name can only contain letters (A–Z)'
+      if (v.length < 2) return 'Name must be at least 2 characters'
+      if (v.length > 50) return 'Name must be no longer than 50 characters'
     }
 
     if (name === 'phone') {
-      if (!v)                               return 'Phone number is required'
-      if (!/^\+?[\d\s\-()]+$/.test(v))     return 'Only digits, spaces, +, - and () allowed'
-      if (v.replace(/\D/g, '').length < 7)  return 'Enter a valid phone number (min 7 digits)'
+      if (!v) return 'Phone number is required'
+      if (!/^\+?[\d\s\-()]+$/.test(v)) return 'Only digits, spaces, +, - and () allowed'
+      if (v.replace(/\D/g, '').length < 7) return 'Enter a valid phone number (min 7 digits)'
       if (v.replace(/\D/g, '').length > 15) return 'Phone number is too long'
     }
 
@@ -37,7 +36,7 @@ export default function ContactPage() {
   }
 
   const validate = () => ({
-    name:  validateField('name',  form.name),
+    name: validateField('name', form.name),
     phone: validateField('phone', form.phone),
   })
 
@@ -66,12 +65,11 @@ export default function ContactPage() {
 
     setStatus('loading')
     try {
-      // 🔥 Uncomment when Firebase is connected:
-      // await addDoc(collection(db, 'callRequests'), {
-      //   ...form,
-      //   createdAt: serverTimestamp(),
-      //   source: window.location.href,
-      // })
+      await addDoc(collection(db, 'callRequests'), {
+        ...form,
+        createdAt: serverTimestamp(),
+        source: window.location.href,
+      })
 
       await new Promise((resolve) => setTimeout(resolve, 1000)) // placeholder until Firebase is connected
       setStatus('success')
