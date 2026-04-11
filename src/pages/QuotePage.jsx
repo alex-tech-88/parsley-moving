@@ -11,17 +11,16 @@ import {
   validateNotes,
 } from '@utils/validation'
 import { PHONE } from '@/constant'
+import { AddressAutofill } from '@mapbox/search-js-react'
 
 import { db } from '@/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const MOVE_TYPES = ['Residential', 'Commercial', 'Special Event', 'Other']
 const ACCESS_TYPES = [
-  'House / Ground floor',
-  'Apartment with elevator',
-  'Apartment with stairs',
-  'Storage unit',
-  'Office',
+  'Elevator',
+  'Walk up',
+  'Ground floor',
 ]
 const TIME_SLOTS = [
   'Morning (8am–12pm)',
@@ -35,6 +34,8 @@ const STEPS = ['Moving Info', 'Addresses', 'Personal Info']
 
 const PERSONAL_FIELDS = ['firstName', 'lastName', 'phone']
 const ADDRESS_FIELDS = ['moveFrom', 'moveTo']
+
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
 
 export default function QuotePage() {
   const { t } = useTheme()
@@ -92,6 +93,23 @@ export default function QuotePage() {
     else if (field === 'notes') msg = validateNotes(form[field])
 
     setErrors((p) => ({ ...p, [field]: msg }))
+  }
+
+  const handleAddressRetrieve = (field) => (res) => {
+    const feature = res?.features?.[0]
+    const props = feature?.properties || {}
+    const full =
+      props.full_address ||
+      feature?.place_name ||
+      feature?.properties?.name ||
+      ''
+
+    if (!full) return
+
+    setForm((p) => ({ ...p, [field]: full }))
+    setTouched((p) => ({ ...p, [field]: true }))
+    setErrors((p) => ({ ...p, [field]: getAddressError(full) }))
+    if (status === 'error') setStatus('idle')
   }
 
   const validateStep = (s) => {
@@ -367,7 +385,10 @@ export default function QuotePage() {
             )}
 
             {step === 2 && (
-              <div className="flex flex-col gap-7 sm:gap-8">
+              <form
+                onSubmit={(e) => e.preventDefault()}
+                className="flex flex-col gap-7 sm:gap-8"
+              >
                 <div>
                   <h3 className="text-sm sm:text-base font-semibold text-brand-green uppercase tracking-wide mb-4">
                     Pick Up Address
@@ -380,14 +401,21 @@ export default function QuotePage() {
                       error={errors.moveFrom}
                       hint="*Please include the zip code"
                     >
-                      <input
-                        type="text"
-                        value={form.moveFrom}
-                        placeholder="Enter full address with zip code"
-                        onChange={(e) => set('moveFrom', e.target.value)}
-                        onBlur={() => handleBlur('moveFrom')}
-                        className={inputClass('moveFrom')}
-                      />
+                      <AddressAutofill
+                        accessToken={MAPBOX_TOKEN}
+                        onRetrieve={handleAddressRetrieve('moveFrom')}
+                      >
+                        <input
+                          type="text"
+                          value={form.moveFrom}
+                          name="moveFrom"
+                          autoComplete="section-pickup shipping address-line1"
+                          placeholder="Enter full address with zip code"
+                          onChange={(e) => set('moveFrom', e.target.value)}
+                          onBlur={() => handleBlur('moveFrom')}
+                          className={inputClass('moveFrom')}
+                        />
+                      </AddressAutofill>
                     </FormField>
 
                     <FormField label="Type of access" required error={errors.fromAccess}>
@@ -422,14 +450,21 @@ export default function QuotePage() {
                       error={errors.moveTo}
                       hint="*Please include the zip code"
                     >
-                      <input
-                        type="text"
-                        value={form.moveTo}
-                        placeholder="Enter full address with zip code"
-                        onChange={(e) => set('moveTo', e.target.value)}
-                        onBlur={() => handleBlur('moveTo')}
-                        className={inputClass('moveTo')}
-                      />
+                      <AddressAutofill
+                        accessToken={MAPBOX_TOKEN}
+                        onRetrieve={handleAddressRetrieve('moveTo')}
+                      >
+                        <input
+                          type="text"
+                          value={form.moveTo}
+                          name="moveTo"
+                          autoComplete="section-dropoff shipping address-line1"
+                          placeholder="Enter full address with zip code"
+                          onChange={(e) => set('moveTo', e.target.value)}
+                          onBlur={() => handleBlur('moveTo')}
+                          className={inputClass('moveTo')}
+                        />
+                      </AddressAutofill>
                     </FormField>
 
                     <FormField label="Type of access" required error={errors.toAccess}>
@@ -449,7 +484,7 @@ export default function QuotePage() {
                     </FormField>
                   </div>
                 </div>
-              </div>
+              </form>
             )}
 
             {step === 3 && (

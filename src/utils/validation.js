@@ -76,7 +76,7 @@ export const validateEmail = (value) => {
   if (v.length > 200) return 'Email address is too long'
 
   if (/[<>"'`]|&#/.test(v))    return 'Email contains invalid characters'
-  if (/[^\x00-\x7F]/.test(v))  return 'Email must contain only standard characters'
+  if (/[^\x20-\x7F]/.test(v))  return 'Email must contain only standard characters'
 
   const parts = v.split('@')
   if (parts.length !== 2) return 'Please enter a valid email address'
