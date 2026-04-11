@@ -122,6 +122,7 @@ export default function Hero({
             <MobileCard t={t}>
               <ContactForm />
             </MobileCard>
+    
           </div>
 
         </div>

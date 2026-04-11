@@ -2,12 +2,20 @@ import { useState, useRef, useEffect } from 'react'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/style.css'
 
+
 export default function DatePickerInput({ value, onChange, hasError = false }) {
   const [open, setOpen] = useState(false)
   const wrapRef = useRef(null)
 
-  // Parse string → Date for DayPicker
-  const selected = value ? new Date(value + 'T00:00:00') : undefined
+
+  // Parse MM/DD/YYYY → Date for DayPicker (no timezone shift)
+  const selected = (() => {
+    if (!value) return undefined
+    const [m, d, y] = value.split('/')
+    if (!m || !d || !y) return undefined
+    return new Date(Number(y), Number(m) - 1, Number(d))
+  })()
+
 
   // Close on outside click
   useEffect(() => {
@@ -18,23 +26,30 @@ export default function DatePickerInput({ value, onChange, hasError = false }) {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+
   const handleSelect = (date) => {
     if (!date) return
-    // Convert back to YYYY-MM-DD string
-    const iso = date.toLocaleDateString('en-CA') // en-CA = YYYY-MM-DD
-    onChange(iso)
+    // Store as MM/DD/YYYY with leading zeros — matches firestore.rules validDateStr
+    const mm   = String(date.getMonth() + 1).padStart(2, '0')
+    const dd   = String(date.getDate()).padStart(2, '0')
+    const yyyy = date.getFullYear()
+    onChange(`${mm}/${dd}/${yyyy}`)
     setOpen(false)
   }
+
 
   const displayValue = selected
     ? selected.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : ''
 
+
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 
+
   return (
     <div ref={wrapRef} className="relative">
+
 
       {/* Trigger input */}
       <button
@@ -58,6 +73,7 @@ export default function DatePickerInput({ value, onChange, hasError = false }) {
           {displayValue || 'Select move date'}
         </span>
 
+
         {/* Calendar icon */}
         <svg className={`w-5 h-5 shrink-0 transition-colors ${open ? 'text-brand-green' : 'text-[#9ca3af]'}`}
           viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -67,6 +83,7 @@ export default function DatePickerInput({ value, onChange, hasError = false }) {
           <line x1="3" y1="10" x2="21" y2="10"/>
         </svg>
       </button>
+
 
       {/* Calendar dropdown */}
       {open && (

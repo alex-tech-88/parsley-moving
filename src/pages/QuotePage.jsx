@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useTheme } from '@context/useTheme'
 import DatePickerInput from '@components/ui/DatePickerInput'
 import FormField from '@components/ui/FormField'
@@ -17,11 +18,7 @@ import { db } from '@/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const MOVE_TYPES = ['Residential', 'Commercial', 'Special Event', 'Other']
-const ACCESS_TYPES = [
-  'Elevator',
-  'Walk up',
-  'Ground floor',
-]
+const ACCESS_TYPES = ['Elevator', 'Walk up', 'Ground floor']
 const TIME_SLOTS = [
   'Morning (8am–12pm)',
   'Afternoon (12pm–5pm)',
@@ -41,6 +38,7 @@ export default function QuotePage() {
   const { t } = useTheme()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { executeRecaptcha } = useGoogleReCaptcha()
 
   const [step, setStep] = useState(1)
   const [status, setStatus] = useState('idle')
@@ -190,9 +188,16 @@ export default function QuotePage() {
       return
     }
 
+    if (!executeRecaptcha) {
+      setStatus('error')
+      return
+    }
+
     setStatus('loading')
 
     try {
+      await executeRecaptcha('submit_quote')
+
       await addDoc(collection(db, 'quoteRequests'), {
         ...form,
         moveFrom: form.moveFrom.trim(),
@@ -659,6 +664,30 @@ export default function QuotePage() {
                 </button>
               )}
             </div>
+
+            {/* reCAPTCHA disclaimer */}
+            {step === 3 && (
+              <p className="text-[11px] text-center text-[#9ca3af] dark:text-[#6b6b6b] mt-4 leading-relaxed">
+                Protected by reCAPTCHA —{' '}
+                <a
+                  href="https://policies.google.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-brand-green transition-colors duration-200"
+                >
+                  Privacy Policy
+                </a>{' '}
+                &{' '}
+                <a
+                  href="https://policies.google.com/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-brand-green transition-colors duration-200"
+                >
+                  Terms of Service
+                </a>
+              </p>
+            )}
           </>
         )}
       </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { useTheme } from '@context/useTheme'
 import { PhoneIcon } from '@components/ui/icons'
 import { PHONE } from '@/constant'
@@ -11,8 +12,10 @@ const initialState = { name: '', phone: '' }
 
 export default function ContactPage() {
   const { t } = useTheme()
+  const { executeRecaptcha } = useGoogleReCaptcha()
+
   const [form, setForm] = useState(initialState)
-  const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'success' | 'error'
+  const [status, setStatus] = useState('idle')
   const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState({})
 
@@ -55,9 +58,16 @@ export default function ContactPage() {
       return
     }
 
+    if (!executeRecaptcha) {
+      setStatus('error')
+      return
+    }
+
     setStatus('loading')
 
     try {
+      await executeRecaptcha('request_call')
+
       await addDoc(collection(db, 'callRequests'), {
         name: form.name.trim(),
         phone: form.phone.trim(),
@@ -274,6 +284,27 @@ export default function ContactPage() {
                   )}
                 </button>
               </div>
+
+              <p className="text-[11px] text-center text-[#9ca3af] dark:text-[#6b6b6b] mt-4">
+                Protected by reCAPTCHA —{' '}
+                <a
+                  href="https://policies.google.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-brand-green transition-colors duration-200"
+                >
+                  Privacy Policy
+                </a>{' '}
+                &{' '}
+                <a
+                  href="https://policies.google.com/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-brand-green transition-colors duration-200"
+                >
+                  Terms of Service
+                </a>
+              </p>
             </form>
           </div>
         )}
