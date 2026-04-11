@@ -4,19 +4,31 @@ import { useTheme } from '@context/useTheme'
 import DatePickerInput from '@components/ui/DatePickerInput'
 import FormField from '@components/ui/FormField'
 import SelectArrow from '@components/ui/SelectArrow'
-import PillGroup from '@components/ui/PillGroup'
 import {
   getAddressError,
   validatePersonal,
   validateEmail,
+  validateNotes,
 } from '@utils/validation'
+import { PHONE } from '@/constant'
 
 import { db } from '@/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const MOVE_TYPES = ['Residential', 'Commercial', 'Special Event', 'Other']
-const ACCESS_TYPES = ['House / Ground floor', 'Apartment with elevator', 'Apartment with stairs', 'Storage unit', 'Office']
-const TIME_SLOTS = ['Morning (8am–12pm)', 'Afternoon (12pm–5pm)', 'Evening (5pm–8pm)', 'Flexible']
+const ACCESS_TYPES = [
+  'House / Ground floor',
+  'Apartment with elevator',
+  'Apartment with stairs',
+  'Storage unit',
+  'Office',
+]
+const TIME_SLOTS = [
+  'Morning (8am–12pm)',
+  'Afternoon (12pm–5pm)',
+  'Evening (5pm–8pm)',
+  'Flexible',
+]
 const HEAR_OPTIONS = ['Google', 'Yelp', 'Instagram / Facebook', 'Friend / Referral', 'Other']
 
 const STEPS = ['Moving Info', 'Addresses', 'Personal Info']
@@ -50,10 +62,10 @@ export default function QuotePage() {
     notes: '',
   }))
 
-  // ── Field change handler ──────────────────────────────────────────
-
   const set = (field, value) => {
     setForm((p) => ({ ...p, [field]: value }))
+
+    if (status === 'error') setStatus('idle')
     if (!touched[field]) return
 
     if (PERSONAL_FIELDS.includes(field)) {
@@ -62,61 +74,74 @@ export default function QuotePage() {
       setErrors((p) => ({ ...p, [field]: getAddressError(value) }))
     } else if (field === 'email') {
       setErrors((p) => ({ ...p, email: validateEmail(value) }))
+    } else if (field === 'notes') {
+      setErrors((p) => ({ ...p, notes: validateNotes(value) }))
     } else {
       if (errors[field]) setErrors((p) => ({ ...p, [field]: '' }))
     }
   }
 
-  // ── Universal blur handler ────────────────────────────────────────
-
   const handleBlur = (field) => {
     setTouched((p) => ({ ...p, [field]: true }))
+
     let msg = ''
+
     if (PERSONAL_FIELDS.includes(field)) msg = validatePersonal(field, form[field])
     else if (ADDRESS_FIELDS.includes(field)) msg = getAddressError(form[field])
     else if (field === 'email') msg = validateEmail(form[field])
+    else if (field === 'notes') msg = validateNotes(form[field])
+
     setErrors((p) => ({ ...p, [field]: msg }))
   }
 
-  // ── Step validation ───────────────────────────────────────────────
-
   const validateStep = (s) => {
     const e = {}
+
     if (s === 1) {
       if (!form.moveDate) e.moveDate = 'Required'
       if (!form.pickupTime) e.pickupTime = 'Required'
       if (!form.moveType) e.moveType = 'Required'
     }
+
     if (s === 2) {
       const mfErr = getAddressError(form.moveFrom)
       const mtErr = getAddressError(form.moveTo)
+
       if (mfErr) e.moveFrom = mfErr
       if (mtErr) e.moveTo = mtErr
       if (!form.fromAccess) e.fromAccess = 'Required'
       if (!form.toAccess) e.toAccess = 'Required'
     }
+
     if (s === 3) {
       const fnErr = validatePersonal('firstName', form.firstName)
       const lnErr = validatePersonal('lastName', form.lastName)
       const phErr = validatePersonal('phone', form.phone)
       const emErr = validateEmail(form.email)
+      const ntErr = validateNotes(form.notes)
+
       if (fnErr) e.firstName = fnErr
       if (lnErr) e.lastName = lnErr
       if (phErr) e.phone = phErr
       if (emErr) e.email = emErr
+      if (ntErr) e.notes = ntErr
       if (!form.heardFrom) e.heardFrom = 'Required'
     }
+
     return e
   }
-
-  // ── Navigation ────────────────────────────────────────────────────
 
   const next = () => {
     if (step === 2) {
       setTouched((p) => ({ ...p, moveFrom: true, moveTo: true }))
     }
+
     const e = validateStep(step)
-    if (Object.keys(e).length) { setErrors(e); return }
+    if (Object.keys(e).length) {
+      setErrors(e)
+      return
+    }
+
     setErrors({})
     window.scrollTo({ top: 0, behavior: 'smooth' })
     setStep((s) => s + 1)
@@ -125,50 +150,73 @@ export default function QuotePage() {
   const back = () => {
     setErrors({})
     window.scrollTo({ top: 0, behavior: 'smooth' })
+
     if (step === 1) navigate(-1)
     else setStep((s) => s - 1)
   }
 
   const handleSubmit = async () => {
-    setTouched({ firstName: true, lastName: true, phone: true, email: true, moveFrom: true, moveTo: true })
+    setTouched({
+      firstName: true,
+      lastName: true,
+      phone: true,
+      email: true,
+      moveFrom: true,
+      moveTo: true,
+      notes: true,
+    })
+
     const e = validateStep(3)
-    if (Object.keys(e).length) { setErrors(e); return }
+    if (Object.keys(e).length) {
+      setErrors(e)
+      return
+    }
+
     setStatus('loading')
+
     try {
       await addDoc(collection(db, 'quoteRequests'), {
         ...form,
+        moveFrom: form.moveFrom.trim(),
+        moveTo: form.moveTo.trim(),
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        notes: form.notes.trim(),
+        heardFrom: form.heardFrom.trim(),
         createdAt: serverTimestamp(),
         source: window.location.href,
       })
-      await new Promise((r) => setTimeout(r, 1000))
+
       setStatus('success')
+      setErrors({})
       setTouched({})
       window.scrollTo({ top: 0, behavior: 'smooth' })
-    } catch {
-      setStatus('idle')
+    } catch (err) {
+      console.error(err)
+      setStatus('error')
     }
   }
 
-  // ── Shared style helpers ──────────────────────────────────────────
+  const inputClass = (field) =>
+    [
+      'w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border',
+      'text-sm sm:text-base lg:text-lg outline-none',
+      'transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green',
+      'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
+      'placeholder:text-[#9ca3af] dark:placeholder:text-[#6b6b6b]',
+      errors[field] ? 'border-red-400' : 'border-[#e5e7eb] dark:border-[#3a3a3a]',
+    ].join(' ')
 
-  const inputClass = (field) => [
-    'w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border',
-    'text-sm sm:text-base lg:text-lg outline-none',
-    'transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green',
-    'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
-    'placeholder:text-[#9ca3af] dark:placeholder:text-[#6b6b6b]',
-    errors[field] ? 'border-red-400' : 'border-[#e5e7eb] dark:border-[#3a3a3a]',
-  ].join(' ')
-
-  const selectClass = (field) => [
-    'w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border',
-    'text-sm sm:text-base lg:text-lg outline-none appearance-none cursor-pointer',
-    'transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green',
-    'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
-    errors[field] ? 'border-red-400' : 'border-[#e5e7eb] dark:border-[#3a3a3a]',
-  ].join(' ')
-
-  // ── Render ────────────────────────────────────────────────────────
+  const selectClass = (field) =>
+    [
+      'w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border',
+      'text-sm sm:text-base lg:text-lg outline-none appearance-none cursor-pointer',
+      'transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green',
+      'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
+      errors[field] ? 'border-red-400' : 'border-[#e5e7eb] dark:border-[#3a3a3a]',
+    ].join(' ')
 
   return (
     <section
@@ -176,10 +224,7 @@ export default function QuotePage() {
       style={{ backgroundColor: t.bg.section }}
     >
       <div className="w-full max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
-
         {status === 'success' ? (
-
-          // ── Success state ──────────────────────────────────────────
           <div className="text-center">
             <div
               className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full flex items-center justify-center mx-auto mb-8"
@@ -187,20 +232,30 @@ export default function QuotePage() {
             >
               <svg
                 className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 text-brand-green"
-                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-                strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
               >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
+
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-graphite dark:text-white mb-4">
               Quote Request Sent!
             </h2>
+
             <p className="text-base sm:text-lg lg:text-xl leading-relaxed mb-10 mx-auto max-w-lg text-[#6b7280] dark:text-[#a0a0a0]">
               Thank you,{' '}
-              <span className="font-semibold text-graphite dark:text-white">{form.firstName}</span>!
-              {' '}We'll review your move details and get back to you shortly.
+              <span className="font-semibold text-graphite dark:text-white">
+                {form.firstName}
+              </span>
+              ! We&apos;ll review your move details and get back to you shortly.
             </p>
+
             <button
               onClick={() => navigate('/')}
               className="text-sm sm:text-base underline text-[#6b7280] dark:text-[#a0a0a0]"
@@ -208,14 +263,13 @@ export default function QuotePage() {
               Back to Home
             </button>
           </div>
-
         ) : (
           <>
-            {/* ── Progress header ───────────────────────────────────── */}
             <div className="mb-10 sm:mb-14">
               <p className="text-sm sm:text-base font-medium text-brand-green uppercase tracking-widest mb-1">
                 Step {step} of {STEPS.length}
               </p>
+
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-graphite dark:text-white mb-6">
                 {STEPS[step - 1]}
               </h1>
@@ -225,17 +279,24 @@ export default function QuotePage() {
                   const s = i + 1
                   const done = s < step
                   const current = s === step
+
                   return (
                     <div key={s} className="flex items-center gap-2 sm:gap-3 flex-1">
-                      <div className={[
-                        'h-1.5 sm:h-2 rounded-full flex-1 transition-all duration-500',
-                        done || current ? 'bg-brand-green' : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
-                      ].join(' ')} />
+                      <div
+                        className={[
+                          'h-1.5 sm:h-2 rounded-full flex-1 transition-all duration-500',
+                          done || current
+                            ? 'bg-brand-green'
+                            : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
+                        ].join(' ')}
+                      />
                       {i < STEPS.length - 1 && (
-                        <div className={[
-                          'h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full shrink-0 transition-all duration-500',
-                          done ? 'bg-brand-green' : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
-                        ].join(' ')} />
+                        <div
+                          className={[
+                            'h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full shrink-0 transition-all duration-500',
+                            done ? 'bg-brand-green' : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
+                          ].join(' ')}
+                        />
                       )}
                     </div>
                   )
@@ -248,7 +309,9 @@ export default function QuotePage() {
                     key={i}
                     className={[
                       'text-xs font-medium transition-colors duration-300',
-                      i + 1 <= step ? 'text-brand-green' : 'text-[#9ca3af] dark:text-[#6b6b6b]',
+                      i + 1 <= step
+                        ? 'text-brand-green'
+                        : 'text-[#9ca3af] dark:text-[#6b6b6b]',
                     ].join(' ')}
                   >
                     {label}
@@ -257,7 +320,6 @@ export default function QuotePage() {
               </div>
             </div>
 
-            {/* ── Step 1: Moving Info ───────────────────────────────── */}
             {step === 1 && (
               <div className="flex flex-col gap-7 sm:gap-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -277,7 +339,9 @@ export default function QuotePage() {
                         className={selectClass('pickupTime')}
                       >
                         <option value="">Choose an option</option>
-                        {TIME_SLOTS.map((s) => <option key={s}>{s}</option>)}
+                        {TIME_SLOTS.map((s) => (
+                          <option key={s}>{s}</option>
+                        ))}
                       </select>
                       <SelectArrow />
                     </div>
@@ -292,7 +356,9 @@ export default function QuotePage() {
                       className={selectClass('moveType')}
                     >
                       <option value="">Choose an option</option>
-                      {MOVE_TYPES.map((s) => <option key={s}>{s}</option>)}
+                      {MOVE_TYPES.map((s) => (
+                        <option key={s}>{s}</option>
+                      ))}
                     </select>
                     <SelectArrow />
                   </div>
@@ -300,14 +366,13 @@ export default function QuotePage() {
               </div>
             )}
 
-            {/* ── Step 2: Addresses ─────────────────────────────────── */}
             {step === 2 && (
               <div className="flex flex-col gap-7 sm:gap-8">
-
                 <div>
                   <h3 className="text-sm sm:text-base font-semibold text-brand-green uppercase tracking-wide mb-4">
                     Pick Up Address
                   </h3>
+
                   <div className="flex flex-col gap-5">
                     <FormField
                       label="Address"
@@ -333,7 +398,9 @@ export default function QuotePage() {
                           className={selectClass('fromAccess')}
                         >
                           <option value="">Choose an option</option>
-                          {ACCESS_TYPES.map((a) => <option key={a}>{a}</option>)}
+                          {ACCESS_TYPES.map((a) => (
+                            <option key={a}>{a}</option>
+                          ))}
                         </select>
                         <SelectArrow />
                       </div>
@@ -347,6 +414,7 @@ export default function QuotePage() {
                   <h3 className="text-sm sm:text-base font-semibold text-brand-green uppercase tracking-wide mb-4">
                     Drop Off Address
                   </h3>
+
                   <div className="flex flex-col gap-5">
                     <FormField
                       label="Address"
@@ -372,18 +440,18 @@ export default function QuotePage() {
                           className={selectClass('toAccess')}
                         >
                           <option value="">Choose an option</option>
-                          {ACCESS_TYPES.map((a) => <option key={a}>{a}</option>)}
+                          {ACCESS_TYPES.map((a) => (
+                            <option key={a}>{a}</option>
+                          ))}
                         </select>
                         <SelectArrow />
                       </div>
                     </FormField>
                   </div>
                 </div>
-
               </div>
             )}
 
-            {/* ── Step 3: Personal Info ─────────────────────────────── */}
             {step === 3 && (
               <div className="flex flex-col gap-6 sm:gap-7">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -446,18 +514,21 @@ export default function QuotePage() {
                       className={selectClass('heardFrom')}
                     >
                       <option value="">Choose an option</option>
-                      {HEAR_OPTIONS.map((o) => <option key={o}>{o}</option>)}
+                      {HEAR_OPTIONS.map((o) => (
+                        <option key={o}>{o}</option>
+                      ))}
                     </select>
                     <SelectArrow />
                   </div>
                 </FormField>
 
-                <FormField label="Additional information">
+                <FormField label="Additional information" error={errors.notes}>
                   <textarea
                     rows={4}
                     value={form.notes}
                     placeholder="Any details about your move — special items, floor numbers, etc."
                     onChange={(e) => set('notes', e.target.value)}
+                    onBlur={() => handleBlur('notes')}
                     style={{ resize: 'vertical' }}
                     className={inputClass('notes')}
                   />
@@ -465,7 +536,15 @@ export default function QuotePage() {
               </div>
             )}
 
-            {/* ── Navigation buttons ────────────────────────────────── */}
+            {status === 'error' && (
+              <p className="text-sm sm:text-base text-red-400 text-center mt-8 mb-2">
+                Something went wrong. Please try again or call us at{' '}
+                <a href={`tel:${PHONE.replace(/\D/g, '')}`} className="underline">
+                  {PHONE}
+                </a>
+              </p>
+            )}
+
             <div className="flex items-center justify-between mt-10 sm:mt-12">
               <button
                 onClick={back}
@@ -476,7 +555,14 @@ export default function QuotePage() {
                   hover:border-brand-green hover:text-brand-green
                   transition-all duration-200"
               >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  aria-hidden="true"
+                >
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
                 {step === 1 ? 'Cancel' : 'Back'}
@@ -491,7 +577,14 @@ export default function QuotePage() {
                   style={{ backgroundColor: t.brand.primary }}
                 >
                   Continue
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    aria-hidden="true"
+                  >
                     <polyline points="9 18 15 12 9 6" />
                   </svg>
                 </button>
@@ -507,13 +600,23 @@ export default function QuotePage() {
                 >
                   {status === 'loading' ? (
                     <>
-                      <span className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
+                      <span
+                        className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                        aria-hidden="true"
+                      />
                       Submitting...
                     </>
                   ) : (
                     <>
                       Submit Request
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        aria-hidden="true"
+                      >
                         <polyline points="9 18 15 12 9 6" />
                       </svg>
                     </>
@@ -523,7 +626,6 @@ export default function QuotePage() {
             </div>
           </>
         )}
-
       </div>
     </section>
   )

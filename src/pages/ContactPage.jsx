@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTheme } from '@context/useTheme'
 import { PhoneIcon } from '@components/ui/icons'
 import { PHONE } from '@/constant'
+import { validatePersonal } from '@utils/validation'
 
 import { db } from '@/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
@@ -16,22 +17,8 @@ export default function ContactPage() {
   const [touched, setTouched] = useState({})
 
   const validateField = (name, value) => {
-    const v = value.trim()
-
-    if (name === 'name') {
-      if (!v) return 'First name is required'
-      if (!/^[A-Za-z\s'-]+$/.test(v)) return 'Name can only contain letters (A–Z)'
-      if (v.length < 2) return 'Name must be at least 2 characters'
-      if (v.length > 50) return 'Name must be no longer than 50 characters'
-    }
-
-    if (name === 'phone') {
-      if (!v) return 'Phone number is required'
-      if (!/^\+?[\d\s\-()]+$/.test(v)) return 'Only digits, spaces, +, - and () allowed'
-      if (v.replace(/\D/g, '').length < 7) return 'Enter a valid phone number (min 7 digits)'
-      if (v.replace(/\D/g, '').length > 15) return 'Phone number is too long'
-    }
-
+    if (name === 'name') return validatePersonal('firstName', value)
+    if (name === 'phone') return validatePersonal('phone', value)
     return ''
   }
 
@@ -43,6 +30,9 @@ export default function ContactPage() {
   const handleChange = (e) => {
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: value }))
+
+    if (status === 'error') setStatus('idle')
+
     if (touched[name]) {
       setErrors((prev) => ({ ...prev, [name]: validateField(name, value) }))
     }
@@ -56,24 +46,28 @@ export default function ContactPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     setTouched({ name: true, phone: true })
     const validationErrors = validate()
+
     if (Object.values(validationErrors).some(Boolean)) {
       setErrors(validationErrors)
       return
     }
 
     setStatus('loading')
+
     try {
       await addDoc(collection(db, 'callRequests'), {
-        ...form,
+        name: form.name.trim(),
+        phone: form.phone.trim(),
         createdAt: serverTimestamp(),
         source: window.location.href,
       })
 
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // placeholder until Firebase is connected
       setStatus('success')
       setForm(initialState)
+      setErrors({})
       setTouched({})
     } catch (err) {
       console.error(err)
@@ -93,9 +87,7 @@ export default function ContactPage() {
       style={{ backgroundColor: t.bg.section }}
     >
       <div className="w-full max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
-
         {status === 'success' ? (
-          /* ── Success state ── */
           <div
             className="rounded-2xl border p-10 sm:p-16 lg:p-20 text-center"
             style={{ backgroundColor: t.bg.card, borderColor: t.border, boxShadow: t.shadow }}
@@ -106,8 +98,13 @@ export default function ContactPage() {
             >
               <svg
                 className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 text-brand-green"
-                viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
               >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
@@ -119,13 +116,14 @@ export default function ContactPage() {
             >
               Request Sent!
             </h2>
+
             <p
               className="text-base sm:text-lg lg:text-xl leading-relaxed mb-8 sm:mb-10"
               style={{ color: t.text.secondary }}
             >
               Thank you! Your call-back request has been received.{' '}
               <span className="font-semibold text-brand-green">Please wait for our call.</span>{' '}
-              We'll reach you shortly.
+              We&apos;ll reach you shortly.
             </p>
 
             <a
@@ -146,14 +144,11 @@ export default function ContactPage() {
               </button>
             </div>
           </div>
-
         ) : (
-          /* ── Form ── */
           <div
             className="rounded-2xl border p-8 sm:p-12 lg:p-16"
             style={{ backgroundColor: t.bg.card, borderColor: t.border, boxShadow: t.shadow }}
           >
-            {/* Heading */}
             <div className="text-center mb-10 sm:mb-12">
               <p className="text-lg sm:text-2xl lg:text-3xl font-medium leading-snug">
                 <span className="text-brand-green font-bold">
@@ -167,8 +162,6 @@ export default function ContactPage() {
 
             <form onSubmit={handleSubmit} noValidate>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7 lg:gap-8 mb-7 sm:mb-9">
-
-                {/* First name */}
                 <div className="flex flex-col gap-1.5 sm:gap-2">
                   <label
                     htmlFor="name"
@@ -177,22 +170,29 @@ export default function ContactPage() {
                   >
                     First name: <span className="text-brand-green">*</span>
                   </label>
+
                   <input
-                    id="name" type="text" name="name"
+                    id="name"
+                    type="text"
+                    name="name"
                     value={form.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    style={{ ...inputStyle, borderColor: touched.name && errors.name ? '#ef4444' : t.border }}
+                    autoComplete="given-name"
+                    style={{
+                      ...inputStyle,
+                      borderColor: touched.name && errors.name ? '#ef4444' : t.border,
+                    }}
                     className="w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border
                       text-sm sm:text-base lg:text-lg outline-none
                       transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green"
                   />
+
                   {touched.name && errors.name && (
                     <p className="text-xs sm:text-sm text-red-400">{errors.name}</p>
                   )}
                 </div>
 
-                {/* Phone number */}
                 <div className="flex flex-col gap-1.5 sm:gap-2">
                   <label
                     htmlFor="phone"
@@ -201,32 +201,40 @@ export default function ContactPage() {
                   >
                     Phone number: <span className="text-brand-green">*</span>
                   </label>
+
                   <input
-                    id="phone" type="tel" name="phone"
+                    id="phone"
+                    type="tel"
+                    name="phone"
                     value={form.phone}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    style={{ ...inputStyle, borderColor: touched.phone && errors.phone ? '#ef4444' : t.border }}
+                    autoComplete="tel"
+                    inputMode="tel"
+                    style={{
+                      ...inputStyle,
+                      borderColor: touched.phone && errors.phone ? '#ef4444' : t.border,
+                    }}
                     className="w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border
                       text-sm sm:text-base lg:text-lg outline-none
                       transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green"
                   />
+
                   {touched.phone && errors.phone && (
                     <p className="text-xs sm:text-sm text-red-400">{errors.phone}</p>
                   )}
                 </div>
-
               </div>
 
-              {/* Error banner */}
               {status === 'error' && (
                 <p className="text-sm sm:text-base text-red-400 text-center mb-4 sm:mb-6">
                   Something went wrong. Please call us at{' '}
-                  <a href={`tel:${PHONE.replace(/\D/g, '')}`} className="underline">{PHONE}</a>
+                  <a href={`tel:${PHONE.replace(/\D/g, '')}`} className="underline">
+                    {PHONE}
+                  </a>
                 </p>
               )}
 
-              {/* Submit button */}
               <div className="flex justify-center">
                 <button
                   type="submit"
@@ -251,8 +259,13 @@ export default function ContactPage() {
                       CALL ME BACK
                       <svg
                         className="w-4 h-4 sm:w-5 sm:h-5"
-                        viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
                       >
                         <line x1="7" y1="17" x2="17" y2="7" />
                         <polyline points="7 7 17 7 17 17" />
@@ -264,7 +277,6 @@ export default function ContactPage() {
             </form>
           </div>
         )}
-
       </div>
     </section>
   )
