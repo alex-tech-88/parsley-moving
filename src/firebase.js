@@ -14,7 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 
 if (import.meta.env.DEV) {
-  globalThis.FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_APPCHECK_DEBUG_TOKEN
+  globalThis.FIREBASE_APPCHECK_DEBUG_TOKEN = true
 }
 
 initializeAppCheck(app, {

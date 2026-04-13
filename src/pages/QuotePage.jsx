@@ -217,20 +217,27 @@ export default function QuotePage() {
     try {
       const recaptchaToken = await executeRecaptcha('submit_quote')
 
-      await addDoc(collection(db, 'quoteRequests'), {
-        ...form,
+      const payload = {
         moveFrom: form.moveFrom.trim(),
         moveTo: form.moveTo.trim(),
+        moveDate: form.moveDate,
+        pickupTime: form.pickupTime,
+        moveType: form.moveType,
+        moveSize: form.moveSize,
+        fromAccess: form.fromAccess,
+        toAccess: form.toAccess,
         firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
+        lastName: form.lastName.trim() || '-',
         phone: form.phone.trim(),
         email: form.email.trim(),
-        notes: form.notes.trim(),
-        heardFrom: form.heardFrom.trim(),
-        recaptchaToken,
+        heardFrom: form.heardFrom.trim() || '-',
+        notes: form.notes.trim() || '-',
+        inPersonQuote: form.inPersonQuote || '-',
         createdAt: serverTimestamp(),
         source: window.location.href,
-      })
+      }
+
+      await addDoc(collection(db, 'quoteRequests'), payload)
 
       setStatus('success')
       setErrors({})
