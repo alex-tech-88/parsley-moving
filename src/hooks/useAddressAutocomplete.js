@@ -18,7 +18,7 @@ export function useAddressAutocomplete() {
     debounceRef.current = setTimeout(async () => {
       setLoading(true)
       try {
-        const token = import.meta.env.VITE_MAPBOX_TOKEN
+        const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
         const url   = `${MAPBOX_URL}/${encodeURIComponent(query)}.json`
           + `?access_token=${token}`
           + `&country=us`

@@ -97,3 +97,21 @@ export const validateEmail = (value) => {
 
   return ''
 }
+
+// ── Move size (sq ft) validation ─────────────────────────────────────
+
+export const validateMoveSize = (value) => {
+  if (value === '' || value === null || value === undefined) return 'Size is required'
+
+  const raw = String(value).trim()
+
+  if (!raw) return 'Size is required'
+  if (!/^\d+$/.test(raw)) return 'Only digits are allowed'
+
+  const num = Number(raw)
+
+  if (num <= 0) return 'Size must be greater than 0'
+  if (num > 100000) return 'Size cannot exceed 100,000 sq ft'
+
+  return ''
+}

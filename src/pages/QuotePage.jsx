@@ -10,14 +10,15 @@ import {
   validatePersonal,
   validateEmail,
   validateNotes,
+  validateMoveSize,
 } from '@utils/validation'
 import { PHONE } from '@/constant'
 import { AddressAutofill } from '@mapbox/search-js-react'
-
 import { db } from '@/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 
 const MOVE_TYPES = ['Residential', 'Commercial', 'Special Event', 'Other']
+const MOVE_SIZES = ['Studio', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4+ Bedroom', 'Other']
 const ACCESS_TYPES = ['Elevator', 'Walk up', 'Ground floor']
 const TIME_SLOTS = [
   'Morning (8am–12pm)',
@@ -26,13 +27,26 @@ const TIME_SLOTS = [
   'Flexible',
 ]
 const HEAR_OPTIONS = ['Google', 'Yelp', 'Instagram / Facebook', 'Friend / Referral', 'Other']
+const IN_PERSON_OPTIONS = [
+  { value: 'in-person', label: 'In-person visit' },
+  { value: 'video', label: 'Video call' },
+  { value: 'no', label: 'No thanks' },
+]
 
 const STEPS = ['Moving Info', 'Addresses', 'Personal Info']
-
 const PERSONAL_FIELDS = ['firstName', 'lastName', 'phone']
 const ADDRESS_FIELDS = ['moveFrom', 'moveTo']
-
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+
+const shouldOfferInPersonQuote = (form) => {
+  if (form.moveType === 'Residential') {
+    return ['2 Bedroom', '3 Bedroom', '4+ Bedroom'].includes(form.moveSize)
+  }
+  if (['Commercial', 'Special Event', 'Other'].includes(form.moveType)) {
+    return Number(form.moveSize) >= 100
+  }
+  return false
+}
 
 export default function QuotePage() {
   const { t } = useTheme()
@@ -51,6 +65,8 @@ export default function QuotePage() {
     moveDate: '',
     pickupTime: '',
     moveType: '',
+    moveSize: '',
+    inPersonQuote: '',
     fromAccess: '',
     toAccess: '',
     firstName: '',
@@ -62,7 +78,17 @@ export default function QuotePage() {
   }))
 
   const set = (field, value) => {
-    setForm((p) => ({ ...p, [field]: value }))
+    setForm((p) => {
+      const next = { ...p, [field]: value }
+      if (field === 'moveType') {
+        next.moveSize = ''
+        next.inPersonQuote = ''
+      }
+      if (field === 'moveSize') {
+        next.inPersonQuote = ''
+      }
+      return next
+    })
 
     if (status === 'error') setStatus('idle')
     if (!touched[field]) return
@@ -84,7 +110,6 @@ export default function QuotePage() {
     setTouched((p) => ({ ...p, [field]: true }))
 
     let msg = ''
-
     if (PERSONAL_FIELDS.includes(field)) msg = validatePersonal(field, form[field])
     else if (ADDRESS_FIELDS.includes(field)) msg = getAddressError(form[field])
     else if (field === 'email') msg = validateEmail(form[field])
@@ -117,12 +142,12 @@ export default function QuotePage() {
       if (!form.moveDate) e.moveDate = 'Required'
       if (!form.pickupTime) e.pickupTime = 'Required'
       if (!form.moveType) e.moveType = 'Required'
+      if (form.moveType && !form.moveSize) e.moveSize = 'Required'
     }
 
     if (s === 2) {
       const mfErr = getAddressError(form.moveFrom)
       const mtErr = getAddressError(form.moveTo)
-
       if (mfErr) e.moveFrom = mfErr
       if (mtErr) e.moveTo = mtErr
       if (!form.fromAccess) e.fromAccess = 'Required'
@@ -135,13 +160,10 @@ export default function QuotePage() {
       const phErr = validatePersonal('phone', form.phone)
       const emErr = validateEmail(form.email)
       const ntErr = validateNotes(form.notes)
-
       if (fnErr) e.firstName = fnErr
-      if (lnErr) e.lastName = lnErr
       if (phErr) e.phone = phErr
       if (emErr) e.email = emErr
       if (ntErr) e.notes = ntErr
-      if (!form.heardFrom) e.heardFrom = 'Required'
     }
 
     return e
@@ -151,13 +173,11 @@ export default function QuotePage() {
     if (step === 2) {
       setTouched((p) => ({ ...p, moveFrom: true, moveTo: true }))
     }
-
     const e = validateStep(step)
     if (Object.keys(e).length) {
       setErrors(e)
       return
     }
-
     setErrors({})
     window.scrollTo({ top: 0, behavior: 'smooth' })
     setStep((s) => s + 1)
@@ -166,7 +186,6 @@ export default function QuotePage() {
   const back = () => {
     setErrors({})
     window.scrollTo({ top: 0, behavior: 'smooth' })
-
     if (step === 1) navigate(-1)
     else setStep((s) => s - 1)
   }
@@ -196,7 +215,7 @@ export default function QuotePage() {
     setStatus('loading')
 
     try {
-      await executeRecaptcha('submit_quote')
+      const recaptchaToken = await executeRecaptcha('submit_quote')
 
       await addDoc(collection(db, 'quoteRequests'), {
         ...form,
@@ -208,6 +227,7 @@ export default function QuotePage() {
         email: form.email.trim(),
         notes: form.notes.trim(),
         heardFrom: form.heardFrom.trim(),
+        recaptchaToken,
         createdAt: serverTimestamp(),
         source: window.location.href,
       })
@@ -240,6 +260,8 @@ export default function QuotePage() {
       'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
       errors[field] ? 'border-red-400' : 'border-[#e5e7eb] dark:border-[#3a3a3a]',
     ].join(' ')
+
+  const offerVisible = shouldOfferInPersonQuote(form)
 
   return (
     <section
@@ -288,6 +310,7 @@ export default function QuotePage() {
           </div>
         ) : (
           <>
+            {/* Progress */}
             <div className="mb-10 sm:mb-14">
               <p className="text-sm sm:text-base font-medium text-brand-green uppercase tracking-widest mb-1">
                 Step {step} of {STEPS.length}
@@ -302,7 +325,6 @@ export default function QuotePage() {
                   const s = i + 1
                   const done = s < step
                   const current = s === step
-
                   return (
                     <div key={s} className="flex items-center gap-2 sm:gap-3 flex-1">
                       <div
@@ -343,6 +365,7 @@ export default function QuotePage() {
               </div>
             </div>
 
+            {/* Step 1 */}
             {step === 1 && (
               <div className="flex flex-col gap-7 sm:gap-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -362,9 +385,7 @@ export default function QuotePage() {
                         className={selectClass('pickupTime')}
                       >
                         <option value="">Choose an option</option>
-                        {TIME_SLOTS.map((s) => (
-                          <option key={s}>{s}</option>
-                        ))}
+                        {TIME_SLOTS.map((s) => <option key={s}>{s}</option>)}
                       </select>
                       <SelectArrow />
                     </div>
@@ -379,16 +400,109 @@ export default function QuotePage() {
                       className={selectClass('moveType')}
                     >
                       <option value="">Choose an option</option>
-                      {MOVE_TYPES.map((s) => (
-                        <option key={s}>{s}</option>
-                      ))}
+                      {MOVE_TYPES.map((s) => <option key={s}>{s}</option>)}
                     </select>
                     <SelectArrow />
                   </div>
                 </FormField>
+
+                {/* Residential → выбор комнат */}
+                {form.moveType === 'Residential' && (
+                  <FormField label="Size of move" required error={errors.moveSize}>
+                    <div className="relative">
+                      <select
+                        value={form.moveSize}
+                        onChange={(e) => set('moveSize', e.target.value)}
+                        className={selectClass('moveSize')}
+                      >
+                        <option value="">Choose an option</option>
+                        {MOVE_SIZES.map((s) => <option key={s}>{s}</option>)}
+                      </select>
+                      <SelectArrow />
+                    </div>
+                  </FormField>
+                )}
+
+                {['Commercial', 'Special Event', 'Other'].includes(form.moveType) && (
+                  <FormField
+                    label="Approximate size"
+                    required
+                    error={errors.moveSize}
+                    hint="Estimated square footage"
+                  >
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={form.moveSize}
+                      placeholder="e.g. 1500"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '').slice(0, 6)
+                        set('moveSize', val)
+                      }}
+                      onBlur={() => handleBlur('moveSize')}
+                      className={inputClass('moveSize')}
+                    />
+                  </FormField>
+                )}
+
+                {/* Free Quote when selected */}
+                {form.moveType && (
+                  <div className="rounded-xl border border-[#e5e7eb] dark:border-[#3a3a3a] p-5 sm:p-6 bg-white dark:bg-[#2c2c2c]">
+                    <p className="text-sm sm:text-base font-semibold text-graphite dark:text-white mb-1">
+                      Are you interested in our free quote?
+                    </p>
+                    <p className="text-sm sm:text-base text-[#6b7280] dark:text-[#a0a0a0] mb-4">
+                      We will come to your home and price your quote in-person, or connect via video call.
+                    </p>
+
+                    {offerVisible ? (
+                      <div className="flex flex-col gap-3">
+                        {IN_PERSON_OPTIONS.map((opt) => (
+                          <label
+                            key={opt.value}
+                            className="flex items-center gap-3 cursor-pointer group"
+                            onClick={() => set('inPersonQuote', opt.value)}
+                          >
+                            <div
+                              className={[
+                                'w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-all duration-200',
+                                form.inPersonQuote === opt.value
+                                  ? 'bg-brand-green border-brand-green'
+                                  : 'border-[#d1d5db] dark:border-[#4a4a4a] group-hover:border-brand-green',
+                              ].join(' ')}
+                            >
+                              {form.inPersonQuote === opt.value && (
+                                <svg
+                                  className="w-3 h-3 text-white"
+                                  viewBox="0 0 12 12"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  aria-hidden="true"
+                                >
+                                  <polyline points="2 6 5 9 10 3" />
+                                </svg>
+                              )}
+                            </div>
+                            <span className="text-sm sm:text-base text-graphite dark:text-white">
+                              {opt.label}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs sm:text-sm text-[#9ca3af] dark:text-[#6b6b6b] italic">
+                        * Available for moves of 2+ bedrooms or 100+ sq ft.
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
+            {/* Step 2 */}
             {step === 2 && (
               <form
                 onSubmit={(e) => e.preventDefault()}
@@ -431,9 +545,7 @@ export default function QuotePage() {
                           className={selectClass('fromAccess')}
                         >
                           <option value="">Choose an option</option>
-                          {ACCESS_TYPES.map((a) => (
-                            <option key={a}>{a}</option>
-                          ))}
+                          {ACCESS_TYPES.map((a) => <option key={a}>{a}</option>)}
                         </select>
                         <SelectArrow />
                       </div>
@@ -480,9 +592,7 @@ export default function QuotePage() {
                           className={selectClass('toAccess')}
                         >
                           <option value="">Choose an option</option>
-                          {ACCESS_TYPES.map((a) => (
-                            <option key={a}>{a}</option>
-                          ))}
+                          {ACCESS_TYPES.map((a) => <option key={a}>{a}</option>)}
                         </select>
                         <SelectArrow />
                       </div>
@@ -492,6 +602,7 @@ export default function QuotePage() {
               </form>
             )}
 
+            {/* Step 3 */}
             {step === 3 && (
               <div className="flex flex-col gap-6 sm:gap-7">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -506,7 +617,7 @@ export default function QuotePage() {
                     />
                   </FormField>
 
-                  <FormField label="Last Name" required error={errors.lastName}>
+                  <FormField label="Last Name" error={errors.lastName}>
                     <input
                       type="text"
                       value={form.lastName}
@@ -544,7 +655,6 @@ export default function QuotePage() {
 
                 <FormField
                   label="How did you hear about Parsley Moving?"
-                  required
                   error={errors.heardFrom}
                 >
                   <div className="relative">
@@ -554,9 +664,7 @@ export default function QuotePage() {
                       className={selectClass('heardFrom')}
                     >
                       <option value="">Choose an option</option>
-                      {HEAR_OPTIONS.map((o) => (
-                        <option key={o}>{o}</option>
-                      ))}
+                      {HEAR_OPTIONS.map((o) => <option key={o}>{o}</option>)}
                     </select>
                     <SelectArrow />
                   </div>
@@ -585,6 +693,7 @@ export default function QuotePage() {
               </p>
             )}
 
+            {/* Navigation */}
             <div className="flex items-center justify-between mt-10 sm:mt-12">
               <button
                 onClick={back}
@@ -664,30 +773,6 @@ export default function QuotePage() {
                 </button>
               )}
             </div>
-
-            {/* reCAPTCHA disclaimer */}
-            {step === 3 && (
-              <p className="text-[11px] text-center text-[#9ca3af] dark:text-[#6b6b6b] mt-4 leading-relaxed">
-                Protected by reCAPTCHA —{' '}
-                <a
-                  href="https://policies.google.com/privacy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-brand-green transition-colors duration-200"
-                >
-                  Privacy Policy
-                </a>{' '}
-                &{' '}
-                <a
-                  href="https://policies.google.com/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-brand-green transition-colors duration-200"
-                >
-                  Terms of Service
-                </a>
-              </p>
-            )}
           </>
         )}
       </div>
