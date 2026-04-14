@@ -44,7 +44,7 @@ const shouldOfferInPersonQuote = (form) => {
     return ['2 Bedroom', '3 Bedroom', '4+ Bedroom'].includes(form.moveSize)
   }
   if (['Commercial', 'Special Event', 'Other'].includes(form.moveType)) {
-    return Number(form.moveSize) >= 100
+    return Number(form.moveSize) >= 1500
   }
   return false
 }
@@ -464,7 +464,7 @@ export default function QuotePage() {
                   {form.moveType && (
                     <div className="rounded-xl border border-[#e5e7eb] dark:border-[#3a3a3a] p-5 sm:p-6 bg-white dark:bg-[#2c2c2c]">
                       <p className="text-sm sm:text-base font-semibold text-graphite dark:text-white mb-1">
-                        Are you interested in our free quote?
+                        Are you interested in our free in-person or online quote?
                       </p>
                       <p className="text-sm sm:text-base text-[#6b7280] dark:text-[#a0a0a0] mb-4">
                         We will come to your home and price your quote in-person, or connect via video call.
@@ -509,7 +509,7 @@ export default function QuotePage() {
                         </div>
                       ) : (
                         <p className="text-xs sm:text-sm text-[#9ca3af] dark:text-[#6b6b6b] italic">
-                          * Available for moves of 2+ bedrooms or 100+ sq ft.
+                          * Available for moves of 2+ bedrooms or 1500+ sq ft.
                         </p>
                       )}
                     </div>
