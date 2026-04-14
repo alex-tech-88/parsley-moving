@@ -95,17 +95,22 @@ export default function QuotePage() {
     if (!touched[field]) return
 
     if (PERSONAL_FIELDS.includes(field)) {
-      setErrors((p) => ({ ...p, [field]: validatePersonal(field, value) }))
-    } else if (ADDRESS_FIELDS.includes(field)) {
-      setErrors((p) => ({ ...p, [field]: getAddressError(value) }))
-    } else if (field === 'email') {
-      setErrors((p) => ({ ...p, email: validateEmail(value) }))
-    } else if (field === 'notes') {
-      setErrors((p) => ({ ...p, notes: validateNotes(value) }))
-    } else {
-      if (errors[field]) setErrors((p) => ({ ...p, [field]: '' }))
-    }
+    setErrors((p) => ({ ...p, [field]: validatePersonal(field, value) }))
+  } else if (ADDRESS_FIELDS.includes(field)) {
+    setErrors((p) => ({ ...p, [field]: getAddressError(value) }))
+  } else if (field === 'email') {
+    setErrors((p) => ({ ...p, email: validateEmail(value) }))
+  } else if (field === 'notes') {
+    setErrors((p) => ({ ...p, notes: validateNotes(value) }))
+  } else if (                                              
+    field === 'moveSize' &&
+    ['Commercial', 'Special Event', 'Other'].includes(form.moveType)
+  ) {
+    setErrors((p) => ({ ...p, moveSize: validateMoveSize(value) }))
+  } else {
+    if (errors[field]) setErrors((p) => ({ ...p, [field]: '' }))
   }
+}
 
   const handleBlur = (field) => {
     setTouched((p) => ({ ...p, [field]: true }))
@@ -137,38 +142,43 @@ export default function QuotePage() {
   }
 
   const validateStep = (s) => {
-    const e = {}
+  const e = {}
 
-    if (s === 1) {
-      if (!form.moveDate) e.moveDate = 'Required'
-      if (!form.pickupTime) e.pickupTime = 'Required'
-      if (!form.moveType) e.moveType = 'Required'
-      if (form.moveType && !form.moveSize) e.moveSize = 'Required'
+  if (s === 1) {
+    if (!form.moveDate) e.moveDate = 'Required'
+    if (!form.pickupTime) e.pickupTime = 'Required'
+    if (!form.moveType) e.moveType = 'Required'
+
+    if (form.moveType === 'Residential') {
+      if (!form.moveSize) e.moveSize = 'Required'
+    } else if (['Commercial', 'Special Event', 'Other'].includes(form.moveType)) {
+      const szErr = validateMoveSize(form.moveSize)
+      if (szErr) e.moveSize = szErr
     }
-
-    if (s === 2) {
-      const mfErr = getAddressError(form.moveFrom)
-      const mtErr = getAddressError(form.moveTo)
-      if (mfErr) e.moveFrom = mfErr
-      if (mtErr) e.moveTo = mtErr
-      if (!form.fromAccess) e.fromAccess = 'Required'
-      if (!form.toAccess) e.toAccess = 'Required'
-    }
-
-    if (s === 3) {
-      const fnErr = validatePersonal('firstName', form.firstName)
-      const lnErr = validatePersonal('lastName', form.lastName)
-      const phErr = validatePersonal('phone', form.phone)
-      const emErr = validateEmail(form.email)
-      const ntErr = validateNotes(form.notes)
-      if (fnErr) e.firstName = fnErr
-      if (phErr) e.phone = phErr
-      if (emErr) e.email = emErr
-      if (ntErr) e.notes = ntErr
-    }
-
-    return e
   }
+
+  if (s === 2) {
+    const mfErr = getAddressError(form.moveFrom)
+    const mtErr = getAddressError(form.moveTo)
+    if (mfErr) e.moveFrom = mfErr
+    if (mtErr) e.moveTo = mtErr
+    if (!form.fromAccess) e.fromAccess = 'Required'
+    if (!form.toAccess) e.toAccess = 'Required'
+  }
+
+  if (s === 3) {
+    const fnErr = validatePersonal('firstName', form.firstName)
+    const phErr = validatePersonal('phone', form.phone)
+    const emErr = validateEmail(form.email)
+    const ntErr = validateNotes(form.notes)
+    if (fnErr) e.firstName = fnErr
+    if (phErr) e.phone = phErr
+    if (emErr) e.email = emErr
+    if (ntErr) e.notes = ntErr
+  }
+
+  return e
+}
 
   const next = () => {
     if (step === 2) {
@@ -218,6 +228,10 @@ export default function QuotePage() {
     try {
       const recaptchaToken = await executeRecaptcha('submit_quote')
 
+      console.log('recaptchaToken:', recaptchaToken)      // ← добавь
+      console.log('recaptchaToken length:', recaptchaToken?.length)  // ← добавь
+
+
       const payload = {
         moveFrom: form.moveFrom.trim(),
         moveTo: form.moveTo.trim(),
@@ -234,9 +248,12 @@ export default function QuotePage() {
         heardFrom: form.heardFrom.trim() || '-',
         notes: form.notes.trim() || '-',
         inPersonQuote: form.inPersonQuote || '-',
+        recaptchaToken,
         createdAt: serverTimestamp(),
         source: window.location.href,
       }
+
+      console.log('payload keys:', Object.keys(payload))
 
       await addDoc(collection(db, 'quoteRequests'), payload)
 
