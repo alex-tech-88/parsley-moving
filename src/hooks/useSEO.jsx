@@ -7,18 +7,21 @@ const DEFAULT_DESC = 'Parsley Moving — professional moving services in the Bay
 export function SEO({ title, description, canonical, noindex = false }) {
   const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME
   const desc = description || DEFAULT_DESC
-  const url = canonical || (typeof window !== 'undefined' ? window.location.href : '')
+  const url = canonical || ''
 
   return (
     <Helmet>
       <title>{fullTitle}</title>
       <meta name="description" content={desc} />
-      <link rel="canonical" href={url} />
-      {noindex && <meta name="robots" content="noindex,nofollow" />}
+      {url && <link rel="canonical" href={url} />}
+      <meta
+        name="robots"
+        content={noindex ? 'noindex,nofollow' : 'index,follow'}
+      />
 
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={desc} />
-      <meta property="og:url" content={url} />
+      {url && <meta property="og:url" content={url} />}
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="en_US" />
