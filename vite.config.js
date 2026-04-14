@@ -18,5 +18,6 @@ export default defineConfig({
       '@hooks': fileURLToPath(new URL('./src/hooks', import.meta.url)),
       '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)), 
     },
+    extensions: ['.jsx', '.js', '.ts', '.tsx']
   },
 })
