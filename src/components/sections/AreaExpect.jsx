@@ -1,5 +1,10 @@
 import { useTheme } from '@context/useTheme'
 
+const PHOTO_ALTS = [
+  (city) => `Professional movers loading a truck in ${city}`,
+  (city) => `Moving crew carrying furniture in ${city}, CA`,
+]
+
 export default function AreaExpect({ cityName, items, photos = [] }) {
   const { t } = useTheme()
 
@@ -45,7 +50,7 @@ export default function AreaExpect({ cityName, items, photos = [] }) {
                 <img
                   key={i}
                   src={src}
-                  alt={`Moving in ${cityName} ${i + 1}`}
+                  alt={PHOTO_ALTS[i] ? PHOTO_ALTS[i](cityName) : `Moving services in ${cityName}`}
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover rounded-2xl shadow-xl"

@@ -32,7 +32,7 @@ export default function AboutUs({
             <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <img
                 src={img}
-                alt={location}
+                alt={`Parsley Moving team providing professional moving services in ${location}`}
                 className="w-full h-72 sm:h-96 lg:h-120 object-cover"
               />
               <div className="absolute bottom-4 left-4 bg-brand-green text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-lg">

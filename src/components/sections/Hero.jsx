@@ -50,20 +50,21 @@ export default function Hero({
               {image ? (
                 <img
                   src={image}
-                  alt={title}
+                  alt={`${title} ${highlight} — Parsley Moving`}
                   className="absolute inset-0 w-full h-full object-contain rounded-2xl"
                 />
               ) : (
                 <>
                   <img
                     src={logoLight}
-                    alt="Parsley Moving"
+                    alt="Parsley Moving logo"
                     className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-0" : "opacity-100"
                       }`}
                   />
                   <img
                     src={logoDark}
-                    alt="Parsley Moving"
+                    alt=""
+                    aria-hidden="true"
                     className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ${mode === "dark" ? "opacity-100" : "opacity-0"
                       }`}
                   />

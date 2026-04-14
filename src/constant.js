@@ -1,4 +1,3 @@
-// Single re-export point — import from here as usual
 export * from "@/data/breakpoints"
 export * from "@/data/company"
 export * from "@/data/reviews"

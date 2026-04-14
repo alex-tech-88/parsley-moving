@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main -->
+  <url>
+    <loc>https://parsleymoving.com/</loc>
+    <lastmod>2026-04-14</lastmod>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Services -->
+  <url>
+    <loc>https://parsleymoving.com/services/local-moving</loc>
+    <lastmod>2026-04-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://parsleymoving.com/services/residential-moving</loc>
+    <lastmod>2026-04-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://parsleymoving.com/services/commercial-moving</loc>
+    <lastmod>2026-04-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://parsleymoving.com/services/in-state-moving</loc>
+    <lastmod>2026-04-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://parsleymoving.com/services/packing</loc>
+    <lastmod>2026-04-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://parsleymoving.com/services/furniture</loc>
+    <lastmod>2026-04-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Areas — East Bay -->
+  <url><loc>https://parsleymoving.com/areas/richmond</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/berkeley</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/oakland</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/albany</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/el-cerrito</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/san-pablo</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/pinole</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/hercules</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/alameda</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+
+  <!-- Areas — Tri-Valley & Walnut Creek -->
+  <url><loc>https://parsleymoving.com/areas/concord</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/walnut-creek</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/pleasant-hill</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/martinez</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/lafayette</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/orinda</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/danville</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/san-ramon</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/dublin</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/pleasanton</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+
+  <!-- Areas — Fremont Area -->
+  <url><loc>https://parsleymoving.com/areas/san-leandro</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/hayward</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/castro-valley</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/fremont</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/newark</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/union-city</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+
+  <!-- Areas — San Francisco -->
+  <url><loc>https://parsleymoving.com/areas/san-francisco</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+
+  <!-- Areas — Peninsula -->
+  <url><loc>https://parsleymoving.com/areas/daly-city</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/south-san-francisco</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/san-mateo</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+  <url><loc>https://parsleymoving.com/areas/san-bruno</loc><lastmod>2026-04-14</lastmod><priority>0.7</priority></url>
+
+</urlset>
