@@ -14,6 +14,8 @@ import FAQ from "@components/sections/FAQ";
 import ContactPage from "@/pages/ContactPage";
 import QuotePage from "@/pages/QuotePage";
 
+
+
 function AppLayout() {
   const { mode } = useTheme();
 

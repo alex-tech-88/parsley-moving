@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom'
+import { SEO } from '@hooks/useSEO'
 import { ACCORDION_AREAS, SERVICES, ABOUT_BY_CITY, getPhotoBySlug, getExpectPhotosBySlug } from '@/constant'
-import Hero         from '@components/sections/Hero'
-// import AreaIntro    from '@components/sections/AreaIntro'
-import AboutUs      from '@components/sections/AboutUs'
-import AreaExpect   from '@components/sections/AreaExpect'
-import AreaWhy      from '@components/sections/AreaWhy'
-import AreaNearby   from '@components/sections/AreaNearby'
-import AreaFAQ      from '@components/sections/AreaFAQ'
-import Services from '@components/sections/Services'
+import Hero       from '@components/sections/Hero'
+import AboutUs    from '@components/sections/AboutUs'
+import AreaExpect from '@components/sections/AreaExpect'
+import AreaWhy    from '@components/sections/AreaWhy'
+import AreaNearby from '@components/sections/AreaNearby'
+import AreaFAQ    from '@components/sections/AreaFAQ'
+import Services   from '@components/sections/Services'
 
 const defaultImage = SERVICES.find((s) => s.id === 'local-moving')?.img
 
@@ -21,6 +21,7 @@ export default function AreaPage() {
   if (!city) {
     return (
       <>
+        <SEO title="Moving Services" noindex={true} />
         <Hero />
         <AboutUs />
       </>
@@ -44,18 +45,17 @@ export default function AreaPage() {
 
   return (
     <>
-      {/* Block 1 — Hero */}
+      <SEO
+        title={`Moving Company in ${city.name}, CA`}
+        description={`Professional movers in ${city.name}, CA. Parsley Moving handles local & long-distance residential and commercial moves. Available 7 days a week, 9am–9pm.`}
+        canonical={`https://parsleymoving.com/areas/${slug}`}
+      />
+
       <Hero
         title="Professional Moving"
         highlight={`in ${city.name}`}
         image={defaultImage}
       />
-      {/* <AreaIntro
-        intro1={cityData.intro1}
-        intro2={cityData.intro2}
-      /> */}
-
-      {/* Block 2 — About */}
       <AboutUs
         title="Your Trusted"
         highlight={`${city.name} Moving Company`}
@@ -65,24 +65,14 @@ export default function AreaPage() {
         text2={cityData.text2}
         text3={cityData.text3}
       />
-
-      {/* Block 3 — What to Expect */}
       <AreaExpect
         cityName={city.name}
         items={cityData.expect}
         photos={expectPhotos}
       />
-
-      {/* Block 4 — Services */}
-      <Services  cityName={city.name} />
-
-      {/* Block 5 — Why Choose */}
+      <Services cityName={city.name} />
       <AreaWhy city={city.name} />
-
-      {/* Block 6 — Nearby cities */}
       <AreaNearby slug={slug} />
-
-      {/* Block 7 — FAQ */}
       <AreaFAQ slug={slug} cityName={city.name} />
     </>
   )
