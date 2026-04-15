@@ -1,9 +1,9 @@
-import localMovingImg       from '@assets/services/local-moving.png'
-import packingServicesImg   from '@assets/services/packing-services.png'
-import residentialMovingImg from '@assets/services/residential-moving.png'
-import commercialMovingImg  from '@assets/services/commercial-moving.png'
-import instateMovingImgImg  from '@assets/services/instate-moving.png'
-import furnitureMovingImg   from '@assets/services/furniture-moving.png'
+import localMovingImg       from '@assets/services/local-moving.webp'
+import packingServicesImg   from '@assets/services/packing-services.webp'
+import residentialMovingImg from '@assets/services/residential-moving.webp'
+import commercialMovingImg  from '@assets/services/commercial-moving.webp'
+import instateMovingImgImg  from '@assets/services/instate-moving.webp'
+import furnitureMovingImg   from '@assets/services/furniture-moving.webp'
 
 export const SERVICES = [
   {
