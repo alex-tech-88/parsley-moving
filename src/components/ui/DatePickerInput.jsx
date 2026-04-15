@@ -57,7 +57,7 @@ export default function DatePickerInput({ value, onChange, hasError = false }) {
         onClick={() => setOpen((p) => !p)}
         className={`
           w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border
-          text-sm sm:text-base lg:text-lg text-left
+          text-base lg:text-lg text-left
           transition-all duration-200
           bg-white dark:bg-[#2c2c2c]
           flex items-center justify-between gap-2
