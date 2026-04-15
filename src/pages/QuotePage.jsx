@@ -95,22 +95,22 @@ export default function QuotePage() {
     if (!touched[field]) return
 
     if (PERSONAL_FIELDS.includes(field)) {
-    setErrors((p) => ({ ...p, [field]: validatePersonal(field, value) }))
-  } else if (ADDRESS_FIELDS.includes(field)) {
-    setErrors((p) => ({ ...p, [field]: getAddressError(value) }))
-  } else if (field === 'email') {
-    setErrors((p) => ({ ...p, email: validateEmail(value) }))
-  } else if (field === 'notes') {
-    setErrors((p) => ({ ...p, notes: validateNotes(value) }))
-  } else if (                                              
-    field === 'moveSize' &&
-    ['Commercial', 'Special Event', 'Other'].includes(form.moveType)
-  ) {
-    setErrors((p) => ({ ...p, moveSize: validateMoveSize(value) }))
-  } else {
-    if (errors[field]) setErrors((p) => ({ ...p, [field]: '' }))
+      setErrors((p) => ({ ...p, [field]: validatePersonal(field, value) }))
+    } else if (ADDRESS_FIELDS.includes(field)) {
+      setErrors((p) => ({ ...p, [field]: getAddressError(value) }))
+    } else if (field === 'email') {
+      setErrors((p) => ({ ...p, email: validateEmail(value) }))
+    } else if (field === 'notes') {
+      setErrors((p) => ({ ...p, notes: validateNotes(value) }))
+    } else if (
+      field === 'moveSize' &&
+      ['Commercial', 'Special Event', 'Other'].includes(form.moveType)
+    ) {
+      setErrors((p) => ({ ...p, moveSize: validateMoveSize(value) }))
+    } else {
+      if (errors[field]) setErrors((p) => ({ ...p, [field]: '' }))
+    }
   }
-}
 
   const handleBlur = (field) => {
     setTouched((p) => ({ ...p, [field]: true }))
@@ -142,43 +142,43 @@ export default function QuotePage() {
   }
 
   const validateStep = (s) => {
-  const e = {}
+    const e = {}
 
-  if (s === 1) {
-    if (!form.moveDate) e.moveDate = 'Required'
-    if (!form.pickupTime) e.pickupTime = 'Required'
-    if (!form.moveType) e.moveType = 'Required'
+    if (s === 1) {
+      if (!form.moveDate) e.moveDate = 'Required'
+      if (!form.pickupTime) e.pickupTime = 'Required'
+      if (!form.moveType) e.moveType = 'Required'
 
-    if (form.moveType === 'Residential') {
-      if (!form.moveSize) e.moveSize = 'Required'
-    } else if (['Commercial', 'Special Event', 'Other'].includes(form.moveType)) {
-      const szErr = validateMoveSize(form.moveSize)
-      if (szErr) e.moveSize = szErr
+      if (form.moveType === 'Residential') {
+        if (!form.moveSize) e.moveSize = 'Required'
+      } else if (['Commercial', 'Special Event', 'Other'].includes(form.moveType)) {
+        const szErr = validateMoveSize(form.moveSize)
+        if (szErr) e.moveSize = szErr
+      }
     }
-  }
 
-  if (s === 2) {
-    const mfErr = getAddressError(form.moveFrom)
-    const mtErr = getAddressError(form.moveTo)
-    if (mfErr) e.moveFrom = mfErr
-    if (mtErr) e.moveTo = mtErr
-    if (!form.fromAccess) e.fromAccess = 'Required'
-    if (!form.toAccess) e.toAccess = 'Required'
-  }
+    if (s === 2) {
+      const mfErr = getAddressError(form.moveFrom)
+      const mtErr = getAddressError(form.moveTo)
+      if (mfErr) e.moveFrom = mfErr
+      if (mtErr) e.moveTo = mtErr
+      if (!form.fromAccess) e.fromAccess = 'Required'
+      if (!form.toAccess) e.toAccess = 'Required'
+    }
 
-  if (s === 3) {
-    const fnErr = validatePersonal('firstName', form.firstName)
-    const phErr = validatePersonal('phone', form.phone)
-    const emErr = validateEmail(form.email)
-    const ntErr = validateNotes(form.notes)
-    if (fnErr) e.firstName = fnErr
-    if (phErr) e.phone = phErr
-    if (emErr) e.email = emErr
-    if (ntErr) e.notes = ntErr
-  }
+    if (s === 3) {
+      const fnErr = validatePersonal('firstName', form.firstName)
+      const phErr = validatePersonal('phone', form.phone)
+      const emErr = validateEmail(form.email)
+      const ntErr = validateNotes(form.notes)
+      if (fnErr) e.firstName = fnErr
+      if (phErr) e.phone = phErr
+      if (emErr) e.email = emErr
+      if (ntErr) e.notes = ntErr
+    }
 
-  return e
-}
+    return e
+  }
 
   const next = () => {
     if (step === 2) {
@@ -350,31 +350,24 @@ export default function QuotePage() {
                 </h1>
 
                 <div className="flex items-center gap-2 sm:gap-3">
-                  {STEPS.map((label, i) => {
-                    const s = i + 1
-                    const done = s < step
-                    const current = s === step
-                    return (
-                      <div key={s} className="flex items-center gap-2 sm:gap-3 flex-1">
+                  {STEPS.map((label, i) => (
+                    <div key={i} className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                      <div
+                        className={[
+                          'h-1.5 sm:h-2 rounded-full flex-1 min-w-0 transition-all duration-500',
+                          i + 1 <= step ? 'bg-brand-green' : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
+                        ].join(' ')}
+                      />
+                      {i < STEPS.length - 1 && (
                         <div
                           className={[
-                            'h-1.5 sm:h-2 rounded-full flex-1 transition-all duration-500',
-                            done || current
-                              ? 'bg-brand-green'
-                              : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
+                            'h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full shrink-0 transition-all duration-500',
+                            i + 1 < step ? 'bg-brand-green' : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
                           ].join(' ')}
                         />
-                        {i < STEPS.length - 1 && (
-                          <div
-                            className={[
-                              'h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full shrink-0 transition-all duration-500',
-                              done ? 'bg-brand-green' : 'bg-[#e5e7eb] dark:bg-[#3a3a3a]',
-                            ].join(' ')}
-                          />
-                        )}
-                      </div>
-                    )
-                  })}
+                      )}
+                    </div>
+                  ))}
                 </div>
 
                 <div className="hidden sm:flex justify-between mt-2">
