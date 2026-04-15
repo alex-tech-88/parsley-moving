@@ -267,7 +267,7 @@ export default function QuotePage() {
   const inputClass = (field) =>
     [
       'w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border',
-      'text-sm sm:text-base lg:text-lg outline-none',
+      'text-base lg:text-lg outline-none',
       'transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green',
       'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
       'placeholder:text-[#9ca3af] dark:placeholder:text-[#6b6b6b]',
@@ -277,7 +277,7 @@ export default function QuotePage() {
   const selectClass = (field) =>
     [
       'w-full px-4 sm:px-5 py-3 sm:py-4 lg:py-5 rounded-xl border',
-      'text-sm sm:text-base lg:text-lg outline-none appearance-none cursor-pointer',
+      'text-base lg:text-lg outline-none appearance-none cursor-pointer',
       'transition-all duration-200 focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green',
       'bg-white dark:bg-[#2c2c2c] text-graphite dark:text-white',
       errors[field] ? 'border-red-400' : 'border-[#e5e7eb] dark:border-[#3a3a3a]',
