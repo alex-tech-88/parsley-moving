@@ -1,25 +1,33 @@
 import { useEffect, useRef } from "react";
 
-export default function LazyVideo({ lg, poster, className, isActive, onPlay, onPause }) {
+export default function LazyVideo({ sm, md, lg, poster, className, isActive, onPlay, onPause }) {
   const videoRef = useRef(null);
+  const loadedRef = useRef(false);
 
-  // Load video source only when element enters viewport
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          const source = video.querySelector("source");
-          if (source.dataset.src) {
-            source.src = source.dataset.src;
-          }
+        if (entry.isIntersecting && !loadedRef.current) {
+          loadedRef.current = true;
+
+          // Set src from data-src when element enters viewport
+          video.querySelectorAll("source").forEach((source) => {
+            if (source.dataset.src) {
+              source.src = source.dataset.src;
+              delete source.dataset.src;
+            }
+          });
+
+          // Load only metadata until user clicks play
+          video.preload = "metadata";
           video.load();
           observer.disconnect();
         }
       },
-      { rootMargin: "200px" } // start loading 200px before element is visible
+      { rootMargin: "300px" } // start loading 300px before element is visible
     );
 
     observer.observe(video);
@@ -32,21 +40,22 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
     if (!video) return;
     if (!isActive) {
       video.pause();
-      video.currentTime = 0; // rewind to beginning
+      video.currentTime = 0;
     }
   }, [isActive]);
 
-    const handleLoadedMetadata = () => {
+  const handleLoadedMetadata = () => {
     const video = videoRef.current;
-    if (video) video.volume = 0.2; // start with very low volume to avoid loud auto-play
+    if (video) video.volume = 0.2; // start quiet to avoid loud autoplay
   };
 
-  // Toggle play/pause on click
   const handleClick = () => {
     const video = videoRef.current;
     if (!video) return;
+
     if (video.paused) {
-      video.volume = 0.2; // ensure volume is low when starting
+      video.preload = "auto"; // start full buffering on user intent
+      video.volume = 0.2;
       video.play();
       onPlay();
     } else {
@@ -70,6 +79,9 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
         onEnded={onPause}
         onLoadedMetadata={handleLoadedMetadata}
       >
+        {/* Serve smaller files on smaller screens */}
+        {sm && <source data-src={sm} media="(max-width: 640px)" type="video/mp4" />}
+        {md && <source data-src={md} media="(max-width: 1024px)" type="video/mp4" />}
         <source data-src={lg} type="video/mp4" />
       </video>
 
@@ -79,7 +91,7 @@ export default function LazyVideo({ lg, poster, className, isActive, onPlay, onP
           className="absolute inset-0 flex items-center justify-center
             bg-black/30 group-hover:bg-black/40 transition-opacity duration-300"
         >
-          {/* Circular play button with CSS triangle arrow via after: */}
+          {/* Circular play button with CSS triangle via after: pseudo-element */}
           <div
             className="w-14 h-14 rounded-full bg-white/20 border-2 border-white
               flex items-center justify-center backdrop-blur-sm
