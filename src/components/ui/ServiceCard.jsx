@@ -26,9 +26,25 @@ export default function ServiceCard({ service }) {
         to={service.href}
         style={{ color: t.brand.primary }}
         className="mt-4 text-sm font-semibold inline-flex items-center gap-1
-          hover:gap-2 transition-all duration-200"
+    hover:gap-2 transition-all duration-200"
       >
-        Learn More <span className="text-base">↗</span>
+        Learn More
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M2.5 11.5L11.5 2.5M11.5 2.5H5.5M11.5 2.5V8.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </Link>
     </div>
   )

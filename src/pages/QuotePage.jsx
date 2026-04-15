@@ -228,8 +228,7 @@ export default function QuotePage() {
     try {
       const recaptchaToken = await executeRecaptcha('submit_quote')
 
-      console.log('recaptchaToken:', recaptchaToken)      // ← добавь
-      console.log('recaptchaToken length:', recaptchaToken?.length)  // ← добавь
+
 
 
       const payload = {
@@ -252,8 +251,6 @@ export default function QuotePage() {
         createdAt: serverTimestamp(),
         source: window.location.href,
       }
-
-      console.log('payload keys:', Object.keys(payload))
 
       await addDoc(collection(db, 'quoteRequests'), payload)
 
