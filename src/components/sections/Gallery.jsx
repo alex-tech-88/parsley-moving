@@ -4,10 +4,10 @@ import LazyVideo from "@components/ui/LazyVideo";
 import Slider from "@components/ui/Slider";
 
 const VIDEOS = [
-  { lg: "/videos/move1-lg.mp4" },
-  { lg: "/videos/move3-lg.mp4" },
-  { lg: "/videos/move4-lg.mp4" },
-  { lg: "/videos/move5-lg.mp4" },
+  { lg: "https://assets.parsleymoving.com/move1-lg.mp4" },
+  { lg: "https://assets.parsleymoving.com/move3-lg.mp4" },
+  { lg: "https://assets.parsleymoving.com/move4-lg.mp4" },
+  { lg: "https://assets.parsleymoving.com/move5-lg.mp4" },
 ];
 
 export default function Gallery() {
