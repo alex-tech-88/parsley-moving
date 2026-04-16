@@ -252,6 +252,8 @@ export default function QuotePage() {
         source: window.location.href,
       }
 
+      console.log('📦 Payload:', JSON.stringify(payload, null, 2))
+
       await addDoc(collection(db, 'quoteRequests'), payload)
 
       setStatus('success')
@@ -540,7 +542,7 @@ export default function QuotePage() {
                         label="Address"
                         required
                         error={errors.moveFrom}
-                        hint="*Please include the zip code"
+                        hint="*Enter full address, city, or ZIP code"
                       >
                         <AddressAutofill
                           accessToken={MAPBOX_TOKEN}
@@ -551,7 +553,7 @@ export default function QuotePage() {
                             value={form.moveFrom}
                             name="moveFrom"
                             autoComplete="section-pickup shipping address-line1"
-                            placeholder="Enter full address with zip code"
+                            placeholder="e.g. 94105 or 123 Main St, SF"
                             onChange={(e) => set('moveFrom', e.target.value)}
                             onBlur={() => handleBlur('moveFrom')}
                             className={inputClass('moveFrom')}
@@ -587,7 +589,7 @@ export default function QuotePage() {
                         label="Address"
                         required
                         error={errors.moveTo}
-                        hint="*Please include the zip code"
+                        hint="*Enter full address, city, or ZIP code"
                       >
                         <AddressAutofill
                           accessToken={MAPBOX_TOKEN}
@@ -598,7 +600,7 @@ export default function QuotePage() {
                             value={form.moveTo}
                             name="moveTo"
                             autoComplete="section-dropoff shipping address-line1"
-                            placeholder="Enter full address with zip code"
+                            placeholder="e.g. 90001 or 456 Oak Ave, LA"
                             onChange={(e) => set('moveTo', e.target.value)}
                             onBlur={() => handleBlur('moveTo')}
                             className={inputClass('moveTo')}
