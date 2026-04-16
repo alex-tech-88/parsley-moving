@@ -18,7 +18,7 @@ export default function Gallery() {
     <section
       id="gallery"
       style={{ backgroundColor: t.bg.section }}
-      className="pt-0 pb-16 xl:pb-24"
+      className="pt-0 pb-16 xl:pb-24 scroll-mt-24"
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10">
 

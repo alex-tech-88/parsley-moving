@@ -107,7 +107,7 @@ export default function Hero({
           </div>
 
           {/* Right column — heading on mobile, form always */}
-          <div className="w-full lg:max-w-md xl:max-w-lg">
+          <div id="quote-form" className="w-full lg:max-w-md xl:max-w-lg scroll-mt-65">
             {/* Heading — mobile/tablet only */}
             <div className="lg:hidden mb-6">
               <h1 className="text-3xl sm:text-4xl font-bold text-graphite dark:text-white leading-tight mb-3">

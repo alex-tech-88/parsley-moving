@@ -22,7 +22,7 @@ export default function AboutUs({
     <section
       id="about"
       style={{ backgroundColor: t.bg.section }}
-      className="pt-6 pb-16 xl:pt-10 xl:pb-24"
+      className="pt-6 pb-16 xl:pt-10 xl:pb-24 scroll-mt-24"
     >
       <div className="max-w-7xl mx-auto px-6 xl:px-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 xl:gap-20">

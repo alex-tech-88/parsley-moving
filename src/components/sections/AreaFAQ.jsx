@@ -34,7 +34,7 @@ export default function AreaFAQ({ slug, cityName }) {
   }
 
   return (
-    <section id="faq" style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24">
+    <section id="faq" style={{ backgroundColor: t.bg.section }} className="pt-0 pb-16 xl:pb-24 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 xl:px-10">
         <span
           style={{ backgroundColor: t.bg.accent, color: t.brand.primary }}
