@@ -82,16 +82,17 @@ export default function AreaFAQ({ slug, cityName }) {
               </button>
 
               <div
-                className={`overflow-hidden transition-all duration-300 ${
-                  openId === item.id ? 'max-h-56 pb-5' : 'max-h-0'
-                }`}
+                className="grid transition-all duration-300"
+                style={{ gridTemplateRows: openId === item.id ? '1fr' : '0fr' }}
               >
-                <p
-                  style={{ color: t.text.secondary }}
-                  className="text-lg leading-relaxed"
-                >
-                  {item.answer}
-                </p>
+                <div className="overflow-hidden">
+                  <p
+                    style={{ color: t.text.secondary }}
+                    className="text-lg leading-relaxed pb-5"
+                  >
+                    {item.answer}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
