@@ -2,10 +2,19 @@ import { useEffect, useState } from 'react'
 import { ThemeContext } from '@context/ThemeContext'
 import { theme } from '@theme/theme'
 
+function getInitialMode() {
+  const savedMode = localStorage.getItem('parsley-theme')
+  if (savedMode === 'light' || savedMode === 'dark') {
+    return savedMode
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light'
+}
+
 export function ThemeProvider({ children }) {
-  const [mode, setMode] = useState(
-    () => localStorage.getItem('parsley-theme') || 'light'
-  )
+  const [mode, setMode] = useState(getInitialMode)
 
   const t = theme[mode]
 
