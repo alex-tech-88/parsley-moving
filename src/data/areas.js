@@ -178,3 +178,82 @@ export const AREA_NEARBY = {
   "san-mateo":            ["south-san-francisco", "san-bruno", "daly-city", "san-francisco", "hayward"],
   "san-bruno":            ["daly-city", "south-san-francisco", "san-mateo", "san-francisco", "san-leandro"],
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Area-specific SEO overrides
+// `title` should not include the site name suffix because SEO appends it.
+// ─────────────────────────────────────────────────────────────────────────────
+export const AREA_SEO = {
+  berkeley: {
+    title: "Movers in Berkeley, CA | No Hidden Fees",
+    description: "Moving in Berkeley, CA? Fast and careful movers with no hidden fees. Reliable service and transparent pricing. Get your quote today.",
+  },
+  oakland: {
+    title: "Movers in Oakland, CA | Fast & Careful",
+    description: "Looking for movers in Oakland, CA? Professional and efficient moving with clear pricing. No hidden fees. Request a free quote.",
+  },
+  albany: {
+    title: "Movers in Albany, CA | No Hidden Fees",
+    description: "Need movers in Albany, CA? We provide fast and careful local moving with transparent pricing. No hidden fees. Get a quote today.",
+  },
+  "el-cerrito": {
+    title: "Movers in El Cerrito, CA | Reliable & Professional",
+    description: "Moving in El Cerrito, CA? Reliable and professional movers with honest pricing. No hidden fees. Contact us for a quote.",
+  },
+  concord: {
+    title: "Movers in Concord, CA | No Hidden Fees",
+    description: "Looking for movers in Concord, CA? Fast and careful moving with no hidden fees. Get a free quote from Parsley Moving today.",
+  },
+  "walnut-creek": {
+    title: "Movers in Walnut Creek, CA | Fast & Careful",
+    description: "Moving in Walnut Creek, CA? Reliable and professional movers with transparent pricing. No hidden fees. Request your quote today.",
+  },
+  "pleasant-hill": {
+    title: "Movers in Pleasant Hill, CA | No Hidden Fees",
+    description: "Need movers in Pleasant Hill, CA? We handle local moves quickly and carefully. No hidden fees. Get your free quote today.",
+  },
+  martinez: {
+    title: "Movers in Martinez, CA | Fast & Reliable",
+    description: "Planning a move in Martinez, CA? Fast and reliable moving service with clear pricing and no hidden fees. Contact us for a quote.",
+  },
+  lafayette: {
+    title: "Movers in Lafayette, CA | No Hidden Fees",
+    description: "Moving in Lafayette, CA? Careful and efficient movers with transparent pricing. No hidden fees. Get your free estimate today.",
+  },
+  orinda: {
+    title: "Movers in Orinda, CA | Careful & Professional",
+    description: "Looking for movers in Orinda, CA? Professional and careful moving with honest pricing. No hidden fees. Request a quote today.",
+  },
+  "san-francisco": {
+    title: "Movers in San Francisco, CA | No Hidden Fees",
+    description: "Moving in San Francisco, CA? Experienced movers handling city moves efficiently. No hidden fees. Get a fast and free quote today.",
+  },
+  "daly-city": {
+    title: "Movers in Daly City, CA | Fast & Careful",
+    description: "Need movers in Daly City, CA? Reliable and careful moving with transparent pricing. No hidden fees. Request your quote today.",
+  },
+  "san-bruno": {
+    title: "Movers in San Bruno, CA | No Hidden Fees",
+    description: "Looking for movers in San Bruno, CA? Fast and professional moving with clear pricing. No hidden fees. Get your estimate today.",
+  },
+  "south-san-francisco": {
+    title: "Movers in South San Francisco, CA | Reliable & Professional",
+    description: "Moving in South San Francisco, CA? Efficient and careful movers with honest pricing. No hidden fees. Contact us for a quote.",
+  },
+  fremont: {
+    title: "Movers in Fremont, CA | No Hidden Fees",
+    description: "Looking for movers in Fremont, CA? Fast and reliable moving with transparent pricing. No hidden fees. Get your free quote today.",
+  },
+  newark: {
+    title: "Movers in Newark, CA | Fast & Careful",
+    description: "Moving in Newark, CA? Careful and efficient local movers with honest pricing. No hidden fees. Request a quote today.",
+  },
+  "union-city": {
+    title: "Movers in Union City, CA | No Hidden Fees",
+    description: "Need movers in Union City, CA? Professional and fast service with transparent pricing. No hidden fees. Get your quote today.",
+  },
+  hayward: {
+    title: "Movers in Hayward, CA | Reliable & Affordable",
+    description: "Moving in Hayward, CA? Reliable and careful movers with clear pricing. No hidden fees. Contact us for a free quote.",
+  },
+}

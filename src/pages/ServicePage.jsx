@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { SEO } from '@hooks/useSEO'
-import { SERVICES, ABOUT_BY_SERVICE, getPhotoBySlug } from "@/constant"
+import { SERVICES, SERVICE_SEO, ABOUT_BY_SERVICE, getPhotoBySlug } from "@/constant"
 import Hero from "@components/sections/Hero"
 import AboutUs from "@components/sections/AboutUs"
 
@@ -24,12 +24,16 @@ export default function ServicePage() {
     text1: `We provide professional ${service.title.toLowerCase()} services across the Bay Area. Our experienced team handles every job with care and efficiency.`,
     text2: "Parsley Moving is committed to making your relocation as smooth as possible. Contact us today to get a free quote.",
   }
+  const seo = SERVICE_SEO[slug] ?? {
+    title: `${service.title} in the Bay Area`,
+    description: `${service.title} services by Parsley Moving. Serving the San Francisco Bay Area 7 days a week, 9am–9pm. Reliable, professional, and fully equipped.`,
+  }
 
   return (
     <>
       <SEO
-        title={`${service.title} in the Bay Area`}
-        description={`${service.title} services by Parsley Moving. Serving the San Francisco Bay Area 7 days a week, 9am–9pm. Reliable, professional, and fully equipped.`}
+        title={seo.title}
+        description={seo.description}
         canonical={`https://parsleymoving.com/services/${slug}`}
       />
 

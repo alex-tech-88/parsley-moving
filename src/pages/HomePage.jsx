@@ -6,8 +6,8 @@ export default function HomePage() {
   return (
     <>
       <SEO
-        title="Professional Movers in the Bay Area"
-        description="Parsley Moving offers reliable residential and commercial moving services across the San Francisco Bay Area. Available 7 days a week, 9am–9pm. Get a free quote today."
+        title="Bay Area Movers | No Hidden Fees"
+        description="Looking for movers in the Bay Area? Parsley Moving offers fast, careful service with transparent pricing and no hidden fees. Get a free quote today."
         canonical="https://parsleymoving.com/"
       />
 
