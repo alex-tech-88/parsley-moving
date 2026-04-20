@@ -19,7 +19,7 @@ export const faqItems = [
   },
   {
     id: 4,
-    question: "Is my belongings insured during the move?",
+    question: "Are my belongings insured during the move?",
     answer:
       "All moves include basic liability coverage. We also offer full-value protection plans for valuable or fragile items. Our team will walk you through coverage options when you request a quote.",
   },
