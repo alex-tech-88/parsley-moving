@@ -52,13 +52,13 @@ function generateHtml(html, { title, description, canonical }) {
   const fullTitle = `${title} | Parsley Moving`
   return html
     .replace(/<title>.*?<\/title>/, `<title>${fullTitle}</title>`)
-    .replace(/<meta name="description" content=".*?"/, `<meta name="description" content="${description}"`)
+    .replace(/<meta name="description"\s*\n?\s*content=".*?"/s, `<meta name="description"\n    content="${description}"`)
     .replace(/<link rel="canonical" href=".*?"/, `<link rel="canonical" href="${canonical}"`)
     .replace(/<meta property="og:title" content=".*?"/, `<meta property="og:title" content="${fullTitle}"`)
-    .replace(/<meta property="og:description" content=".*?"/, `<meta property="og:description" content="${description}"`)
+    .replace(/<meta property="og:description"\s*\n?\s*content=".*?"/s, `<meta property="og:description"\n    content="${description}"`)
     .replace(/<meta property="og:url" content=".*?"/, `<meta property="og:url" content="${canonical}"`)
     .replace(/<meta name="twitter:title" content=".*?"/, `<meta name="twitter:title" content="${fullTitle}"`)
-    .replace(/<meta name="twitter:description" content=".*?"/, `<meta name="twitter:description" content="${description}"`)
+    .replace(/<meta name="twitter:description"\s*\n?\s*content=".*?"/s, `<meta name="twitter:description"\n    content="${description}"`)
 }
 
 // Generate area pages
