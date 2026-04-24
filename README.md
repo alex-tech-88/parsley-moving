@@ -59,6 +59,8 @@ src/
 ├── App.jsx
 └── main.jsx
 public/              # Favicons, web manifest, SVG icons
+scripts/
+└── generate-og-pages.js  # Pre-renders per-route index.html for OG meta tags
 
 
 Path Aliases
