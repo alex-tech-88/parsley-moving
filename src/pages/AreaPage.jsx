@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { SEO } from '@hooks/useSEO'
-import { ACCORDION_AREAS, SERVICES, ABOUT_BY_CITY, AREA_SEO, getPhotoBySlug, getExpectPhotosBySlug } from '@/constant'
+import { ACCORDION_AREAS, SERVICES, ABOUT_BY_CITY, getPhotoBySlug, getExpectPhotosBySlug } from '@/constant'
 import Hero       from '@components/sections/Hero'
 import AboutUs    from '@components/sections/AboutUs'
 import AreaExpect from '@components/sections/AreaExpect'
@@ -21,7 +20,6 @@ export default function AreaPage() {
   if (!city) {
     return (
       <>
-        <SEO title="Moving Services" noindex={true} />
         <Hero />
         <AboutUs />
       </>
@@ -29,10 +27,6 @@ export default function AreaPage() {
   }
 
   const expectPhotos = getExpectPhotosBySlug(slug)
-  const seo = AREA_SEO[slug] ?? {
-    title: `Moving Company in ${city.name}, CA`,
-    description: `Professional movers in ${city.name}, CA. Parsley Moving handles local & long-distance residential and commercial moves. Available 7 days a week, 9am–9pm.`,
-  }
 
   const cityData = ABOUT_BY_CITY[slug] ?? {
     intro1: `Looking for reliable movers in ${city.name}, CA? Parsley Moving provides professional local and long-distance moving services in ${city.name} and the surrounding Bay Area.`,
@@ -49,12 +43,6 @@ export default function AreaPage() {
 
   return (
     <>
-      <SEO
-        title={seo.title}
-        description={seo.description}
-        canonical={`https://parsleymoving.com/areas/${slug}`}
-      />
-
       <Hero
         title="Professional Moving"
         highlight={`in ${city.name}`}
