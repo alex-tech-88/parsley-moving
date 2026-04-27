@@ -1,5 +1,3 @@
-/areas/*     /areas/:splat/index.html    200
-/services/*  /services/:splat/index.html 200
-/contact     /contact/index.html         200
-/quote       /quote/index.html           200
-/*           /index.html                 200
+/areas/*     /areas/:splat    200
+/services/*  /services/:splat 200
+/*           /index.html      200
