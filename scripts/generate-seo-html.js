@@ -90,19 +90,18 @@ for (const [route, seo] of Object.entries(STATIC_PAGES)) {
     writeFileSync(resolve(distDir, 'index.html'), generateHtml(template, seo))
     console.log('✅ / (home)')
   } else {
-    const dir = resolve(distDir, route.replace('/', ''))
-    mkdirSync(dir, { recursive: true })
-    writeFileSync(resolve(dir, 'index.html'), generateHtml(template, seo))
+    const slug = route.replace('/', '')
+    writeFileSync(resolve(distDir, `${slug}.html`), generateHtml(template, seo))
     console.log(`✅ ${route}`)
   }
 }
 
 // ─── Area pages ───────────────────────────────────────────────────────────────
 
+mkdirSync(resolve(distDir, 'areas'), { recursive: true })
+
 for (const [slug, seo] of Object.entries(AREA_SEO)) {
-  const dir = resolve(distDir, 'areas', slug)
-  mkdirSync(dir, { recursive: true })
-  writeFileSync(resolve(dir, 'index.html'), generateHtml(template, {
+  writeFileSync(resolve(distDir, 'areas', `${slug}.html`), generateHtml(template, {
     ...seo,
     canonical: `https://parsleymoving.com/areas/${slug}`,
   }))
@@ -111,10 +110,10 @@ for (const [slug, seo] of Object.entries(AREA_SEO)) {
 
 // ─── Service pages ────────────────────────────────────────────────────────────
 
+mkdirSync(resolve(distDir, 'services'), { recursive: true })
+
 for (const [slug, seo] of Object.entries(SERVICE_SEO)) {
-  const dir = resolve(distDir, 'services', slug)
-  mkdirSync(dir, { recursive: true })
-  writeFileSync(resolve(dir, 'index.html'), generateHtml(template, {
+  writeFileSync(resolve(distDir, 'services', `${slug}.html`), generateHtml(template, {
     ...seo,
     canonical: `https://parsleymoving.com/services/${slug}`,
   }))

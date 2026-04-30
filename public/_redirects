@@ -1,6 +1,0 @@
-/areas/:slug/    /areas/:slug    301
-/services/:slug/ /services/:slug 301
-
-/areas/*     /areas/:splat    200
-/services/*  /services/:splat 200
-/*           /index.html      200
