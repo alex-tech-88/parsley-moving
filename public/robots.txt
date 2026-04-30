@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /quote
-Disallow: /contact
-
 Sitemap: https://parsleymoving.com/sitemap.xml
