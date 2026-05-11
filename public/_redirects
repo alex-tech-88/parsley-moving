@@ -1,3 +1,5 @@
-﻿/areas/:city/    /areas/:city    301
-/services/:page/ /services/:page 301
-/*    /index.html   200
+﻿# HTTP → HTTPS
+http://parsleymoving.com/*  https://parsleymoving.com/:splat  301!
+
+# SPA fallback
+/*  /index.html  200
