@@ -1,5 +1,2 @@
-﻿# HTTP → HTTPS
-http://parsleymoving.com/*  https://parsleymoving.com/:splat  301!
-
-# SPA fallback
+﻿# SPA fallback
 /*  /index.html  200
